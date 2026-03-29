@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { License } from "@/lib/db";
 import { useAuth } from "@/context/AuthContext";
@@ -11,9 +13,15 @@ function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
-    await navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard) {
+        await navigator.clipboard.writeText(text);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }
+    } catch (err) {
+      console.error("Copy failed", err);
+    }
   };
 
   return (
@@ -23,14 +31,33 @@ function CopyButton({ text }: { text: string }) {
     >
       {copied ? (
         <>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-green-500">
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-green-500"
+          >
             <path d="M20 6L9 17l-5-5" />
           </svg>
           Copied
         </>
       ) : (
         <>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
             <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
           </svg>
@@ -57,7 +84,9 @@ export default function ProfileSettings({ license }: ProfileSettingsProps) {
           <h1 className="text-2xl font-bold text-neutral-900 dark:text-white tracking-tight">
             Account Settings
           </h1>
-          <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">{user?.email}</p>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
+            {user?.email}
+          </p>
         </div>
       </div>
 
@@ -65,15 +94,25 @@ export default function ProfileSettings({ license }: ProfileSettingsProps) {
         {/* Account Info */}
         <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200/60 dark:border-neutral-800/60 shadow-card dark:shadow-card-dark overflow-hidden">
           <div className="px-6 py-5 border-b border-neutral-100 dark:border-neutral-800/60">
-            <h2 className="text-base font-semibold text-neutral-900 dark:text-white">Account</h2>
+            <h2 className="text-base font-semibold text-neutral-900 dark:text-white">
+              Account
+            </h2>
           </div>
+
           <div className="px-6 py-5 space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-neutral-500 dark:text-neutral-400">Email</span>
-              <span className="text-sm font-medium text-neutral-900 dark:text-white">{user?.email}</span>
+              <span className="text-sm text-neutral-500 dark:text-neutral-400">
+                Email
+              </span>
+              <span className="text-sm font-medium text-neutral-900 dark:text-white">
+                {user?.email}
+              </span>
             </div>
+
             <div className="flex items-center justify-between">
-              <span className="text-sm text-neutral-500 dark:text-neutral-400">Member since</span>
+              <span className="text-sm text-neutral-500 dark:text-neutral-400">
+                Member since
+              </span>
               <span className="text-sm font-medium text-neutral-900 dark:text-white">
                 {user?.created_at
                   ? new Date(user.created_at).toLocaleDateString("en-GB", {
@@ -90,49 +129,35 @@ export default function ProfileSettings({ license }: ProfileSettingsProps) {
         {/* License */}
         <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200/60 dark:border-neutral-800/60 shadow-card dark:shadow-card-dark overflow-hidden">
           <div className="px-6 py-5 border-b border-neutral-100 dark:border-neutral-800/60">
-            <h2 className="text-base font-semibold text-neutral-900 dark:text-white">License</h2>
+            <h2 className="text-base font-semibold text-neutral-900 dark:text-white">
+              License
+            </h2>
           </div>
+
           <div className="px-6 py-5 space-y-4">
             {license?.license_key ? (
               <>
                 <div className="flex items-center justify-between gap-4">
-                  <span className="text-sm text-neutral-500 dark:text-neutral-400 flex-shrink-0">License key</span>
+                  <span className="text-sm text-neutral-500 dark:text-neutral-400 flex-shrink-0">
+                    License key
+                  </span>
+
                   <div className="flex items-center gap-2 min-w-0">
                     <code className="text-sm font-mono font-medium text-neutral-900 dark:text-white tracking-wider truncate">
                       {license.license_key}
                     </code>
+
                     <CopyButton text={license.license_key} />
                   </div>
                 </div>
+
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-neutral-500 dark:text-neutral-400">Activations</span>
+                  <span className="text-sm text-neutral-500 dark:text-neutral-400">
+                    Activations
+                  </span>
                   <span className="text-sm font-medium text-neutral-900 dark:text-white">
                     {license.activation_count} / {license.max_activations} devices
                   </span>
-                </div>
-                {license.last_validated_at && (
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-neutral-500 dark:text-neutral-400">Last used</span>
-                    <span className="text-sm font-medium text-neutral-900 dark:text-white">
-                      {new Date(license.last_validated_at).toLocaleDateString("en-GB", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </span>
-                  </div>
-                )}
-                <div className="pt-1">
-                  <a
-                    href="/manage-license"
-                    className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:text-accent/80 transition-colors"
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="3" />
-                      <path d="M19.07 4.93A10 10 0 1 0 4.93 19.07 10 10 0 0 0 19.07 4.93z" />
-                    </svg>
-                    Manage License
-                  </a>
                 </div>
               </>
             ) : (
@@ -140,15 +165,6 @@ export default function ProfileSettings({ license }: ProfileSettingsProps) {
                 <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-4">
                   No license found for this account.
                 </p>
-                <a
-                  href="/manage-license"
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:text-accent/80 transition-colors"
-                >
-                  Look up by email
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M9 18l6-6-6-6" />
-                  </svg>
-                </a>
               </div>
             )}
           </div>
@@ -162,11 +178,14 @@ export default function ProfileSettings({ license }: ProfileSettingsProps) {
           <div className="px-6 py-5">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-neutral-900 dark:text-white">Sign out</p>
+                <p className="text-sm font-medium text-neutral-900 dark:text-white">
+                  Sign out
+                </p>
                 <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
                   Sign out of your account on this device
                 </p>
               </div>
+
               <button
                 onClick={signOut}
                 className="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all duration-150"
