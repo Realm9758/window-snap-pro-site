@@ -184,7 +184,8 @@ export default function Hero() {
         >
           <div className="flex flex-col sm:flex-row items-center gap-3">
             <motion.a
-              href="/download"
+              href="/WindowSnapPro.zip"
+              download
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 20 }}
