@@ -7,6 +7,7 @@ import Download from "../components/Download";
 import Footer from "../components/Footer";
 import PricingCard from "../components/PricingCard";
 import { motion } from "framer-motion";
+import { getStripe } from "../lib/stripe-browser";
 
 const FREE_FEATURES = [
   { text: "Basic window snapping", included: true },
@@ -41,12 +42,18 @@ function PricingPreview() {
   const handleSubscribe = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({}),
-      });
+      const [stripe, res] = await Promise.all([
+        getStripe(),
+        fetch("/api/create-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({}),
+        }),
+      ]);
       const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Checkout failed");
+      // stripe is preloaded for PCI-compliance/Radar fraud detection
+      void stripe;
       if (data.url) window.location.href = data.url;
     } catch (err) {
       console.error(err);

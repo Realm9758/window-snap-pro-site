@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       allow_promotion_codes: true,
     });
 
-    return res.status(200).json({ url: session.url });
+    return res.status(200).json({ url: session.url, id: session.id });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Internal server error";
     console.error("[checkout] error:", message);
