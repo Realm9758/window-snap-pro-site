@@ -10,6 +10,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
   const isChangelog = router.pathname === "/changelog";
+  const isHome = router.pathname === "/";
 
   useEffect(() => {
     const stored = localStorage.getItem("theme");
@@ -33,9 +34,10 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { label: "Features", href: isChangelog ? "/#features" : "#features" },
+    { label: "Features", href: isHome ? "#features" : "/#features" },
+    { label: "Pricing", href: "/pricing" },
     { label: "Changelog", href: "/changelog" },
-    { label: "Download", href: isChangelog ? "/#download" : "#download" },
+    { label: "Download", href: "/download" },
   ];
 
   return (
@@ -105,15 +107,15 @@ export default function Navbar() {
             )}
           </button>
 
-          {/* Download CTA */}
+          {/* Get Pro CTA */}
           <Link
-            href={isChangelog ? "/#download" : "#download"}
-            className="hidden md:flex items-center gap-1.5 px-4 py-1.5 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-medium rounded-full hover:bg-neutral-700 dark:hover:bg-neutral-100 transition-all duration-150 shadow-sm"
+            href="/pricing"
+            className="hidden md:flex items-center gap-1.5 px-4 py-1.5 bg-accent text-white text-sm font-semibold rounded-full hover:bg-accent/90 transition-all duration-150 shadow-sm shadow-accent/25"
           >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 1.5a.75.75 0 01.75.75v4h4a.75.75 0 010 1.5h-4v4a.75.75 0 01-1.5 0v-4h-4a.75.75 0 010-1.5h4v-4A.75.75 0 018 1.5z" />
             </svg>
-            Download
+            Get Pro
           </Link>
 
           {/* Mobile menu button */}
