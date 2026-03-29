@@ -3,7 +3,7 @@ import { APP_URL } from "./stripe";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const FROM = "Window Snap Pro <hello@windowsnappro.com>";
+const FROM = "Window Snap Pro <onboarding@resend.dev>";
 
 export async function sendLicenseEmail(email: string, licenseKey: string): Promise<void> {
   const { error } = await resend.emails.send({
