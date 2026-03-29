@@ -39,6 +39,9 @@ export default function Signup() {
     const { error: authError } = await getSupabaseBrowser().auth.signUp({
       email: email.trim().toLowerCase(),
       password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/profile`,
+      },
     });
 
     if (authError) {
