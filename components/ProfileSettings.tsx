@@ -101,9 +101,7 @@ export default function ProfileSettings({ license }: ProfileSettingsProps) {
                     <code className="text-sm font-mono font-medium text-neutral-900 dark:text-white tracking-wider truncate">
                       {license.license_key}
                     </code>
-                    <CopyButton text={license.
-                      
-                    } />
+                    <CopyButton text={license.license_key} />
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
