@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { License } from "@/lib/db";
-import { useAuth } from "@/context/AuthContext";
+import type { License } from "@/lib/db";
+import { useAuth } from "@/lib/auth-context";
 import SubscriptionCard from "@/components/SubscriptionCard";
 
 interface ProfileSettingsProps {

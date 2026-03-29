@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { License } from "@/lib/db";
-import { useAuth } from "@/context/AuthContext";
+import type { License } from "@/lib/db";
+import { useAuth } from "@/lib/auth-context";
 
 interface SubscriptionCardProps {
   license: License | null;
