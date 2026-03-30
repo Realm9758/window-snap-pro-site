@@ -1,94 +1,89 @@
 import Head from "next/head";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { getSupabaseBrowser } from "../lib/supabase-browser";
+import { useAuth } from "../lib/auth-context";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import LicenseKeyDisplay from "../components/LicenseKeyDisplay";
 
-type Step = "input" | "found" | "not_found";
-
 interface LicenseInfo {
   license_key: string;
-  email: string;
-  plan: string;
-  status: string;
+  product_tier: string;
+  subscription_status: string;
+  current_period_end: string | null;
+  cancel_at_period_end: boolean;
+  active: boolean;
+  stripe_customer_id: string | null;
 }
-
-const STATUS_MAP: Record<string, { label: string; color: string }> = {
-  active: { label: "Active", color: "text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30" },
-  trialing: { label: "Trial", color: "text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30" },
-  past_due: { label: "Payment Due", color: "text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/30" },
-  canceled: { label: "Cancelled", color: "text-neutral-500 bg-neutral-100 dark:bg-neutral-800" },
-  inactive: { label: "Inactive", color: "text-neutral-500 bg-neutral-100 dark:bg-neutral-800" },
-};
 
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
   show: (i: number) => ({
     opacity: 1, y: 0,
-    transition: { delay: i * 0.07, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] },
+    transition: { delay: i * 0.08, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] },
   }),
 };
 
+const STATUS_MAP: Record<string, { label: string; color: string }> = {
+  active:   { label: "Active",       color: "text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30" },
+  trialing: { label: "Trial",        color: "text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30" },
+  past_due: { label: "Payment Due",  color: "text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/30" },
+  canceled: { label: "Cancelled",    color: "text-neutral-500 bg-neutral-100 dark:bg-neutral-800" },
+  inactive: { label: "Inactive",     color: "text-neutral-500 bg-neutral-100 dark:bg-neutral-800" },
+};
+
 export default function ManageLicense() {
-  const [step, setStep] = useState<Step>("input");
-  const [email, setEmail] = useState("");
-  const [licenseInfo, setLicenseInfo] = useState<LicenseInfo | null>(null);
-  const [lookupLoading, setLookupLoading] = useState(false);
+  const router = useRouter();
+  const { user, loading } = useAuth();
+
+  const [license, setLicense]           = useState<LicenseInfo | null>(null);
+  const [fetching, setFetching]         = useState(true);
   const [resendLoading, setResendLoading] = useState(false);
-  const [resendSent, setResendSent] = useState(false);
+  const [resendSent, setResendSent]     = useState(false);
   const [portalLoading, setPortalLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError]               = useState("");
 
-  const handleLookup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim()) return;
-
-    setLookupLoading(true);
-    setError("");
-
-    try {
-      // We use the resend endpoint to check if a license exists
-      // In production you might want a dedicated /api/license/lookup endpoint
-      const res = await fetch("/api/license/resend", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim() }),
-      });
-
-      // Always shows success (to prevent enumeration), so we rely on by-session
-      // Instead, use a dedicated lookup endpoint that returns masked info
-      const lookupRes = await fetch("/api/manage/lookup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim() }),
-      });
-
-      if (lookupRes.ok) {
-        const data = await lookupRes.json();
-        if (data.found) {
-          setLicenseInfo(data);
-          setStep("found");
-        } else {
-          setStep("not_found");
-        }
-      } else {
-        setStep("not_found");
-      }
-    } catch {
-      setError("Something went wrong. Please try again.");
-    } finally {
-      setLookupLoading(false);
+  // Must be logged in — redirect to login if not
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace("/login?redirect=/manage-license");
     }
-  };
+  }, [user, loading, router]);
+
+  // Fetch own license via the authenticated /api/auth/user endpoint
+  useEffect(() => {
+    if (!user) return;
+    async function fetchLicense() {
+      setFetching(true);
+      try {
+        const { data: { session } } = await getSupabaseBrowser().auth.getSession();
+        if (!session) { setFetching(false); return; }
+
+        const res = await fetch("/api/auth/user", {
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setLicense(data.license ?? null);
+        }
+      } finally {
+        setFetching(false);
+      }
+    }
+    fetchLicense();
+  }, [user]);
 
   const handleResend = async () => {
+    if (!user?.email) return;
     setResendLoading(true);
     try {
       await fetch("/api/license/resend", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: user.email }),
       });
       setResendSent(true);
       setTimeout(() => setResendSent(false), 4000);
@@ -100,12 +95,14 @@ export default function ManageLicense() {
   };
 
   const handlePortal = async () => {
+    if (!user?.email) return;
     setPortalLoading(true);
+    setError("");
     try {
       const res = await fetch("/api/manage/portal", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: user.email }),
       });
       const data = await res.json();
       if (data.url) window.location.href = data.url;
@@ -117,13 +114,20 @@ export default function ManageLicense() {
     }
   };
 
-  const statusInfo = licenseInfo ? (STATUS_MAP[licenseInfo.status] ?? STATUS_MAP["inactive"]) : null;
+  if (loading || !user) return null;
+
+  const statusInfo = license ? (STATUS_MAP[license.subscription_status] ?? STATUS_MAP["inactive"]) : null;
+  const renewDate = license?.current_period_end
+    ? new Date(license.current_period_end).toLocaleDateString("en-GB", {
+        day: "numeric", month: "long", year: "numeric",
+      })
+    : null;
 
   return (
     <>
       <Head>
         <title>Manage License — Window Snap Pro</title>
-        <meta name="description" content="Look up your Window Snap Pro license, resend your key, or manage your subscription." />
+        <meta name="description" content="View and manage your Window Snap Pro license and subscription." />
       </Head>
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />
@@ -142,157 +146,129 @@ export default function ManageLicense() {
                 custom={1} variants={fadeUp} initial="hidden" animate="show"
                 className="text-neutral-500 dark:text-neutral-400 leading-relaxed"
               >
-                Enter your purchase email to view your license, resend your key, or manage your subscription.
+                Logged in as <span className="font-medium text-neutral-700 dark:text-neutral-300">{user.email}</span>
               </motion.p>
             </div>
 
-            <AnimatePresence mode="wait">
+            <div className="flex flex-col gap-4">
 
-              {/* Email input form */}
-              {step === "input" && (
-                <motion.div
-                  key="input"
-                  custom={2} variants={fadeUp} initial="hidden" animate="show" exit={{ opacity: 0, y: -12 }}
-                >
-                  <form onSubmit={handleLookup} className="flex flex-col gap-4">
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                        Purchase email
-                      </label>
-                      <input
-                        id="email"
-                        type="email"
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="you@example.com"
-                        className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all text-sm"
-                      />
+              {/* Status card */}
+              <motion.div
+                custom={2} variants={fadeUp} initial="hidden" animate="show"
+                className="rounded-3xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-[0_4px_24px_rgba(0,0,0,0.05)] p-6"
+              >
+                <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500 mb-4">
+                  Subscription
+                </p>
+                {fetching ? (
+                  <div className="flex flex-col gap-2 animate-pulse">
+                    <div className="h-4 bg-neutral-100 dark:bg-neutral-800 rounded-full w-1/3" />
+                    <div className="h-4 bg-neutral-100 dark:bg-neutral-800 rounded-full w-1/2" />
+                  </div>
+                ) : license ? (
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center justify-between">
+                      <p className="font-semibold text-neutral-900 dark:text-white capitalize">
+                        {license.product_tier}
+                      </p>
+                      <span className={`text-xs font-semibold px-3 py-1.5 rounded-full ${statusInfo?.color}`}>
+                        {statusInfo?.label}
+                      </span>
                     </div>
-                    {error && (
-                      <p className="text-sm text-red-500 dark:text-red-400">{error}</p>
+                    {renewDate && (
+                      <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                        {license.cancel_at_period_end ? "Access until" : "Renews"}{" "}
+                        <span className="font-medium text-neutral-700 dark:text-neutral-300">{renewDate}</span>
+                      </p>
                     )}
-                    <motion.button
-                      type="submit"
-                      disabled={lookupLoading}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full py-3 px-6 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-semibold text-sm rounded-2xl hover:bg-neutral-700 dark:hover:bg-neutral-100 transition-colors duration-150 disabled:opacity-60 flex items-center justify-center gap-2"
+                    {license.cancel_at_period_end && (
+                      <p className="text-xs text-amber-600 dark:text-amber-400 font-medium">
+                        Cancels at period end
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                      No active Pro subscription found for this account.
+                    </p>
+                    <Link
+                      href="/pricing"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 bg-accent text-white text-sm font-semibold rounded-xl shadow-sm shadow-accent/30 hover:bg-accent/90 transition-all duration-150 w-fit"
                     >
-                      {lookupLoading ? (
-                        <>
-                          <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-                          </svg>
-                          Looking up…
-                        </>
-                      ) : "Look Up License"}
-                    </motion.button>
-                  </form>
+                      Upgrade to Pro — £4.99/mo
+                    </Link>
+                  </div>
+                )}
+              </motion.div>
+
+              {/* License key card */}
+              {!fetching && license && (
+                <motion.div
+                  custom={3} variants={fadeUp} initial="hidden" animate="show"
+                  className="rounded-3xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-[0_4px_24px_rgba(0,0,0,0.05)] p-6"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500 mb-4">
+                    License Key
+                  </p>
+                  <LicenseKeyDisplay licenseKey={license.license_key} />
+                  <p className="text-xs text-neutral-400 dark:text-neutral-500 leading-relaxed mt-4">
+                    Open <strong className="text-neutral-600 dark:text-neutral-400">Window Snap Pro</strong> → Settings → License and paste this key to activate.
+                  </p>
                 </motion.div>
               )}
 
-              {/* License found */}
-              {step === "found" && licenseInfo && (
+              {/* Actions */}
+              {!fetching && license && (
                 <motion.div
-                  key="found"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-                  className="flex flex-col gap-5"
+                  custom={4} variants={fadeUp} initial="hidden" animate="show"
+                  className="flex flex-col gap-3"
                 >
-                  {/* Status banner */}
-                  <div className="rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-5 flex items-center justify-between">
-                    <div>
-                      <p className="text-xs text-neutral-400 dark:text-neutral-500 mb-1">Subscription</p>
-                      <p className="font-semibold text-neutral-900 dark:text-white capitalize">{licenseInfo.plan}</p>
-                    </div>
-                    <span className={`text-xs font-semibold px-3 py-1.5 rounded-full ${statusInfo?.color}`}>
-                      {statusInfo?.label}
-                    </span>
-                  </div>
-
-                  {/* License key */}
-                  <LicenseKeyDisplay licenseKey={licenseInfo.license_key} />
-
-                  {/* Actions */}
-                  <div className="flex flex-col gap-3">
-                    <button
-                      onClick={handleResend}
-                      disabled={resendLoading || resendSent}
-                      className="w-full py-3 px-6 rounded-2xl border border-neutral-200 dark:border-neutral-700 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors duration-150 disabled:opacity-60 flex items-center justify-center gap-2"
-                    >
-                      {resendSent ? (
-                        <span className="flex items-center gap-2 text-green-600 dark:text-green-400">
-                          <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z" />
-                          </svg>
-                          Email sent!
-                        </span>
-                      ) : resendLoading ? "Sending…" : "Resend License Email"}
-                    </button>
-
-                    <button
-                      onClick={handlePortal}
-                      disabled={portalLoading}
-                      className="w-full py-3 px-6 rounded-2xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-semibold hover:bg-neutral-700 dark:hover:bg-neutral-100 transition-colors duration-150 disabled:opacity-60 flex items-center justify-center gap-2"
-                    >
-                      {portalLoading ? (
-                        <>
-                          <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-                          </svg>
-                          Opening…
-                        </>
-                      ) : "Manage Subscription"}
-                    </button>
-                  </div>
-
-                  {error && <p className="text-sm text-red-500 dark:text-red-400 text-center">{error}</p>}
+                  <button
+                    onClick={handleResend}
+                    disabled={resendLoading || resendSent}
+                    className="w-full py-3 px-6 rounded-2xl border border-neutral-200 dark:border-neutral-700 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors duration-150 disabled:opacity-60 flex items-center justify-center gap-2"
+                  >
+                    {resendSent ? (
+                      <span className="flex items-center gap-2 text-green-600 dark:text-green-400">
+                        <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z" />
+                        </svg>
+                        Email sent!
+                      </span>
+                    ) : resendLoading ? "Sending…" : "Resend License Email"}
+                  </button>
 
                   <button
-                    onClick={() => { setStep("input"); setLicenseInfo(null); setError(""); }}
-                    className="text-sm text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 text-center transition-colors"
+                    onClick={handlePortal}
+                    disabled={portalLoading}
+                    className="w-full py-3 px-6 rounded-2xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-semibold hover:bg-neutral-700 dark:hover:bg-neutral-100 transition-colors duration-150 disabled:opacity-60 flex items-center justify-center gap-2"
                   >
-                    ← Use a different email
+                    {portalLoading ? (
+                      <>
+                        <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                        </svg>
+                        Opening…
+                      </>
+                    ) : "Manage Subscription"}
                   </button>
+
+                  {error && <p className="text-sm text-red-500 dark:text-red-400 text-center">{error}</p>}
                 </motion.div>
               )}
 
-              {/* Not found */}
-              {step === "not_found" && (
-                <motion.div
-                  key="not_found"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="text-center py-8"
+              {/* Account link */}
+              <motion.div custom={5} variants={fadeUp} initial="hidden" animate="show" className="text-center pt-2">
+                <Link
+                  href="/profile"
+                  className="text-sm text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"
                 >
-                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-neutral-100 dark:bg-neutral-800 mb-5">
-                    <svg className="w-6 h-6 text-neutral-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="11" cy="11" r="8" />
-                      <path d="m21 21-4.35-4.35" />
-                    </svg>
-                  </div>
-                  <h2 className="text-lg font-semibold text-neutral-900 dark:text-white mb-2">No license found</h2>
-                  <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-8 leading-relaxed max-w-xs mx-auto">
-                    We couldn&apos;t find a license for <span className="font-medium text-neutral-700 dark:text-neutral-300">{email}</span>. Double-check the email you used to purchase.
-                  </p>
-                  <div className="flex flex-col gap-3 max-w-xs mx-auto">
-                    <button
-                      onClick={() => { setStep("input"); setError(""); }}
-                      className="w-full py-3 px-6 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-semibold text-sm rounded-2xl"
-                    >
-                      Try a different email
-                    </button>
-                    <a href="/pricing" className="text-sm text-accent font-medium text-center hover:underline">
-                      Get Window Snap Pro →
-                    </a>
-                  </div>
-                </motion.div>
-              )}
+                  ← Back to my account
+                </Link>
+              </motion.div>
 
-            </AnimatePresence>
+            </div>
           </div>
         </main>
         <Footer />

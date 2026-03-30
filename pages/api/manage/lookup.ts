@@ -1,22 +1,28 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { createClient } from "@supabase/supabase-js";
 import { getLicenseByEmail } from "../../../lib/db";
-import { checkRateLimit } from "../../../lib/rateLimit";
 
+// Requires a valid Supabase Bearer token.
+// Returns license data only for the authenticated user's own email —
+// callers cannot look up arbitrary accounts.
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "POST") return res.status(405).end();
+  if (req.method !== "GET") return res.status(405).end();
 
-  const { email } = req.body as { email?: string };
-  if (!email || typeof email !== "string") {
-    return res.status(400).json({ error: "Email is required." });
+  const token = req.headers.authorization?.replace("Bearer ", "").trim();
+  if (!token) return res.status(401).json({ error: "Unauthorized" });
+
+  const admin = createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { persistSession: false } }
+  );
+
+  const { data: { user }, error } = await admin.auth.getUser(token);
+  if (error || !user?.email) {
+    return res.status(401).json({ error: "Invalid or expired session." });
   }
 
-  // Rate limit: 5 lookups per minute per email
-  const rl = checkRateLimit(`lookup:${email.toLowerCase()}`, 5, 60_000);
-  if (!rl.allowed) {
-    return res.status(429).json({ error: "Too many requests. Please wait a moment." });
-  }
-
-  const license = await getLicenseByEmail(email);
+  const license = await getLicenseByEmail(user.email);
 
   if (!license) {
     return res.status(200).json({ found: false });
@@ -24,11 +30,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   return res.status(200).json({
     found: true,
-    license_key: license.license_key,
-    email: license.email,
-    plan: license.product_tier,
-    status: license.subscription_status,
-    current_period_end: license.current_period_end,
+    license_key:         license.license_key,
+    plan:                license.product_tier,
+    status:              license.subscription_status,
+    current_period_end:  license.current_period_end,
     cancel_at_period_end: license.cancel_at_period_end,
   });
 }

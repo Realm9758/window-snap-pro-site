@@ -64,7 +64,7 @@ export default function Download() {
                     Window Snap Pro
                   </h2>
                   <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-400 dark:text-neutral-500">
-                    <span>Version 1.0</span>
+                    <span>Version 1.2</span>
                     <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-600" />
                     <span>~4.2 MB</span>
                     <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-600" />
@@ -88,7 +88,7 @@ export default function Download() {
               {/* Meta row */}
               <div className="px-8 py-5 grid grid-cols-3 divide-x divide-neutral-100 dark:divide-neutral-800">
                 {[
-                  { label: "Version", value: "1.0" },
+                  { label: "Version", value: "1.2" },
                   { label: "Requires", value: "macOS 13+" },
                   { label: "Architecture", value: "Apple Silicon + Intel" },
                 ].map((item) => (
@@ -111,16 +111,16 @@ export default function Download() {
                     <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z" />
                   </svg>
                 </span>
-                What&apos;s new in 1.0
+                What&apos;s new in 1.2
               </h3>
               <ul className="flex flex-col gap-2.5">
                 {[
-                  "Initial release with full window snapping engine",
-                  "Menu bar access with quick-snap shortcuts",
-                  "Support for halves, thirds, quarters, and corners",
-                  "Drag-to-edge zone detection",
-                  "Full macOS Ventura & Sonoma compatibility",
-                  "Apple Silicon (M1–M4) native build",
+                  "Clipboard History — track up to 5 copied items (free) or 50 (Pro)",
+                  "Clipboard popup at cursor with search, pin, and arrow-key navigation",
+                  "Customisable ⌘⇧V shortcut for the clipboard history popup",
+                  "Fully redesigned Settings window with animated sidebar",
+                  "Per-section coloured icons and page crossfade transitions in Settings",
+                  "Improved shortcut badge design with recording indicator",
                 ].map((note) => (
                   <li key={note} className="flex items-start gap-3 text-sm text-neutral-600 dark:text-neutral-400">
                     <svg className="w-4 h-4 text-neutral-300 dark:text-neutral-600 flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="currentColor">
