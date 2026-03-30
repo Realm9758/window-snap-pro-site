@@ -85,6 +85,20 @@ const features = [
     iconColor: "text-pink-500 dark:text-pink-400",
     border: "group-hover:border-pink-200 dark:group-hover:border-pink-800",
   },
+  {
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="8" y="2" width="8" height="4" rx="1" />
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+        <path d="M9 12h6M9 15h4" />
+      </svg>
+    ),
+    title: "Clipboard History",
+    description: "Instantly recall your last 5 copied items from the menu bar — text, links, or snippets. Pro users can expand the limit up to 50.",
+    accent: "from-teal-500/10 to-teal-600/5",
+    iconColor: "text-teal-500 dark:text-teal-400",
+    border: "group-hover:border-teal-200 dark:group-hover:border-teal-800",
+  },
 ];
 
 const whyPoints = [

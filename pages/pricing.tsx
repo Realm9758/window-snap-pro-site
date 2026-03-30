@@ -11,10 +11,12 @@ const FREE_FEATURES = [
   { text: "Keyboard shortcut support", included: true },
   { text: "Menu bar quick-access", included: true },
   { text: "Standard snap zones", included: true },
+  { text: "Clipboard history (up to 5 items)", included: true },
   { text: "App-specific snap rules", included: false },
   { text: "Custom drag zones", included: false },
   { text: "Advanced animations", included: false },
   { text: "Premium settings panel", included: false },
+  { text: "Clipboard history limit (up to 50)", included: false },
   { text: "Priority support", included: false },
 ];
 
@@ -25,6 +27,7 @@ const PRO_FEATURES = [
   { text: "Advanced animations", included: true },
   { text: "Premium settings panel", included: true },
   { text: "Multi-monitor profiles", included: true },
+  { text: "Clipboard history limit (up to 50)", included: true },
   { text: "Priority support", included: true },
   { text: "All future Pro updates", included: true },
 ];

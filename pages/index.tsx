@@ -13,9 +13,11 @@ const FREE_FEATURES = [
   { text: "Basic window snapping", included: true },
   { text: "Keyboard shortcuts", included: true },
   { text: "Menu bar access", included: true },
+  { text: "Clipboard history (up to 5 items)", included: true },
   { text: "App-specific rules", included: false },
   { text: "Custom drag zones", included: false },
   { text: "Advanced animations", included: false },
+  { text: "Clipboard history limit (up to 50)", included: false },
 ];
 
 const PRO_FEATURES = [
@@ -24,6 +26,7 @@ const PRO_FEATURES = [
   { text: "Custom drag zones", included: true },
   { text: "Advanced animations", included: true },
   { text: "Premium settings", included: true },
+  { text: "Clipboard history limit (up to 50)", included: true },
   { text: "All future updates", included: true },
 ];
 

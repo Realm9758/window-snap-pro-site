@@ -7,9 +7,19 @@ import Link from "next/link";
 
 const changelog: ChangelogEntry[] = [
   {
-    version: "1.1",
+    version: "1.2",
     date: "March 2026",
     tag: "latest",
+    changes: [
+      { type: "added", text: "Clipboard History — instantly recall your last copied items from the menu bar. Free users get up to 5 entries." },
+      { type: "added", text: "Pro users can customize the clipboard history limit from 5 up to 50 items via Settings → Clipboard." },
+      { type: "improved", text: "Clipboard entries support rich previews for text, URLs, and code snippets." },
+    ],
+  },
+  {
+    version: "1.1",
+    date: "March 2026",
+    tag: "stable",
     changes: [
       { type: "added", text: "App-specific rules — assign a default snap position for any app." },
       { type: "added", text: "Drag zone customization — resize and reposition snap trigger areas." },
