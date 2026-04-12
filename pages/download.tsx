@@ -118,6 +118,8 @@ export default function Download() {
                   "Clipboard History — track up to 5 copied items (free) or 50 (Pro)",
                   "Clipboard popup at cursor with search, pin, and arrow-key navigation",
                   "Customisable ⌘⇧V shortcut for the clipboard history popup",
+                  "File Shelf — drag files into the clipboard popup to store and paste them",
+                  "Drag files back out of the shelf directly into any app",
                   "Fully redesigned Settings window with animated sidebar",
                   "Per-section coloured icons and page crossfade transitions in Settings",
                   "Improved shortcut badge design with recording indicator",

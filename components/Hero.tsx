@@ -146,7 +146,7 @@ export default function Hero() {
         <motion.div custom={0} variants={fadeUp} initial="hidden" animate="show">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 dark:bg-accent/15 text-accent text-xs font-semibold tracking-wide border border-accent/20">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-            Version 1.0 — Now Available
+            Version 1.2 — Now Available
           </span>
         </motion.div>
 
@@ -210,7 +210,7 @@ export default function Hero() {
             </motion.a>
           </div>
           <div className="flex flex-col items-center gap-0.5">
-            <span className="text-xs text-neutral-400 dark:text-neutral-500 font-medium">Version 1.0 · Free to download</span>
+            <span className="text-xs text-neutral-400 dark:text-neutral-500 font-medium">Version 1.2 · Free to download</span>
             <span className="text-xs text-neutral-400 dark:text-neutral-600">Requires macOS Ventura or later</span>
           </div>
         </motion.div>
