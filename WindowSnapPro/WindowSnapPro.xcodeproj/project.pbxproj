@@ -1,0 +1,437 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A1000001 /* WindowSnapProApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000001 /* WindowSnapProApp.swift */; };
+		A1000002 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000002 /* AppState.swift */; };
+		A1000003 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000003 /* WindowManager.swift */; };
+		A1000004 /* ShortcutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000004 /* ShortcutManager.swift */; };
+		A1000005 /* SnapOverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000005 /* SnapOverlayWindow.swift */; };
+		A1000006 /* MenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000006 /* MenuBarController.swift */; };
+		A1000007 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000007 /* SettingsView.swift */; };
+		A1000008 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000008 /* OnboardingView.swift */; };
+		A1000009 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2000009 /* Assets.xcassets */; };
+		A100000A /* DragMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000C /* DragMonitor.swift */; };
+		A100000B /* AppRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000E /* AppRule.swift */; };
+		A100000C /* AnimationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000F /* AnimationManager.swift */; };
+		A100000D /* DragZoneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000010 /* DragZoneManager.swift */; };
+		A100000E /* RuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000011 /* RuleManager.swift */; };
+		A100000F /* SettingsSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000012 /* SettingsSidebar.swift */; };
+		A1000010 /* RulesSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000013 /* RulesSettingsView.swift */; };
+		A1000011 /* DragZoneSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000014 /* DragZoneSettingsView.swift */; };
+		A1000012 /* PremiumSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000015 /* PremiumSettingsView.swift */; };
+		A1000013 /* ProActivationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000016 /* ProActivationView.swift */; };
+		A1000014 /* ProGateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000017 /* ProGateView.swift */; };
+		A100001A /* KeyRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200000D /* KeyRecorderView.swift */; };
+		A1000015 /* ClipboardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000018 /* ClipboardItem.swift */; };
+		A1000016 /* ClipboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000019 /* ClipboardManager.swift */; };
+		A1000017 /* ClipboardPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200001A /* ClipboardPopup.swift */; };
+		A1000018 /* ClipboardSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200001B /* ClipboardSettings.swift */; };
+		A1000019 /* ClipboardShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200001C /* ClipboardShortcut.swift */; };
+		A100001B /* ClipboardItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200001D /* ClipboardItemView.swift */; };
+		A100001C /* FileShelfItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200001E /* FileShelfItem.swift */; };
+		A100001D /* FileShelfManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A200001F /* FileShelfManager.swift */; };
+		A100001E /* FileShelfItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000020 /* FileShelfItemView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A2000001 /* WindowSnapProApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowSnapProApp.swift; sourceTree = "<group>"; };
+		A2000002 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		A2000003 /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
+		A2000004 /* ShortcutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutManager.swift; sourceTree = "<group>"; };
+		A2000005 /* SnapOverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapOverlayWindow.swift; sourceTree = "<group>"; };
+		A2000006 /* MenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarController.swift; sourceTree = "<group>"; };
+		A2000007 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A2000008 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		A2000009 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A200000A /* WindowSnapPro.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WindowSnapPro.entitlements; sourceTree = "<group>"; };
+		A200000B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A200000C /* DragMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragMonitor.swift; sourceTree = "<group>"; };
+		A200000D /* KeyRecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRecorderView.swift; sourceTree = "<group>"; };
+		A200000E /* AppRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRule.swift; sourceTree = "<group>"; };
+		A200000F /* AnimationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationManager.swift; sourceTree = "<group>"; };
+		A2000010 /* DragZoneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragZoneManager.swift; sourceTree = "<group>"; };
+		A2000011 /* RuleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleManager.swift; sourceTree = "<group>"; };
+		A2000012 /* SettingsSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSidebar.swift; sourceTree = "<group>"; };
+		A2000013 /* RulesSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesSettingsView.swift; sourceTree = "<group>"; };
+		A2000014 /* DragZoneSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragZoneSettingsView.swift; sourceTree = "<group>"; };
+		A2000015 /* PremiumSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumSettingsView.swift; sourceTree = "<group>"; };
+		A2000016 /* ProActivationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProActivationView.swift; sourceTree = "<group>"; };
+		A2000017 /* ProGateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProGateView.swift; sourceTree = "<group>"; };
+		A2000018 /* ClipboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardItem.swift; sourceTree = "<group>"; };
+		A2000019 /* ClipboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardManager.swift; sourceTree = "<group>"; };
+		A200001A /* ClipboardPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardPopup.swift; sourceTree = "<group>"; };
+		A200001B /* ClipboardSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardSettings.swift; sourceTree = "<group>"; };
+		A200001C /* ClipboardShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardShortcut.swift; sourceTree = "<group>"; };
+		A200001D /* ClipboardItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardItemView.swift; sourceTree = "<group>"; };
+		A200001E /* FileShelfItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileShelfItem.swift; sourceTree = "<group>"; };
+		A200001F /* FileShelfManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileShelfManager.swift; sourceTree = "<group>"; };
+		A2000020 /* FileShelfItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileShelfItemView.swift; sourceTree = "<group>"; };
+		A300000A /* WindowSnapPro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WindowSnapPro.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A4000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A5000001 /* WindowSnapPro */ = {
+			isa = PBXGroup;
+			children = (
+				A2000001 /* WindowSnapProApp.swift */,
+				A2000002 /* AppState.swift */,
+				A2000003 /* WindowManager.swift */,
+				A2000004 /* ShortcutManager.swift */,
+				A2000005 /* SnapOverlayWindow.swift */,
+				A2000006 /* MenuBarController.swift */,
+				A2000007 /* SettingsView.swift */,
+				A2000008 /* OnboardingView.swift */,
+				A2000009 /* Assets.xcassets */,
+				A200000A /* WindowSnapPro.entitlements */,
+				A200000B /* Info.plist */,
+				A200000C /* DragMonitor.swift */,
+				A200000D /* KeyRecorderView.swift */,
+				A200000E /* AppRule.swift */,
+				A200000F /* AnimationManager.swift */,
+				A2000010 /* DragZoneManager.swift */,
+				A2000011 /* RuleManager.swift */,
+				A2000012 /* SettingsSidebar.swift */,
+				A2000013 /* RulesSettingsView.swift */,
+				A2000014 /* DragZoneSettingsView.swift */,
+				A2000015 /* PremiumSettingsView.swift */,
+				A2000016 /* ProActivationView.swift */,
+				A2000017 /* ProGateView.swift */,
+				A2000018 /* ClipboardItem.swift */,
+				A2000019 /* ClipboardManager.swift */,
+				A200001A /* ClipboardPopup.swift */,
+				A200001B /* ClipboardSettings.swift */,
+				A200001C /* ClipboardShortcut.swift */,
+				A200001D /* ClipboardItemView.swift */,
+				A200001E /* FileShelfItem.swift */,
+				A200001F /* FileShelfManager.swift */,
+				A2000020 /* FileShelfItemView.swift */,
+			);
+			path = WindowSnapPro;
+			sourceTree = "<group>";
+		};
+		A5000002 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A300000A /* WindowSnapPro.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A5000000 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				A5000001 /* WindowSnapPro */,
+				A5000002 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A6000001 /* WindowSnapPro */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A7000001 /* Build configuration list for PBXNativeTarget "WindowSnapPro" */;
+			buildPhases = (
+				A4000002 /* Sources */,
+				A4000001 /* Frameworks */,
+				A4000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WindowSnapPro;
+			productInstallPath = "$(HOME)/Applications";
+			productName = WindowSnapPro;
+			productReference = A300000A /* WindowSnapPro.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A8000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					A6000001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = A7000002 /* Build configuration list for PBXProject "WindowSnapPro" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A5000000 /* Root */;
+			productRefGroup = A5000002 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A6000001 /* WindowSnapPro */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A4000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1000009 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A4000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1000001 /* WindowSnapProApp.swift in Sources */,
+				A1000002 /* AppState.swift in Sources */,
+				A1000003 /* WindowManager.swift in Sources */,
+				A1000004 /* ShortcutManager.swift in Sources */,
+				A1000005 /* SnapOverlayWindow.swift in Sources */,
+				A1000006 /* MenuBarController.swift in Sources */,
+				A1000007 /* SettingsView.swift in Sources */,
+				A1000008 /* OnboardingView.swift in Sources */,
+				A100000A /* DragMonitor.swift in Sources */,
+				A100000B /* AppRule.swift in Sources */,
+				A100000C /* AnimationManager.swift in Sources */,
+				A100000D /* DragZoneManager.swift in Sources */,
+				A100000E /* RuleManager.swift in Sources */,
+				A100000F /* SettingsSidebar.swift in Sources */,
+				A1000010 /* RulesSettingsView.swift in Sources */,
+				A1000011 /* DragZoneSettingsView.swift in Sources */,
+				A1000012 /* PremiumSettingsView.swift in Sources */,
+				A1000013 /* ProActivationView.swift in Sources */,
+				A1000014 /* ProGateView.swift in Sources */,
+				A100001A /* KeyRecorderView.swift in Sources */,
+				A1000015 /* ClipboardItem.swift in Sources */,
+				A1000016 /* ClipboardManager.swift in Sources */,
+				A1000017 /* ClipboardPopup.swift in Sources */,
+				A1000018 /* ClipboardSettings.swift in Sources */,
+				A1000019 /* ClipboardShortcut.swift in Sources */,
+				A100001B /* ClipboardItemView.swift in Sources */,
+				A100001C /* FileShelfItem.swift in Sources */,
+				A100001D /* FileShelfManager.swift in Sources */,
+				A100001E /* FileShelfItemView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A9000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_CYCLE = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A9000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_CYCLE = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		A9000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WindowSnapPro/WindowSnapPro.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = WindowSnapPro/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.windowsnappro.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A9000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WindowSnapPro/WindowSnapPro.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 2;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = WindowSnapPro/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.windowsnappro.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A7000001 /* Build configuration list for PBXNativeTarget "WindowSnapPro" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A9000003 /* Debug */,
+				A9000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A7000002 /* Build configuration list for PBXProject "WindowSnapPro" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A9000001 /* Debug */,
+				A9000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = A8000001 /* Project object */;
+}

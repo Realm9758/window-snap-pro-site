@@ -125,6 +125,7 @@ export default function Home() {
         <title>Window Snap Pro — Snap Windows. Stay Focused.</title>
         <meta name="description" content="The fastest, most intuitive window manager for macOS. Snap, arrange, and organize your workspace with a single drag." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="vibecoded-verification" content="03b85dd2db8db10a50dc193bf1493531f32f" />
       </Head>
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />
