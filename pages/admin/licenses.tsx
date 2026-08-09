@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { getSupabaseBrowser } from "../../lib/supabase-browser";
 import { useAuth } from "../../lib/auth-context";
+import { apiPath } from "../../lib/site";
 
 interface LicenseRow {
   id: string;
@@ -105,7 +106,7 @@ export default function AdminLicenses() {
     if (!token) return;
 
     setFetching(true);
-    const res = await fetch("/api/admin/licenses", {
+    const res = await fetch(apiPath("/api/admin/licenses"), {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -135,7 +136,7 @@ export default function AdminLicenses() {
     setCreating(true);
 
     const token = await getToken();
-    const res = await fetch("/api/admin/licenses", {
+    const res = await fetch(apiPath("/api/admin/licenses"), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -166,7 +167,7 @@ export default function AdminLicenses() {
     setDeletingId(id);
 
     const token = await getToken();
-    await fetch(`/api/admin/licenses?id=${id}`, {
+    await fetch(apiPath(`/api/admin/licenses?id=${id}`), {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { License } from "@/lib/db";
 import { useAuth } from "@/lib/auth-context";
+import { apiPath } from "@/lib/site";
 
 interface SubscriptionCardProps {
   license: License | null;
@@ -35,7 +36,7 @@ export default function SubscriptionCard({ license }: SubscriptionCardProps) {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/create-portal-session", {
+      const res = await fetch(apiPath("/api/create-portal-session"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

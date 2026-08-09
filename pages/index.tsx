@@ -8,6 +8,7 @@ import Footer from "../components/Footer";
 import PricingCard from "../components/PricingCard";
 import { motion } from "framer-motion";
 import { getStripe } from "../lib/stripe-browser";
+import { apiPath } from "../lib/site";
 
 const FREE_FEATURES = [
   { text: "Basic window snapping", included: true },
@@ -47,7 +48,7 @@ function PricingPreview() {
     try {
       const [stripe, res] = await Promise.all([
         getStripe(),
-        fetch("/api/create-checkout-session", {
+        fetch(apiPath("/api/create-checkout-session"), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({}),

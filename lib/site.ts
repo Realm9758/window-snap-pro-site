@@ -25,6 +25,18 @@ export const SITE_URL = `${SITE_ORIGIN}${BASE_PATH}`;
  * Query strings and hashes are dropped: `?ref=` variants of one page are the
  * same page, and letting them through would create duplicates.
  */
+/**
+ * Client-side path to an API route.
+ *
+ * REQUIRED for every browser fetch. `basePath` rewrites Next's <Link> and the
+ * server's routing table, but `fetch("/api/x")` is resolved by the browser
+ * against the origin — so from /redock/pricing it silently hits
+ * bhopstudio.com/api/x and 404s. Every call must go through here.
+ */
+export function apiPath(path: string): string {
+  return `${BASE_PATH}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
 export function canonicalUrl(asPath: string): string {
   const pathOnly = asPath.split(/[?#]/)[0];
   const clean = pathOnly === "/" ? "" : pathOnly.replace(/\/$/, "");

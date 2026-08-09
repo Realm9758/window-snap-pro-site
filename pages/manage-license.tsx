@@ -8,6 +8,7 @@ import { useAuth } from "../lib/auth-context";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import LicenseKeyDisplay from "../components/LicenseKeyDisplay";
+import { apiPath } from "../lib/site";
 
 interface LicenseInfo {
   license_key: string;
@@ -62,7 +63,7 @@ export default function ManageLicense() {
         const { data: { session } } = await getSupabaseBrowser().auth.getSession();
         if (!session) { setFetching(false); return; }
 
-        const res = await fetch("/api/auth/user", {
+        const res = await fetch(apiPath("/api/auth/user"), {
           headers: { Authorization: `Bearer ${session.access_token}` },
         });
         if (res.ok) {
@@ -80,7 +81,7 @@ export default function ManageLicense() {
     if (!user?.email) return;
     setResendLoading(true);
     try {
-      await fetch("/api/license/resend", {
+      await fetch(apiPath("/api/license/resend"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: user.email }),
@@ -99,7 +100,7 @@ export default function ManageLicense() {
     setPortalLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/manage/portal", {
+      const res = await fetch(apiPath("/api/manage/portal"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: user.email }),

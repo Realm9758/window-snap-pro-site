@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import LicenseKeyDisplay from "../components/LicenseKeyDisplay";
+import { apiPath } from "../lib/site";
 
 type State = "loading" | "found" | "timeout" | "error";
 
@@ -35,7 +36,7 @@ export default function Success() {
     const poll = async () => {
       attempts++;
       try {
-        const res = await fetch(`/api/license/by-session?session_id=${session_id}`);
+        const res = await fetch(apiPath(`/api/license/by-session?session_id=${session_id}`));
         const data = await res.json();
         if (data.found) {
           setLicenseKey(data.license_key);
