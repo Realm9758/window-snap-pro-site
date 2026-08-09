@@ -43,7 +43,7 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>Log in — Window Snap Pro</title>
+        <title>Log in — Redock</title>
       </Head>
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] flex items-center justify-center px-6">
         <motion.div
@@ -63,7 +63,7 @@ export default function Login() {
               </svg>
             </div>
             <span className="font-semibold text-base tracking-tight text-neutral-900 dark:text-white">
-              Window Snap Pro
+              Redock
             </span>
           </Link>
 

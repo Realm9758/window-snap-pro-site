@@ -160,7 +160,7 @@ export default function Features() {
               <span className="text-neutral-400 dark:text-neutral-500">Nothing you don't.</span>
             </h2>
             <p className="text-neutral-500 dark:text-neutral-400 max-w-md mx-auto text-balance">
-              Window Snap Pro packs powerful window management into a beautifully simple experience.
+              Redock packs powerful window management into a beautifully simple experience.
             </p>
           </motion.div>
 
@@ -173,7 +173,7 @@ export default function Features() {
         </div>
       </section>
 
-      {/* Why Window Snap Pro */}
+      {/* Why Redock */}
       <section className="py-24 px-6 bg-neutral-50 dark:bg-neutral-900/50">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -184,7 +184,7 @@ export default function Features() {
             className="text-center mb-14"
           >
             <span className="text-xs font-semibold tracking-widest uppercase text-neutral-400 dark:text-neutral-500 mb-3 block">
-              Why Window Snap Pro
+              Why Redock
             </span>
             <h2 className="text-[clamp(1.8rem,4vw,2.6rem)] font-bold tracking-tight text-neutral-900 dark:text-white text-balance">
               Designed for power users.

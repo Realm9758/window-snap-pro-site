@@ -17,8 +17,8 @@ export default function Download() {
   return (
     <>
       <Head>
-        <title>Download — Window Snap Pro</title>
-        <meta name="description" content="Download Window Snap Pro for macOS Ventura or later. Free to download, Pro available via subscription." />
+        <title>Download — Redock</title>
+        <meta name="description" content="Download Redock for macOS Ventura or later. Free to download; Pro is a one-time £19 purchase." />
       </Head>
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />
@@ -41,13 +41,13 @@ export default function Download() {
                 custom={1} variants={fadeUp} initial="hidden" animate="show"
                 className="text-[clamp(2rem,5vw,3rem)] font-bold tracking-tight text-neutral-900 dark:text-white leading-tight mb-4"
               >
-                Download Window Snap Pro
+                Download Redock
               </motion.h1>
               <motion.p
                 custom={2} variants={fadeUp} initial="hidden" animate="show"
                 className="text-lg text-neutral-500 dark:text-neutral-400 leading-relaxed max-w-xl mx-auto"
               >
-                The fastest, most intuitive window manager for macOS. Free to download, Pro features available via subscription.
+                The fastest, most intuitive window manager for macOS. Free to download; Pro is a one-time £19 purchase.
               </motion.p>
             </div>
 
@@ -61,7 +61,7 @@ export default function Download() {
                 <div className="flex-1">
                   <p className="text-xs font-semibold tracking-widest uppercase text-neutral-400 dark:text-neutral-500 mb-1.5">macOS</p>
                   <h2 className="text-xl font-semibold text-neutral-900 dark:text-white mb-1">
-                    Window Snap Pro
+                    Redock
                   </h2>
                   <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-400 dark:text-neutral-500">
                     <span>Version 1.2</span>
@@ -72,7 +72,7 @@ export default function Download() {
                   </div>
                 </div>
                 <motion.a
-                  href="/WindowSnapPro.zip"
+                  href="/Redock.zip"
                   download
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
@@ -152,14 +152,14 @@ export default function Download() {
                 Already purchased Pro?
               </p>
               <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-4">
-                Open Window Snap Pro → Settings → Pro and paste your license key to activate.
+                Open Redock → Settings → Pro and paste your license key to activate.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link
                   href="/pricing"
                   className="text-sm font-semibold text-accent hover:underline"
                 >
-                  Get Pro for £4.99/month →
+                  Get Pro — £19 once →
                 </Link>
                 <span className="hidden sm:block text-neutral-300 dark:text-neutral-700">·</span>
                 <Link

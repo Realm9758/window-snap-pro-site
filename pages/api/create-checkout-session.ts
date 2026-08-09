@@ -7,16 +7,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const { email } = req.body as { email?: string };
 
+    // One-time purchase, not a subscription.
+    //
+    // Utilities in this category (Rectangle Pro, Moom, Dropover, Yoink) all sell
+    // a single lifetime licence, and buyers actively resent a monthly fee for a
+    // window manager. STRIPE_PRICE_ID must therefore point at a *one-time* Price
+    // — a recurring Price will make Stripe reject `mode: "payment"`.
     const session = await stripe.checkout.sessions.create({
-      mode: "subscription",
+      mode: "payment",
       payment_method_types: ["card"],
       line_items: [{ price: STRIPE_PRICE_ID, quantity: 1 }],
       success_url: `${APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${APP_URL}/pricing`,
       ...(email ? { customer_email: email } : {}),
-      subscription_data: {
-        metadata: { product: "window_snap_pro" },
+      // `payment` mode has no subscription object, so metadata rides on the
+      // PaymentIntent. The webhook reads it from there.
+      payment_intent_data: {
+        metadata: { product: "window_snap_pro", license_type: "lifetime" },
       },
+      metadata: { product: "window_snap_pro", license_type: "lifetime" },
       allow_promotion_codes: true,
     });
 

@@ -3,13 +3,13 @@ import { APP_URL } from "./stripe";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const FROM = "Window Snap Pro <onboarding@resend.dev>";
+const FROM = "Redock <onboarding@resend.dev>";
 
 export async function sendLicenseEmail(email: string, licenseKey: string): Promise<void> {
   const { error } = await resend.emails.send({
     from: FROM,
     to: email,
-    subject: "Your Window Snap Pro License Key",
+    subject: "Your Redock License Key",
     html: buildLicenseEmailHtml(licenseKey),
   });
   if (error) {
@@ -19,9 +19,9 @@ export async function sendLicenseEmail(email: string, licenseKey: string): Promi
 
 function buildLicenseEmailHtml(licenseKey: string): string {
   const steps = [
-    "Download Window Snap Pro from our website",
-    "Open Window Snap Pro on your Mac",
-    "Open Window Snap Pro → Settings",
+    "Download Redock from our website",
+    "Open Redock on your Mac",
+    "Open Redock → Settings",
     'Select the "Pro" tab',
     'Paste your license key and click "Activate Pro"',
   ];
@@ -31,7 +31,7 @@ function buildLicenseEmailHtml(licenseKey: string): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Your Window Snap Pro License</title>
+<title>Your Redock License</title>
 </head>
 <body style="margin:0;padding:40px 20px;background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;">
   <div style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 4px 40px rgba(0,0,0,0.08);">
@@ -46,7 +46,7 @@ function buildLicenseEmailHtml(licenseKey: string): string {
           <rect x="9" y="9" width="6" height="6" rx="1.5" fill="white" opacity="0.4"/>
         </svg>
       </div>
-      <h1 style="color:#ffffff;font-size:22px;font-weight:700;margin:0;letter-spacing:-0.3px;">Window Snap Pro</h1>
+      <h1 style="color:#ffffff;font-size:22px;font-weight:700;margin:0;letter-spacing:-0.3px;">Redock</h1>
       <p style="color:rgba(255,255,255,0.45);font-size:14px;margin:6px 0 0;">Purchase confirmed — welcome to Pro</p>
     </div>
 
@@ -54,7 +54,7 @@ function buildLicenseEmailHtml(licenseKey: string): string {
     <div style="padding:40px;">
       <h2 style="font-size:18px;font-weight:600;color:#1d1d1f;margin:0 0 8px;">Your License Key</h2>
       <p style="color:#6e6e73;font-size:14px;line-height:1.65;margin:0 0 28px;">
-        Thanks for subscribing to Window Snap Pro Pro. Copy the license key below and paste it into the app to unlock all Pro features.
+        Thanks for subscribing to Redock Pro. Copy the license key below and paste it into the app to unlock all Pro features.
       </p>
 
       <!-- Key box -->
@@ -84,7 +84,7 @@ function buildLicenseEmailHtml(licenseKey: string): string {
       <!-- CTA -->
       <div style="text-align:center;margin-bottom:36px;">
         <a href="${APP_URL}/download" style="display:inline-block;background:#0071E3;color:#fff;font-size:15px;font-weight:600;padding:14px 36px;border-radius:980px;text-decoration:none;">
-          Download Window Snap Pro
+          Download Redock
         </a>
       </div>
 
@@ -98,7 +98,7 @@ function buildLicenseEmailHtml(licenseKey: string): string {
     <!-- Footer -->
     <div style="background:#f5f5f7;padding:24px 40px;text-align:center;border-top:1px solid #e5e5ea;">
       <p style="font-size:12px;color:#aeaeb2;margin:0;">
-        &copy; ${new Date().getFullYear()} Window Snap Pro · All rights reserved<br>
+        &copy; ${new Date().getFullYear()} Redock · All rights reserved<br>
         <a href="${APP_URL}/privacy" style="color:#aeaeb2;text-decoration:none;">Privacy Policy</a>
         &nbsp;·&nbsp;
         <a href="${APP_URL}/manage-license" style="color:#aeaeb2;text-decoration:none;">Manage License</a>

@@ -184,7 +184,7 @@ export default function Hero() {
         >
           <div className="flex flex-col sm:flex-row items-center gap-3">
             <motion.a
-              href="/WindowSnapPro.zip"
+              href="/Redock.zip"
               download
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
@@ -206,7 +206,7 @@ export default function Hero() {
               <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
                 <path d="M8 1.5a.75.75 0 01.75.75v4h4a.75.75 0 010 1.5h-4v4a.75.75 0 01-1.5 0v-4h-4a.75.75 0 010-1.5h4v-4A.75.75 0 018 1.5z" />
               </svg>
-              Get Pro — £4.99/mo
+              Get Pro — £19 once
             </motion.a>
           </div>
           <div className="flex flex-col items-center gap-0.5">

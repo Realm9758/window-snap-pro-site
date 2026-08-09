@@ -128,7 +128,7 @@ export default function Profile() {
   return (
     <>
       <Head>
-        <title>My Account — Window Snap Pro</title>
+        <title>My Account — Redock</title>
       </Head>
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />
@@ -212,7 +212,7 @@ export default function Profile() {
                     <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
                       <path d="M8 1.5a.75.75 0 01.75.75v4h4a.75.75 0 010 1.5h-4v4a.75.75 0 01-1.5 0v-4h-4a.75.75 0 010-1.5h4v-4A.75.75 0 018 1.5z" />
                     </svg>
-                    Upgrade to Pro — £4.99/mo
+                    Buy Pro — £19 once
                   </Link>
                 </div>
               )}
@@ -229,7 +229,7 @@ export default function Profile() {
                 <div className="flex flex-col gap-4">
                   <LicenseKeyDisplay licenseKey={license.license_key} />
                   <p className="text-xs text-neutral-400 dark:text-neutral-500 leading-relaxed">
-                    Open <strong className="text-neutral-600 dark:text-neutral-400">Window Snap Pro</strong> → Settings → Pro and paste this key to activate.
+                    Open <strong className="text-neutral-600 dark:text-neutral-400">Redock</strong> → Settings → Pro and paste this key to activate.
                   </p>
                 </div>
               ) : (

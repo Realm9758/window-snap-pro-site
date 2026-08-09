@@ -126,8 +126,8 @@ export default function ManageLicense() {
   return (
     <>
       <Head>
-        <title>Manage License — Window Snap Pro</title>
-        <meta name="description" content="View and manage your Window Snap Pro license and subscription." />
+        <title>Manage License — Redock</title>
+        <meta name="description" content="View and manage your Redock license and subscription." />
       </Head>
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />
@@ -190,13 +190,13 @@ export default function ManageLicense() {
                 ) : (
                   <div className="flex flex-col gap-3">
                     <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                      No active Pro subscription found for this account.
+                      No Pro licence found for this account.
                     </p>
                     <Link
                       href="/pricing"
                       className="inline-flex items-center gap-1.5 px-4 py-2 bg-accent text-white text-sm font-semibold rounded-xl shadow-sm shadow-accent/30 hover:bg-accent/90 transition-all duration-150 w-fit"
                     >
-                      Upgrade to Pro — £4.99/mo
+                      Buy Pro — £19 once
                     </Link>
                   </div>
                 )}
@@ -213,7 +213,7 @@ export default function ManageLicense() {
                   </p>
                   <LicenseKeyDisplay licenseKey={license.license_key} />
                   <p className="text-xs text-neutral-400 dark:text-neutral-500 leading-relaxed mt-4">
-                    Open <strong className="text-neutral-600 dark:text-neutral-400">Window Snap Pro</strong> → Settings → License and paste this key to activate.
+                    Open <strong className="text-neutral-600 dark:text-neutral-400">Redock</strong> → Settings → License and paste this key to activate.
                   </p>
                 </motion.div>
               )}

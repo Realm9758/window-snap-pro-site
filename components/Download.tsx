@@ -46,7 +46,7 @@ export default function Download() {
 
             <div>
               <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-tight mb-2 text-balance">
-                Download Window Snap Pro
+                Download Redock
               </h2>
               <p className="text-neutral-400 max-w-md mx-auto text-balance">
                 Take control of your workspace today. Free to download, no account required.

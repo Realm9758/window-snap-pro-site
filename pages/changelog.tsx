@@ -46,7 +46,7 @@ const changelog: ChangelogEntry[] = [
     version: "1.0",
     date: "January 2026",
     changes: [
-      { type: "added", text: "Initial release of Window Snap Pro." },
+      { type: "added", text: "Initial release of Redock." },
       { type: "added", text: "Drag-to-edge window snapping: snap to left half, right half, top half, bottom half, and all four corners." },
       { type: "added", text: "Menu bar app for quick access to layouts and preferences." },
       { type: "added", text: "Full multi-monitor support — snap windows on any connected display." },
@@ -60,9 +60,9 @@ export default function Changelog() {
   return (
     <>
       <Head>
-        <title>Changelog — Window Snap Pro</title>
+        <title>Changelog — Redock</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="See what's new in Window Snap Pro — release notes and version history." />
+        <meta name="description" content="See what's new in Redock — release notes and version history." />
       </Head>
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />
@@ -125,7 +125,7 @@ export default function Changelog() {
           >
             <div>
               <div className="font-semibold text-neutral-900 dark:text-white mb-0.5">Ready to try it?</div>
-              <div className="text-sm text-neutral-500 dark:text-neutral-400">Download Window Snap Pro for free.</div>
+              <div className="text-sm text-neutral-500 dark:text-neutral-400">Download Redock for free.</div>
             </div>
             <Link
               href="/#download"

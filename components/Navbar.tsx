@@ -87,7 +87,7 @@ export default function Navbar() {
             </svg>
           </div>
           <span className="font-semibold text-[15px] tracking-tight text-neutral-900 dark:text-white">
-            Window Snap Pro
+            Redock
           </span>
         </Link>
 

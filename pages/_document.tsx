@@ -5,8 +5,8 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <meta charSet="utf-8" />
-        <meta name="description" content="Window Snap Pro — The fastest, most intuitive window manager for macOS. Snap, arrange, and organize your workspace." />
-        <meta property="og:title" content="Window Snap Pro" />
+        <meta name="description" content="Redock — The fastest, most intuitive window manager for macOS. Snap, arrange, and organize your workspace." />
+        <meta property="og:title" content="Redock" />
         <meta property="og:description" content="Snap Windows. Stay Focused. The best window manager for macOS." />
         <meta property="og:type" content="website" />
         <link rel="icon" href="/favicon.ico" />

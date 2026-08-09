@@ -69,8 +69,8 @@ export default function Pricing() {
   return (
     <>
       <Head>
-        <title>Pricing — Window Snap Pro</title>
-        <meta name="description" content="Simple, honest pricing for Window Snap Pro. Free forever, or unlock Pro for £4.99/month." />
+        <title>Pricing — Redock</title>
+        <meta name="description" content="Simple, honest pricing for Redock. Free forever, or buy Pro once for £19 — no subscription." />
       </Head>
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />
@@ -115,14 +115,14 @@ export default function Pricing() {
               />
               <PricingCard
                 name="Pro"
-                price="£4.99"
-                period="/ month"
-                description="Unlock the full Window Snap Pro experience with powerful customisation."
+                price="£19"
+                period="one-time"
+                description="Pay once. Yours forever, on up to 3 Macs, including every future update."
                 features={PRO_FEATURES}
-                cta="Subscribe to Pro"
+                cta="Buy Pro — £19"
                 onCtaClick={handleSubscribe}
                 highlighted
-                badge="Most Popular"
+                badge="One-time purchase"
                 loading={loading}
               />
             </motion.div>
@@ -157,7 +157,7 @@ export default function Pricing() {
                 {[
                   {
                     q: "How do I activate Pro after subscribing?",
-                    a: "After subscribing you'll receive a license key by email. Open Window Snap Pro, go to Settings → Pro, paste your key, and click Activate.",
+                    a: "After subscribing you'll receive a license key by email. Open Redock, go to Settings → Pro, paste your key, and click Activate.",
                   },
                   {
                     q: "Can I use my license on multiple Macs?",

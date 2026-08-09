@@ -26,8 +26,8 @@ export default function Privacy() {
   return (
     <>
       <Head>
-        <title>Privacy Policy — Window Snap Pro</title>
-        <meta name="description" content="Privacy Policy for Window Snap Pro. Learn what data we collect and how we use it." />
+        <title>Privacy Policy — Redock</title>
+        <meta name="description" content="Privacy Policy for Redock. Learn what data we collect and how we use it." />
       </Head>
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />
@@ -51,7 +51,7 @@ export default function Privacy() {
 
               <Section title="Overview">
                 <p>
-                  Window Snap Pro (&ldquo;we&rdquo;, &ldquo;our&rdquo;, or &ldquo;us&rdquo;) is committed to protecting your privacy.
+                  Redock (&ldquo;we&rdquo;, &ldquo;our&rdquo;, or &ldquo;us&rdquo;) is committed to protecting your privacy.
                   This policy explains what information we collect, why we collect it, and how we use it when you use our macOS application and website.
                 </p>
                 <p>
@@ -66,7 +66,7 @@ export default function Privacy() {
                 </p>
                 <p>
                   <strong className="text-neutral-800 dark:text-neutral-200">Purchase information.</strong>{" "}
-                  When you subscribe to Window Snap Pro, payment is processed by Stripe. We receive a confirmation of payment and a customer identifier, but we never store your card details.
+                  When you subscribe to Redock, payment is processed by Stripe. We receive a confirmation of payment and a customer identifier, but we never store your card details.
                 </p>
                 <p>
                   <strong className="text-neutral-800 dark:text-neutral-200">License key.</strong>{" "}
@@ -143,7 +143,7 @@ export default function Privacy() {
 
               <Section title="Children">
                 <p>
-                  Window Snap Pro is not directed at children under 13. We do not knowingly collect personal data from children.
+                  Redock is not directed at children under 13. We do not knowingly collect personal data from children.
                 </p>
               </Section>
 

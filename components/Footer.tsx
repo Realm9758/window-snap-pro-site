@@ -17,7 +17,7 @@ export default function Footer() {
             </svg>
           </div>
           <span className="text-sm text-neutral-500 dark:text-neutral-500">
-            &copy; {year} Window Snap Pro. All rights reserved.
+            &copy; {year} Redock. All rights reserved.
           </span>
         </div>
 

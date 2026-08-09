@@ -84,7 +84,7 @@ function PricingPreview() {
             custom={2} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}
             className="text-neutral-500 dark:text-neutral-400 max-w-md mx-auto"
           >
-            Window Snap Pro is free forever. Unlock the full experience with a Pro subscription.
+            Redock is free forever. Unlock everything with a single £19 purchase — no subscription.
           </motion.p>
         </div>
 
@@ -102,8 +102,8 @@ function PricingPreview() {
           />
           <PricingCard
             name="Pro"
-            price="£4.99"
-            period="/ month"
+            price="£19"
+            period="one-time"
             description="Full control over your window workflow."
             features={PRO_FEATURES}
             cta="Subscribe to Pro"
@@ -122,7 +122,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Window Snap Pro — Snap Windows. Stay Focused.</title>
+        <title>Redock — Snap Windows. Stay Focused.</title>
         <meta name="description" content="The fastest, most intuitive window manager for macOS. Snap, arrange, and organize your workspace with a single drag." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="vibecoded-verification" content="03b85dd2db8db10a50dc193bf1493531f32f" />

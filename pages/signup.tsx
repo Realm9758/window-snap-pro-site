@@ -57,7 +57,7 @@ export default function Signup() {
   return (
     <>
       <Head>
-        <title>Create Account — Window Snap Pro</title>
+        <title>Create Account — Redock</title>
       </Head>
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] flex items-center justify-center px-6">
         <motion.div
@@ -77,7 +77,7 @@ export default function Signup() {
               </svg>
             </div>
             <span className="font-semibold text-base tracking-tight text-neutral-900 dark:text-white">
-              Window Snap Pro
+              Redock
             </span>
           </Link>
 

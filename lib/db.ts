@@ -83,6 +83,22 @@ export async function getLicenseBySubscriptionId(subscriptionId: string): Promis
   return data ?? null;
 }
 
+/**
+ * Lifetime licences have no subscription id, so refunds and disputes have to be
+ * matched on the Stripe customer instead. Newest first — a customer who bought
+ * twice should have their most recent licence acted on.
+ */
+export async function getLicenseByCustomerId(customerId: string): Promise<License | null> {
+  const { data } = await supabase
+    .from("licenses")
+    .select("*")
+    .eq("stripe_customer_id", customerId)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  return data ?? null;
+}
+
 export async function createLicense(data: Partial<LicenseInsert>): Promise<License | null> {
   const { data: created, error } = await supabase
     .from("licenses")
