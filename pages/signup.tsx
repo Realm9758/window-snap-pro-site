@@ -5,6 +5,7 @@ import { useState, useEffect, FormEvent } from "react";
 import { motion } from "framer-motion";
 import { getSupabaseBrowser } from "../lib/supabase-browser";
 import { useAuth } from "../lib/auth-context";
+import { SITE_URL } from "../lib/site";
 
 export default function Signup() {
   const router = useRouter();
@@ -40,7 +41,7 @@ export default function Signup() {
       email: email.trim().toLowerCase(),
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/profile`,
+        emailRedirectTo: `${SITE_URL}/profile`,
       },
     });
 

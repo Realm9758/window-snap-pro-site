@@ -2,6 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { supabaseClient } from "@/lib/supabaseClient";
+import { SITE_URL } from "../lib/site";
 
 export default function SignupForm() {
   const router = useRouter();
@@ -32,7 +33,7 @@ export default function SignupForm() {
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/profile`,
+        emailRedirectTo: `${SITE_URL}/profile`,
       },
     });
 
