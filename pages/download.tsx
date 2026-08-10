@@ -3,6 +3,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { assetPath } from "../lib/site";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -72,7 +73,7 @@ export default function Download() {
                   </div>
                 </div>
                 <motion.a
-                  href="/Redock.zip"
+                  href={assetPath("/Redock.zip")}
                   download
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}

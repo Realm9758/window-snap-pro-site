@@ -1,5 +1,8 @@
 import Link from "next/link";
-import { SnapMark, AppleGlyph } from "./Marks";
+import { AppleGlyph } from "./Marks";
+import RestoreAnimation from "./RestoreAnimation";
+import { assetPath } from "../lib/site";
+
 
 /**
  * The hero sells the one thing no competitor does: layouts coming back when you
@@ -25,10 +28,10 @@ export default function Hero() {
 
         <div className="settle settle-3 mt-9 flex flex-wrap items-center gap-3">
           <a
-            href="/Redock.zip"
+            href={assetPath("/Redock.zip")}
             download
             className="group inline-flex items-center gap-2.5 rounded-lg px-5 py-3 text-[15px] font-medium transition-transform duration-150 active:scale-[0.985]"
-            style={{ background: "var(--signal)", color: "var(--signal-ink)" }}
+            style={{ background: "var(--signal-fill)", color: "var(--signal-ink)" }}
           >
             <AppleGlyph className="h-4 w-4" />
             Download for macOS
@@ -50,34 +53,14 @@ export default function Hero() {
         </p>
       </div>
 
-      {/* Proof: the real app, not a mockup. */}
-      <div className="settle settle-4 mx-auto mt-14 max-w-5xl sm:mt-20">
-        <figure
-          className="overflow-hidden rounded-xl border shadow-[0_24px_70px_-30px_rgba(10,14,22,0.45)]"
-          style={{ borderColor: "var(--edge)" }}
-        >
-          <picture>
-            <source
-              srcSet="/redock/shots/app-settings-dark.webp"
-              media="(prefers-color-scheme: dark)"
-              type="image/webp"
-            />
-            <source srcSet="/redock/shots/app-settings-light.webp" type="image/webp" />
-            <img
-              src="/redock/shots/app-settings-light.png"
-              alt="Redock settings window on macOS, showing the General pane with window snapping, launch at login and snap preview options, and a sidebar listing Shortcuts, Snapping, Clipboard, Workspaces, App Rules, Drag Zones and License."
-              width={1560}
-              height={1064}
-              className="block w-full"
-            />
-          </picture>
-        </figure>
-        <figcaption className="mt-3 text-center text-[12.5px] ink-3">
-          Redock 1.2 on macOS 26.
-        </figcaption>
+      {/*
+        The dock moment, shown immediately. A settings screenshot used to sit
+        here: it proved the app exists but said nothing about why anyone would
+        want it, and configuration panels are not the pitch.
+      */}
+      <div className="settle settle-4 mx-auto mt-12 max-w-3xl sm:mt-16">
+        <RestoreAnimation className="w-full" />
       </div>
     </section>
   );
 }
-
-export { SnapMark };

@@ -9,7 +9,8 @@ export default function Document() {
         <meta property="og:title" content="Redock" />
         <meta property="og:description" content="Snap Windows. Stay Focused. The best window manager for macOS." />
         <meta property="og:type" content="website" />
-        <link rel="icon" href="/favicon.ico" />
+        {/* _document has no router, so the basePath is literal here. */}
+        <link rel="icon" href="/redock/icon.svg" type="image/svg+xml" />
       </Head>
       <body>
         {/* Prevent dark mode flash */}

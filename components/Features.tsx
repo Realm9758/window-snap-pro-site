@@ -1,9 +1,11 @@
-import { RestoreDiagram, SnapMark } from "./Marks";
+import { SnapMark } from "./Marks";
+import SnapAnimation from "./SnapAnimation";
+import ClipboardAnimation from "./ClipboardAnimation";
 
 /**
- * Not a grid of equal cards. Workspaces is the reason to pay, so it gets the
- * full width and the diagram; everything else is a compact list underneath.
- * Weighting the layout is what tells the reader which feature matters.
+ * Not a grid of equal cards. Workspaces is the reason to pay, so it leads at
+ * full width; the two mechanics worth showing get animated cards; everything
+ * else is a compact list. Weighting is what tells the reader what matters.
  */
 
 const SECONDARY = [
@@ -13,14 +15,9 @@ const SECONDARY = [
     tier: "Free",
   },
   {
-    name: "Snap by dragging",
-    body: "Drag a window to an edge or corner and a preview shows where it will land. Release to place it.",
-    tier: "Free",
-  },
-  {
-    name: "Clipboard history",
-    body: "The last ten things you copied, one keystroke away. Pro raises it to fifty and adds search, pinning and images.",
-    tier: "Free",
+    name: "Clipboard, expanded",
+    body: "Pro raises the history to fifty items and adds search, pinning and copied images.",
+    tier: "Pro",
   },
   {
     name: "Rules per app",
@@ -48,7 +45,7 @@ export default function Features() {
           className="overflow-hidden rounded-xl border"
           style={{ borderColor: "var(--hairline)", background: "var(--surface)" }}
         >
-          <div className="grid gap-8 p-7 sm:p-10 lg:grid-cols-[1.05fr_1fr] lg:items-center">
+          <div className="p-7 sm:p-10">
             <div>
               <h2 className="text-[clamp(1.5rem,2.6vw,2rem)] font-semibold leading-tight tracking-[-0.025em] ink text-balance">
                 Workspaces
@@ -67,8 +64,33 @@ export default function Features() {
                 windows. None of them save layouts.
               </p>
             </div>
+          </div>
+        </div>
 
-            <RestoreDiagram className="w-full" />
+        {/* Two mechanics that are clearer shown than described. */}
+        <div className="mt-6 grid gap-6 sm:grid-cols-2">
+          <div
+            className="rounded-xl border p-6"
+            style={{ borderColor: "var(--hairline)", background: "var(--surface)" }}
+          >
+            <SnapAnimation className="w-full" />
+            <h3 className="mt-5 text-[15.5px] font-medium ink">Drag to an edge</h3>
+            <p className="mt-1.5 text-[14px] leading-relaxed ink-2 text-pretty">
+              A translucent preview shows exactly where the window will land
+              before you let go. Corners and halves, on any display.
+            </p>
+          </div>
+
+          <div
+            className="rounded-xl border p-6"
+            style={{ borderColor: "var(--hairline)", background: "var(--surface)" }}
+          >
+            <ClipboardAnimation className="w-full" />
+            <h3 className="mt-5 text-[15.5px] font-medium ink">Recall what you copied</h3>
+            <p className="mt-1.5 text-[14px] leading-relaxed ink-2 text-pretty">
+              Press Command-Shift-V for the last ten things on your clipboard.
+              Pick one and it pastes where your cursor is.
+            </p>
           </div>
         </div>
 

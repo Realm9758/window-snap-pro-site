@@ -87,7 +87,7 @@ export default function PricingCard({
             onClick={onCtaClick}
             disabled={loading}
             className="w-full rounded-lg px-5 py-3 text-[15px] font-medium transition-transform duration-150 active:scale-[0.985] disabled:opacity-60"
-            style={{ background: "var(--signal)", color: "var(--signal-ink)" }}
+            style={{ background: "var(--signal-fill)", color: "var(--signal-ink)" }}
           >
             {loading ? "Opening checkout" : cta}
           </button>

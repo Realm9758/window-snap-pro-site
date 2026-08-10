@@ -12,24 +12,30 @@
   :root {
     --ink:        #14171a;
     --ink-2:      #5a616b;
-    --ink-3:      #8a919b;
+    --ink-3:      #6a7280;
     --paper:      #f6f7f9;
     --surface:    #ffffff;
     --hairline:   #e3e6ea;
     --edge:       #d8dce2;
     --signal:     #3b7dff;
+    /* Filled buttons need a deeper blue: white on #3b7dff is only 3.77:1,
+       under the 4.5 floor for button text. #2563eb measures 5.17:1. */
+    --signal-fill: #2563eb;
     --signal-ink: #ffffff;
   }
 
   .dark {
     --ink:        #f2f4f7;
     --ink-2:      #9ba3ae;
-    --ink-3:      #6b737e;
+    --ink-3:      #8a929c;
     --paper:      #141619;
     --surface:    #1c1f24;
     --hairline:   #2c3037;
     --edge:       #343941;
     --signal:     #538cff;
+    /* Dark mode puts near-black text on the lighter blue: 5.85:1, so the
+       fill and the accent can be the same colour here. */
+    --signal-fill: #538cff;
     --signal-ink: #0b1220;
   }
 
