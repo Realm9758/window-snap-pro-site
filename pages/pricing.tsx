@@ -1,7 +1,7 @@
-import Head from "next/head";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
+import Seo from "../components/Seo";
 import Footer from "../components/Footer";
 import PricingCard from "../components/PricingCard";
 import { getStripe } from "../lib/stripe-browser";
@@ -66,10 +66,10 @@ export default function Pricing() {
 
   return (
     <>
-      <Head>
-        <title>Redock pricing</title>
-        <meta name="description" content="Redock is free to use. Pro is £19 once, for three Macs, with every future update included. No subscription." />
-      </Head>
+      <Seo
+        title="Redock pricing"
+        description="Redock is free to use. Pro is £19 once, for three Macs, with every future update included. No subscription."
+      />
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />
         <main className="pt-32 pb-24 px-6">

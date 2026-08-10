@@ -1,6 +1,6 @@
-import Head from "next/head";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
+import Seo from "../components/Seo";
 import Footer from "../components/Footer";
 import { CONTACT_EMAIL } from "../lib/site";
 
@@ -26,10 +26,10 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 export default function Privacy() {
   return (
     <>
-      <Head>
-        <title>Redock privacy policy</title>
-        <meta name="description" content="Privacy Policy for Redock. Learn what data we collect and how we use it." />
-      </Head>
+      <Seo
+        title="Redock privacy policy"
+        description="Privacy Policy for Redock. Learn what data we collect and how we use it."
+      />
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />
         <main className="pt-32 pb-24 px-6">

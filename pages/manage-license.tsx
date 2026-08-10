@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -6,6 +5,7 @@ import { motion } from "framer-motion";
 import { getSupabaseBrowser } from "../lib/supabase-browser";
 import { useAuth } from "../lib/auth-context";
 import Navbar from "../components/Navbar";
+import Seo from "../components/Seo";
 import Footer from "../components/Footer";
 import LicenseKeyDisplay from "../components/LicenseKeyDisplay";
 import { apiPath } from "../lib/site";
@@ -126,10 +126,11 @@ export default function ManageLicense() {
 
   return (
     <>
-      <Head>
-        <title>Manage your Redock licence</title>
-        <meta name="description" content="View and manage your Redock license and subscription." />
-      </Head>
+      <Seo
+        title="Manage your Redock licence"
+        description="Look up your Redock licence key and move it between Macs."
+        noindex
+      />
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />
         <main className="pt-32 pb-24 px-6">

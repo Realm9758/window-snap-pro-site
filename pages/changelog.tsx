@@ -1,6 +1,6 @@
-import Head from "next/head";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
+import Seo from "../components/Seo";
 import Footer from "../components/Footer";
 import ChangelogCard, { ChangelogEntry } from "../components/ChangelogCard";
 import Link from "next/link";
@@ -74,11 +74,10 @@ const changelog: ChangelogEntry[] = [
 export default function Changelog() {
   return (
     <>
-      <Head>
-        <title>Redock changelog</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Release notes and version history for Redock." />
-      </Head>
+      <Seo
+        title="Redock changelog"
+        description="Release notes and version history for Redock, the macOS window manager."
+      />
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />
 

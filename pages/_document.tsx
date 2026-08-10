@@ -5,10 +5,12 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <meta charSet="utf-8" />
-        <meta name="description" content="Redock saves the position of every window on every display and puts them back when you reconnect your monitor." />
-        <meta property="og:title" content="Redock" />
-        <meta property="og:description" content="Snap Windows. Stay Focused. The best window manager for macOS." />
-        <meta property="og:type" content="website" />
+        {/*
+          No description or og tags here. This file renders on every page, so
+          anything set here competed with each page's own <Seo> block and every
+          page shipped two <meta name="description"> tags. Per-page metadata
+          lives in components/Seo.tsx, the constant parts in _app.tsx.
+        */}
         {/* _document has no router, so the basePath is literal here. */}
         <link rel="icon" href="/redock/icon.svg" type="image/svg+xml" />
       </Head>

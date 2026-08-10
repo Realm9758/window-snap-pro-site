@@ -1,9 +1,9 @@
-import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "../components/Navbar";
+import Seo from "../components/Seo";
 import Footer from "../components/Footer";
 import LicenseKeyDisplay from "../components/LicenseKeyDisplay";
 import { apiPath } from "../lib/site";
@@ -61,9 +61,7 @@ export default function Success() {
 
   return (
     <>
-      <Head>
-        <title>Your Redock licence</title>
-      </Head>
+      <Seo title="Your Redock licence" noindex />
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />
         <main className="pt-32 pb-24 px-6">

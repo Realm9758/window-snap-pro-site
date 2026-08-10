@@ -1,6 +1,7 @@
-import Head from "next/head";
 import { useState } from "react";
 import Navbar from "../components/Navbar";
+import Seo from "../components/Seo";
+import ProductSchema from "../components/ProductSchema";
 import Hero from "../components/Hero";
 import Features from "../components/Features";
 import Footer from "../components/Footer";
@@ -110,15 +111,11 @@ function Pricing() {
 export default function Home() {
   return (
     <>
-      <Head>
-        <title>Redock: save and restore Mac window layouts</title>
-        <meta
-          name="description"
-          content="Redock saves the position of every window on every display and puts them back when you reconnect your monitor. A window manager for macOS. £19 once, no subscription."
-        />
-        <meta name="theme-color" content="#141619" media="(prefers-color-scheme: dark)" />
-        <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)" />
-      </Head>
+      <Seo
+        title="Redock: save and restore Mac window layouts"
+        description="Redock saves the position of every window on every display and puts them back when you reconnect your monitor. A window manager for macOS. £19 once, no subscription."
+      />
+      <ProductSchema />
 
       <Navbar />
       <main>

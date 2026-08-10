@@ -1,7 +1,7 @@
-import Head from "next/head";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
+import Seo from "../components/Seo";
 import Footer from "../components/Footer";
 import { assetPath } from "../lib/site";
 
@@ -17,10 +17,10 @@ const fadeUp = {
 export default function Download() {
   return (
     <>
-      <Head>
-        <title>Download Redock for macOS</title>
-        <meta name="description" content="Download Redock for macOS Ventura or later. Free to download; Pro is a one-time £19 purchase." />
-      </Head>
+      <Seo
+        title="Download Redock for macOS"
+        description="Download Redock for macOS Ventura or later. Free to download; Pro is a one-time £19 purchase."
+      />
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />
         <main className="pt-32 pb-24 px-6">
