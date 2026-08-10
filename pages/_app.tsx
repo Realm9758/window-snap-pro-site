@@ -1,6 +1,5 @@
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { AnimatePresence, motion } from "framer-motion";
 import { AuthProvider } from "../lib/auth-context";
 import { canonicalUrl } from "../lib/site";
 import "../styles/globals.css";
@@ -18,17 +17,16 @@ export default function App({ Component, pageProps, router }: AppProps) {
       <Head>
         <link rel="canonical" href={canonical} />
       </Head>
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={router.route}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.25, ease: "easeInOut" }}
-        >
-          <Component {...pageProps} />
-        </motion.div>
-      </AnimatePresence>
+      {/*
+        No page-transition wrapper here on purpose. A framer-motion cross-fade
+        used to sit at this level, and because it starts at opacity 0 it
+        server-rendered the entire site inside <div style="opacity:0">. The page
+        was therefore invisible until JavaScript hydrated it, blank for anyone
+        without JS, and it read as hidden content to anything that inspects the
+        initial HTML. The hero already carries an authored CSS entrance, which
+        needs no JS and degrades cleanly.
+      */}
+      <Component {...pageProps} />
     </AuthProvider>
   );
 }

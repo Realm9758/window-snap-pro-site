@@ -44,7 +44,6 @@ export default function Footer() {
               alt="Featured on VibeCodingList"
               width="200"
               height="51"
-              loading="lazy"
             />
           </a>
 
