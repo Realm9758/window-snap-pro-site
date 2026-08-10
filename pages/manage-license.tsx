@@ -47,7 +47,7 @@ export default function ManageLicense() {
   const [portalLoading, setPortalLoading] = useState(false);
   const [error, setError]               = useState("");
 
-  // Must be logged in — redirect to login if not
+  // Must be logged in; redirect to login if not
   useEffect(() => {
     if (!loading && !user) {
       router.replace("/login?redirect=/manage-license");
@@ -127,7 +127,7 @@ export default function ManageLicense() {
   return (
     <>
       <Head>
-        <title>Manage License — Redock</title>
+        <title>Manage your Redock licence</title>
         <meta name="description" content="View and manage your Redock license and subscription." />
       </Head>
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
@@ -197,7 +197,7 @@ export default function ManageLicense() {
                       href="/pricing"
                       className="inline-flex items-center gap-1.5 px-4 py-2 bg-accent text-white text-sm font-semibold rounded-xl shadow-sm shadow-accent/30 hover:bg-accent/90 transition-all duration-150 w-fit"
                     >
-                      Buy Pro — £19 once
+                      Buy Redock, £19 once
                     </Link>
                   </div>
                 )}

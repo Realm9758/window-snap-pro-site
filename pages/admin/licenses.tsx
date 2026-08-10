@@ -203,7 +203,7 @@ export default function AdminLicenses() {
   return (
     <>
       <Head>
-        <title>Admin — License Manager</title>
+        <title>Licence manager</title>
       </Head>
 
       <div className="min-h-screen bg-neutral-50 dark:bg-[#0a0a0a] transition-colors duration-300">

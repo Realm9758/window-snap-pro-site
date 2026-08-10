@@ -2,7 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Redock site: the "instrument" world, matching the app.
+  Graphite neutrals, one signal blue, hairline rules, tabular numerals.
+  Every colour is a token here; components never invent one.
+*/
+
 @layer base {
+  :root {
+    --ink:        #14171a;
+    --ink-2:      #5a616b;
+    --ink-3:      #8a919b;
+    --paper:      #f6f7f9;
+    --surface:    #ffffff;
+    --hairline:   #e3e6ea;
+    --edge:       #d8dce2;
+    --signal:     #3b7dff;
+    --signal-ink: #ffffff;
+  }
+
+  .dark {
+    --ink:        #f2f4f7;
+    --ink-2:      #9ba3ae;
+    --ink-3:      #6b737e;
+    --paper:      #141619;
+    --surface:    #1c1f24;
+    --hairline:   #2c3037;
+    --edge:       #343941;
+    --signal:     #538cff;
+    --signal-ink: #0b1220;
+  }
+
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
@@ -10,51 +40,77 @@
   }
 
   body {
-    @apply bg-white text-neutral-900 transition-colors duration-300;
+    background: var(--paper);
+    color: var(--ink);
+    font-feature-settings: "cv02", "cv03", "cv04";
   }
 
-  .dark body {
-    @apply bg-[#0a0a0a] text-neutral-100;
+  * { @apply box-border; }
+
+  /* Numerals in prices, versions and key combos must not jitter. */
+  .tabular { font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+
+  /* Browser surfaces belong to the design too. */
+  ::selection {
+    background: color-mix(in srgb, var(--signal) 26%, transparent);
+    color: var(--ink);
   }
 
-  * {
-    @apply box-border;
+  :focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  a { text-underline-offset: 0.22em; text-decoration-thickness: from-font; }
+
+  ::-webkit-scrollbar { width: 11px; height: 11px; }
+  ::-webkit-scrollbar-track { background: var(--paper); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--edge);
+    border: 3px solid var(--paper);
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--ink-3); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+  .text-balance { text-wrap: balance; }
+  .text-pretty  { text-wrap: pretty; }
 
-  .bg-glass {
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-  }
+  .ink   { color: var(--ink); }
+  .ink-2 { color: var(--ink-2); }
+  .ink-3 { color: var(--ink-3); }
+  .signal { color: var(--signal); }
 
-  .gradient-text {
-    background: linear-gradient(135deg, #0071E3 0%, #34aadc 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+  .surface   { background: var(--surface); }
+  .hairline  { border-color: var(--hairline); }
 
-  .hero-gradient {
-    background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 113, 227, 0.08), transparent);
-  }
+  /* Measure ceiling so body copy never runs past comfortable reading width. */
+  .measure { max-width: 68ch; }
 
-  .dark .hero-gradient {
-    background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 113, 227, 0.12), transparent);
+  /*
+    The single authored motion moment: the hero settling into place, mirroring
+    what the product does to windows. Used once, at the top, and nowhere else.
+  */
+  .settle {
+    animation: settle 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
-}
+  .settle-1 { animation-delay: 60ms; }
+  .settle-2 { animation-delay: 150ms; }
+  .settle-3 { animation-delay: 240ms; }
+  .settle-4 { animation-delay: 360ms; }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  @apply bg-neutral-300 dark:bg-neutral-700 rounded-full;
+  @keyframes settle {
+    from { opacity: 0; transform: translateY(14px) scale(0.995); filter: blur(6px); }
+    to   { opacity: 1; transform: none; filter: blur(0); }
+  }
 }

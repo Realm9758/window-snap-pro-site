@@ -62,7 +62,7 @@ export default function Success() {
   return (
     <>
       <Head>
-        <title>Purchase Confirmed — Redock</title>
+        <title>Your Redock licence</title>
       </Head>
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />

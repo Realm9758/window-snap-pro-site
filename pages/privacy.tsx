@@ -26,7 +26,7 @@ export default function Privacy() {
   return (
     <>
       <Head>
-        <title>Privacy Policy — Redock</title>
+        <title>Redock privacy policy</title>
         <meta name="description" content="Privacy Policy for Redock. Learn what data we collect and how we use it." />
       </Head>
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
@@ -107,9 +107,9 @@ export default function Privacy() {
               <Section title="Data Sharing">
                 <p>We share your data only with the following third-party services, which are necessary to operate the product:</p>
                 <ul className="list-disc list-inside flex flex-col gap-1.5 pl-2">
-                  <li><strong className="text-neutral-800 dark:text-neutral-200">Stripe</strong> — payment processing and billing. Governed by <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Stripe&apos;s Privacy Policy</a>.</li>
-                  <li><strong className="text-neutral-800 dark:text-neutral-200">Supabase</strong> — account and license database hosting. Data is stored in the EU (Ireland). Governed by <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Supabase&apos;s Privacy Policy</a>.</li>
-                  <li><strong className="text-neutral-800 dark:text-neutral-200">Vercel</strong> — website hosting. Governed by <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Vercel&apos;s Privacy Policy</a>.</li>
+                  <li><strong className="text-neutral-800 dark:text-neutral-200">Stripe</strong> handles payment processing and billing. Governed by <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Stripe&apos;s Privacy Policy</a>.</li>
+                  <li><strong className="text-neutral-800 dark:text-neutral-200">Supabase</strong> hosts the account and licence database. Data is stored in the EU (Ireland). Governed by <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Supabase&apos;s Privacy Policy</a>.</li>
+                  <li><strong className="text-neutral-800 dark:text-neutral-200">Vercel</strong> hosts this website. Governed by <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Vercel&apos;s Privacy Policy</a>.</li>
                 </ul>
                 <p>We do not share your data with advertisers, data brokers, or any other parties.</p>
               </Section>
@@ -125,7 +125,7 @@ export default function Privacy() {
 
               <Section title="Security">
                 <p>
-                  Passwords are hashed and never stored in plain text. All data is transmitted over HTTPS. Access to the license database is restricted and rate-limited. License lookup endpoints require a valid authenticated session — it is not possible to look up another user&apos;s license key using our website.
+                  Passwords are hashed and never stored in plain text. All data is transmitted over HTTPS. Access to the license database is restricted and rate-limited. Licence lookup endpoints require a valid authenticated session, so it is not possible to look up another person&apos;s licence key through this website.
                 </p>
               </Section>
 

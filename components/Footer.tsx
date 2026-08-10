@@ -1,40 +1,40 @@
 import Link from "next/link";
+import { SnapMark } from "./Marks";
+
+const LINKS = [
+  { label: "Features", href: "/#features" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Download", href: "/download" },
+  { label: "Changelog", href: "/changelog" },
+  { label: "Manage licence", href: "/manage-license" },
+  { label: "Privacy", href: "/privacy" },
+];
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-neutral-200 dark:border-neutral-800 py-10 px-6">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-5">
-        {/* Logo + copyright */}
-        <div className="flex items-center gap-2.5">
-          <div className="w-6 h-6 rounded-[6px] bg-accent flex items-center justify-center">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-              <rect x="1" y="1" width="6" height="6" rx="1.5" fill="white" />
-              <rect x="9" y="1" width="6" height="6" rx="1.5" fill="white" opacity="0.7" />
-              <rect x="1" y="9" width="6" height="6" rx="1.5" fill="white" opacity="0.7" />
-              <rect x="9" y="9" width="6" height="6" rx="1.5" fill="white" opacity="0.4" />
-            </svg>
+    <footer className="border-t px-6 py-12" style={{ borderColor: "var(--hairline)" }}>
+      <div className="mx-auto flex max-w-5xl flex-col gap-8 md:flex-row md:items-start md:justify-between">
+        <div>
+          <div className="flex items-center gap-2.5">
+            <SnapMark className="h-[20px] w-[22px] signal" />
+            <span className="text-[15px] font-semibold tracking-[-0.02em] ink">Redock</span>
           </div>
-          <span className="text-sm text-neutral-500 dark:text-neutral-500">
-            &copy; {year} Redock. All rights reserved.
-          </span>
+          <p className="mt-3 max-w-xs text-[13.5px] leading-relaxed ink-3">
+            A window manager for people who work at more than one desk.
+          </p>
+          <p className="mt-4 text-[13px] ink-3">
+            &copy; {year} bhopstudio
+          </p>
         </div>
 
-        {/* Links */}
-        <nav className="flex items-center gap-1 flex-wrap justify-center">
-          {[
-            { label: "Features", href: "/#features" },
-            { label: "Pricing", href: "/pricing" },
-            { label: "Changelog", href: "/changelog" },
-            { label: "Download", href: "/download" },
-            { label: "Manage License", href: "/manage-license" },
-            { label: "Privacy Policy", href: "/privacy" },
-          ].map((link) => (
+        <nav aria-label="Footer" className="grid grid-cols-2 gap-x-10 gap-y-2.5 sm:flex sm:flex-col sm:items-end">
+          {LINKS.map((link) => (
             <Link
               key={link.label}
               href={link.href}
-              className="px-3 py-1.5 text-sm text-neutral-500 dark:text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors duration-150 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800"
+              className="text-[14px] ink-2 transition-colors duration-150 hover:ink"
             >
               {link.label}
             </Link>

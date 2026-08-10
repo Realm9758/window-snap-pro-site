@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../lib/auth-context";
+import { SnapMark } from "./Marks";
 
 export default function Navbar() {
   const [scrolled, setScrolled]   = useState(false);
@@ -69,24 +70,18 @@ export default function Navbar() {
       initial={{ y: -60, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+      style={scrolled ? { background: "color-mix(in srgb, var(--paper) 82%, transparent)", borderColor: "var(--hairline)" } : undefined}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/80 dark:bg-[#0a0a0a]/80 bg-glass border-b border-neutral-200/60 dark:border-neutral-800/60 shadow-soft"
+          ? "bg-glass border-b" 
           : "bg-transparent"
       }`}
     >
       <nav className="max-w-6xl mx-auto px-6 h-[60px] flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-7 h-7 rounded-[8px] bg-accent flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow duration-200">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <rect x="1" y="1" width="6" height="6" rx="1.5" fill="white" />
-              <rect x="9" y="1" width="6" height="6" rx="1.5" fill="white" opacity="0.7" />
-              <rect x="1" y="9" width="6" height="6" rx="1.5" fill="white" opacity="0.7" />
-              <rect x="9" y="9" width="6" height="6" rx="1.5" fill="white" opacity="0.4" />
-            </svg>
-          </div>
-          <span className="font-semibold text-[15px] tracking-tight text-neutral-900 dark:text-white">
+          <SnapMark className="h-[22px] w-[24px] signal" />
+          <span className="font-semibold text-[15px] tracking-[-0.02em] ink">
             Redock
           </span>
         </Link>
@@ -97,7 +92,7 @@ export default function Navbar() {
             <Link
               key={link.label}
               href={link.href}
-              className="px-4 py-1.5 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all duration-150"
+              className="rounded-md px-3 py-1.5 text-[14px] font-medium ink-2 transition-colors duration-150 hover:ink hover:bg-[color-mix(in_srgb,var(--ink)_6%,transparent)]"
             >
               {link.label}
             </Link>
@@ -188,7 +183,7 @@ export default function Navbar() {
                 <div className="hidden md:flex items-center gap-2">
                   <Link
                     href="/login"
-                    className="px-4 py-1.5 text-sm font-medium text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all duration-150"
+                    className="rounded-md px-3 py-1.5 text-[14px] font-medium ink-2 transition-colors duration-150 hover:ink hover:bg-[color-mix(in_srgb,var(--ink)_6%,transparent)]"
                   >
                     Log in
                   </Link>

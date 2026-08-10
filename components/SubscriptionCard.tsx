@@ -17,7 +17,7 @@ const STATUS_CONFIG: Record<string, { label: string; dot: string; text: string }
 };
 
 function formatDate(iso: string | null) {
-  if (!iso) return "—";
+  if (!iso) return "Not set";
   return new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 }
 

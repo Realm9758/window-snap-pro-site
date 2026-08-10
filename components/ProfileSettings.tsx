@@ -120,7 +120,7 @@ export default function ProfileSettings({ license }: ProfileSettingsProps) {
                       month: "long",
                       year: "numeric",
                     })
-                  : "—"}
+                  : "Not set"}
               </span>
             </div>
           </div>

@@ -11,7 +11,7 @@ const changelog: ChangelogEntry[] = [
     date: "March 2026",
     tag: "latest",
     changes: [
-      { type: "added", text: "Clipboard History — instantly recall your last copied items from the menu bar. Free users get up to 5 entries." },
+      { type: "added", text: "Clipboard history: recall your last copied items from the menu bar. Free users get up to 5 entries." },
       { type: "added", text: "Pro users can customize the clipboard history limit from 5 up to 50 items via Settings → Clipboard." },
       { type: "improved", text: "Clipboard entries support rich previews for text, URLs, and code snippets." },
     ],
@@ -21,11 +21,11 @@ const changelog: ChangelogEntry[] = [
     date: "March 2026",
     tag: "stable",
     changes: [
-      { type: "added", text: "App-specific rules — assign a default snap position for any app." },
-      { type: "added", text: "Drag zone customization — resize and reposition snap trigger areas." },
+      { type: "added", text: "App rules: assign a default snap position for any app." },
+      { type: "added", text: "Drag zones: resize and reposition the snap trigger areas." },
       { type: "added", text: "Custom keyboard shortcuts for every snap action." },
       { type: "improved", text: "Snap animations are now significantly smoother using spring physics." },
-      { type: "improved", text: "Performance improvements — reduced CPU and memory footprint by 40%." },
+      { type: "improved", text: "Reduced CPU and memory use." },
       { type: "improved", text: "Multi-monitor support is now more reliable with mismatched display resolutions." },
       { type: "fixed", text: "Fixed a bug where windows would occasionally snap to the wrong position on secondary displays." },
       { type: "fixed", text: "Resolved a rare crash when rapidly dragging windows across monitor boundaries." },
@@ -49,7 +49,7 @@ const changelog: ChangelogEntry[] = [
       { type: "added", text: "Initial release of Redock." },
       { type: "added", text: "Drag-to-edge window snapping: snap to left half, right half, top half, bottom half, and all four corners." },
       { type: "added", text: "Menu bar app for quick access to layouts and preferences." },
-      { type: "added", text: "Full multi-monitor support — snap windows on any connected display." },
+      { type: "added", text: "Multi-monitor support: snap windows on any connected display." },
       { type: "added", text: "Native macOS Ventura design with light and dark mode support." },
       { type: "added", text: "Built-in onboarding walkthrough for first-time setup." },
     ],
@@ -60,9 +60,9 @@ export default function Changelog() {
   return (
     <>
       <Head>
-        <title>Changelog — Redock</title>
+        <title>Redock changelog</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="See what's new in Redock — release notes and version history." />
+        <meta name="description" content="Release notes and version history for Redock." />
       </Head>
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />
@@ -102,7 +102,7 @@ export default function Changelog() {
               Changelog
             </h1>
             <p className="text-neutral-500 dark:text-neutral-400 text-lg">
-              Every update, improvement, and fix — all in one place.
+              Every update, improvement and fix.
             </p>
           </motion.div>
 

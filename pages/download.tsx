@@ -17,7 +17,7 @@ export default function Download() {
   return (
     <>
       <Head>
-        <title>Download — Redock</title>
+        <title>Download Redock for macOS</title>
         <meta name="description" content="Download Redock for macOS Ventura or later. Free to download; Pro is a one-time £19 purchase." />
       </Head>
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
@@ -47,7 +47,7 @@ export default function Download() {
                 custom={2} variants={fadeUp} initial="hidden" animate="show"
                 className="text-lg text-neutral-500 dark:text-neutral-400 leading-relaxed max-w-xl mx-auto"
               >
-                The fastest, most intuitive window manager for macOS. Free to download; Pro is a one-time £19 purchase.
+                Free to use. Pro is a one-time £19 purchase, with a 14 day trial.
               </motion.p>
             </div>
 
@@ -115,10 +115,10 @@ export default function Download() {
               </h3>
               <ul className="flex flex-col gap-2.5">
                 {[
-                  "Clipboard History — track up to 5 copied items (free) or 50 (Pro)",
+                  "Clipboard history: 10 copied items on Free, 50 on Pro",
                   "Clipboard popup at cursor with search, pin, and arrow-key navigation",
                   "Customisable ⌘⇧V shortcut for the clipboard history popup",
-                  "File Shelf — drag files into the clipboard popup to store and paste them",
+                  "File shelf: hold files in the popup while you navigate somewhere else",
                   "Drag files back out of the shelf directly into any app",
                   "Fully redesigned Settings window with animated sidebar",
                   "Per-section coloured icons and page crossfade transitions in Settings",
@@ -159,7 +159,7 @@ export default function Download() {
                   href="/pricing"
                   className="text-sm font-semibold text-accent hover:underline"
                 >
-                  Get Pro — £19 once →
+                  Buy Redock, £19 once
                 </Link>
                 <span className="hidden sm:block text-neutral-300 dark:text-neutral-700">·</span>
                 <Link

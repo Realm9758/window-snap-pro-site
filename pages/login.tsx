@@ -43,7 +43,7 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>Log in — Redock</title>
+        <title>Log in to Redock</title>
       </Head>
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] flex items-center justify-center px-6">
         <motion.div

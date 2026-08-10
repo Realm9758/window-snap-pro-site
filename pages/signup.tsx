@@ -58,7 +58,7 @@ export default function Signup() {
   return (
     <>
       <Head>
-        <title>Create Account — Redock</title>
+        <title>Create a Redock account</title>
       </Head>
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] flex items-center justify-center px-6">
         <motion.div

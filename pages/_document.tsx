@@ -5,7 +5,7 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <meta charSet="utf-8" />
-        <meta name="description" content="Redock — The fastest, most intuitive window manager for macOS. Snap, arrange, and organize your workspace." />
+        <meta name="description" content="Redock saves the position of every window on every display and puts them back when you reconnect your monitor." />
         <meta property="og:title" content="Redock" />
         <meta property="og:description" content="Snap Windows. Stay Focused. The best window manager for macOS." />
         <meta property="og:type" content="website" />

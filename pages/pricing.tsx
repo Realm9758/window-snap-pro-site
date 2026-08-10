@@ -8,29 +8,26 @@ import { getStripe } from "../lib/stripe-browser";
 import { apiPath } from "../lib/site";
 
 const FREE_FEATURES = [
-  { text: "Basic window snapping (halves & corners)", included: true },
-  { text: "Keyboard shortcut support", included: true },
-  { text: "Menu bar quick-access", included: true },
-  { text: "Standard snap zones", included: true },
-  { text: "Clipboard history (up to 5 items)", included: true },
-  { text: "App-specific snap rules", included: false },
-  { text: "Custom drag zones", included: false },
-  { text: "Advanced animations", included: false },
-  { text: "Premium settings panel", included: false },
-  { text: "Clipboard history limit (up to 50)", included: false },
-  { text: "Priority support", included: false },
+  { text: "Snap with keyboard shortcuts", included: true },
+  { text: "Snap by dragging to an edge", included: true },
+  { text: "Menu bar access", included: true },
+  { text: "Clipboard history, 10 items", included: true },
+  { text: "File shelf, 3 files", included: true },
+  { text: "Saved workspaces", included: false },
+  { text: "Auto-restore when you dock", included: false },
+  { text: "App rules and drag zones", included: false },
+  { text: "Clipboard search, pinning and images", included: false },
 ];
 
 const PRO_FEATURES = [
   { text: "Everything in Free", included: true },
-  { text: "App-specific snap rules", included: true },
-  { text: "Custom drag zones", included: true },
-  { text: "Advanced animations", included: true },
-  { text: "Premium settings panel", included: true },
-  { text: "Multi-monitor profiles", included: true },
-  { text: "Clipboard history limit (up to 50)", included: true },
-  { text: "Priority support", included: true },
-  { text: "All future Pro updates", included: true },
+  { text: "Saved workspaces, unlimited", included: true },
+  { text: "Auto-restore when you dock or undock", included: true },
+  { text: "App rules and drag zones", included: true },
+  { text: "Clipboard: 50 items, search, pinning, images", included: true },
+  { text: "File shelf, 20 files", included: true },
+  { text: "Three Macs", included: true },
+  { text: "All future updates", included: true },
 ];
 
 const fadeUp = {
@@ -70,8 +67,8 @@ export default function Pricing() {
   return (
     <>
       <Head>
-        <title>Pricing — Redock</title>
-        <meta name="description" content="Simple, honest pricing for Redock. Free forever, or buy Pro once for £19 — no subscription." />
+        <title>Redock pricing</title>
+        <meta name="description" content="Redock is free to use. Pro is £19 once, for three Macs, with every future update included. No subscription." />
       </Head>
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />
@@ -97,7 +94,7 @@ export default function Pricing() {
                 className="text-lg text-neutral-500 dark:text-neutral-400 max-w-lg mx-auto leading-relaxed"
               >
                 Start for free. Upgrade to Pro when you need more power.
-                Cancel any time — no questions asked.
+                No subscription to cancel.
               </motion.p>
             </div>
 
@@ -109,21 +106,20 @@ export default function Pricing() {
               <PricingCard
                 name="Free"
                 price="£0"
-                description="Everything you need to get started with smarter window management."
+                description="Snapping, shortcuts and a short clipboard history."
                 features={FREE_FEATURES}
-                cta="Download Free"
+                cta="Download"
                 ctaHref="/download"
               />
               <PricingCard
                 name="Pro"
                 price="£19"
-                period="one-time"
-                description="Pay once. Yours forever, on up to 3 Macs, including every future update."
+                period="one time"
+                description="Saved layouts that come back when you reconnect a display."
                 features={PRO_FEATURES}
-                cta="Buy Pro — £19"
+                cta="Buy Redock"
                 onCtaClick={handleSubscribe}
                 highlighted
-                badge="One-time purchase"
                 loading={loading}
               />
             </motion.div>
@@ -162,11 +158,11 @@ export default function Pricing() {
                   },
                   {
                     q: "Can I use my license on multiple Macs?",
-                    a: "Yes — each Pro license supports up to 3 Mac activations. You can deactivate a device via the Manage License page to free up a slot.",
+                    a: "Yes. One licence covers three Macs. You can free a slot by deactivating a device from the Manage licence page.",
                   },
                   {
                     q: "What happens if I cancel?",
-                    a: "You keep Pro access until the end of your billing period. After that, the app reverts to the free feature set — your settings are preserved.",
+                    a: "Nothing to cancel. Pro is a one-time purchase, so it does not expire. If you ever remove the licence, the app returns to the free feature set and your settings, layouts and clipboard are kept.",
                   },
                   {
                     q: "I lost my license key. Can I recover it?",

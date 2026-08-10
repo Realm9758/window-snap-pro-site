@@ -3,48 +3,37 @@ import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Features from "../components/Features";
-import Download from "../components/Download";
 import Footer from "../components/Footer";
 import PricingCard from "../components/PricingCard";
-import { motion } from "framer-motion";
 import { getStripe } from "../lib/stripe-browser";
 import { apiPath } from "../lib/site";
 
 const FREE_FEATURES = [
-  { text: "Basic window snapping", included: true },
-  { text: "Keyboard shortcuts", included: true },
+  { text: "Snap with keyboard shortcuts", included: true },
+  { text: "Snap by dragging to an edge", included: true },
   { text: "Menu bar access", included: true },
-  { text: "Clipboard history (up to 5 items)", included: true },
-  { text: "App-specific rules", included: false },
-  { text: "Custom drag zones", included: false },
-  { text: "Advanced animations", included: false },
-  { text: "Clipboard history limit (up to 50)", included: false },
+  { text: "Clipboard history, 10 items", included: true },
+  { text: "Saved workspaces", included: false },
+  { text: "Auto-restore when you dock", included: false },
+  { text: "App rules and drag zones", included: false },
 ];
 
 const PRO_FEATURES = [
   { text: "Everything in Free", included: true },
-  { text: "App-specific snap rules", included: true },
-  { text: "Custom drag zones", included: true },
-  { text: "Advanced animations", included: true },
-  { text: "Premium settings", included: true },
-  { text: "Clipboard history limit (up to 50)", included: true },
-  { text: "All future updates", included: true },
+  { text: "Saved workspaces, unlimited", included: true },
+  { text: "Auto-restore when you dock", included: true },
+  { text: "App rules and drag zones", included: true },
+  { text: "Clipboard: 50 items, search, images", included: true },
+  { text: "Three Macs, all future updates", included: true },
 ];
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  show: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.08, duration: 0.55, ease: [0.25, 0.1, 0.25, 1] },
-  }),
-};
-
-function PricingPreview() {
+function Pricing() {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubscribe = async () => {
+  const handleBuy = async () => {
     setLoading(true);
+    setError(null);
     try {
       const [stripe, res] = await Promise.all([
         getStripe(),
@@ -55,65 +44,64 @@ function PricingPreview() {
         }),
       ]);
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Checkout failed");
-      // stripe is preloaded for PCI-compliance/Radar fraud detection
-      void stripe;
-      if (data.url) window.location.href = data.url;
+      if (!res.ok) throw new Error(data.error || "Checkout could not be opened.");
+      void stripe; // preloaded so Stripe Radar can fingerprint the session
+      if (data.url) {
+        window.location.href = data.url;
+        return;
+      }
+      throw new Error("Checkout could not be opened.");
     } catch (err) {
-      console.error(err);
+      setError(
+        err instanceof Error ? err.message : "Checkout could not be opened."
+      );
       setLoading(false);
     }
   };
 
   return (
-    <section id="pricing" className="py-28 px-6 bg-neutral-50 dark:bg-neutral-900/40">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-14">
-          <motion.p
-            custom={0} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}
-            className="text-sm font-semibold text-accent tracking-widest uppercase mb-4"
-          >
-            Pricing
-          </motion.p>
-          <motion.h2
-            custom={1} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}
-            className="text-[clamp(2rem,5vw,3rem)] font-bold tracking-tight text-neutral-900 dark:text-white mb-4"
-          >
-            Free to start. Pro when you need it.
-          </motion.h2>
-          <motion.p
-            custom={2} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}
-            className="text-neutral-500 dark:text-neutral-400 max-w-md mx-auto"
-          >
-            Redock is free forever. Unlock everything with a single £19 purchase — no subscription.
-          </motion.p>
-        </div>
+    <section id="pricing" className="px-6 py-20 sm:py-28">
+      <div className="mx-auto max-w-4xl">
+        <h2 className="text-[clamp(1.6rem,3vw,2.25rem)] font-semibold tracking-[-0.03em] ink text-balance">
+          Free to use. £19 once for the rest.
+        </h2>
+        <p className="measure mt-3 leading-relaxed ink-2 text-pretty">
+          No subscription. Buy it once and it stays yours, on up to three Macs,
+          including every future update. Pro is free to try for 14 days without
+          a card.
+        </p>
 
-        <motion.div
-          custom={3} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}
-          className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto"
-        >
+        <div className="mt-10 grid gap-5 sm:grid-cols-2">
           <PricingCard
             name="Free"
             price="£0"
-            description="Solid window snapping for everyday use."
+            description="Snapping, shortcuts and a short clipboard history."
             features={FREE_FEATURES}
-            cta="Download Free"
+            cta="Download"
             ctaHref="/download"
           />
           <PricingCard
             name="Pro"
             price="£19"
-            period="one-time"
-            description="Full control over your window workflow."
+            period="one time"
+            description="Saved layouts that come back when you reconnect a display."
             features={PRO_FEATURES}
-            cta="Subscribe to Pro"
-            onCtaClick={handleSubscribe}
+            cta="Buy Redock"
+            onCtaClick={handleBuy}
             highlighted
-            badge="Most Popular"
             loading={loading}
           />
-        </motion.div>
+        </div>
+
+        {error && (
+          <p role="alert" className="mt-4 text-[14px]" style={{ color: "#c0392b" }}>
+            {error} You can also{" "}
+            <a className="underline" href="mailto:hello@bhopstudio.com">
+              email us
+            </a>{" "}
+            and we will sort it out.
+          </p>
+        )}
       </div>
     </section>
   );
@@ -123,21 +111,22 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Redock — Snap Windows. Stay Focused.</title>
-        <meta name="description" content="The fastest, most intuitive window manager for macOS. Snap, arrange, and organize your workspace with a single drag." />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="vibecoded-verification" content="03b85dd2db8db10a50dc193bf1493531f32f" />
+        <title>Redock: save and restore Mac window layouts</title>
+        <meta
+          name="description"
+          content="Redock saves the position of every window on every display and puts them back when you reconnect your monitor. A window manager for macOS. £19 once, no subscription."
+        />
+        <meta name="theme-color" content="#141619" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)" />
       </Head>
-      <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
-        <Navbar />
-        <main>
-          <Hero />
-          <Features />
-          <PricingPreview />
-          <Download />
-        </main>
-        <Footer />
-      </div>
+
+      <Navbar />
+      <main>
+        <Hero />
+        <Features />
+        <Pricing />
+      </main>
+      <Footer />
     </>
   );
 }

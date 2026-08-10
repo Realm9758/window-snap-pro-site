@@ -1,9 +1,8 @@
 "use client";
-import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
+import { Check, Dash } from "./Marks";
 
-interface Feature {
+export interface Feature {
   text: string;
   included: boolean;
 }
@@ -18,30 +17,14 @@ interface PricingCardProps {
   ctaHref?: string;
   onCtaClick?: () => void;
   highlighted?: boolean;
-  badge?: string;
   loading?: boolean;
 }
 
-function CheckIcon({ included }: { included: boolean }) {
-  return included ? (
-    <svg
-      className="w-4 h-4 text-accent flex-shrink-0"
-      viewBox="0 0 16 16"
-      fill="currentColor"
-    >
-      <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z" />
-    </svg>
-  ) : (
-    <svg
-      className="w-4 h-4 text-neutral-300 dark:text-neutral-600 flex-shrink-0"
-      viewBox="0 0 16 16"
-      fill="currentColor"
-    >
-      <path d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z" />
-    </svg>
-  );
-}
-
+/**
+ * Two plans, no badge. A "Most Popular" tag on a two-option table where the
+ * other option is free says nothing true, so it is gone. The paid column earns
+ * attention through the signal border and filled button instead.
+ */
 export default function PricingCard({
   name,
   price,
@@ -52,75 +35,50 @@ export default function PricingCard({
   ctaHref,
   onCtaClick,
   highlighted = false,
-  badge,
   loading = false,
 }: PricingCardProps) {
   return (
-    <motion.div
-      whileHover={{ y: -4 }}
-      transition={{ type: "spring", stiffness: 300, damping: 24 }}
-      className={`relative flex flex-col rounded-[24px] p-8 ${
-        highlighted
-          ? "bg-neutral-900 dark:bg-white border border-neutral-800 dark:border-neutral-200 shadow-[0_24px_80px_rgba(0,0,0,0.18)] dark:shadow-[0_24px_80px_rgba(0,0,0,0.4)]"
-          : "bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
-      }`}
+    <div
+      className="flex flex-col rounded-xl border p-7"
+      style={{
+        background: "var(--surface)",
+        borderColor: highlighted ? "var(--signal)" : "var(--hairline)",
+      }}
     >
-      {/* Badge */}
-      {badge && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent text-white text-xs font-semibold shadow-lg shadow-accent/30">
-            <span className="w-1.5 h-1.5 rounded-full bg-white/60 animate-pulse" />
-            {badge}
-          </span>
-        </div>
-      )}
+      <h3 className="text-[13px] font-semibold uppercase tracking-[0.14em] ink-3">
+        {name}
+      </h3>
 
-      {/* Header */}
-      <div className="mb-6">
-        <p
-          className={`text-sm font-semibold tracking-wide uppercase mb-3 ${
-            highlighted ? "text-neutral-400 dark:text-neutral-500" : "text-neutral-400 dark:text-neutral-500"
-          }`}
-        >
-          {name}
-        </p>
-        <div className="flex items-end gap-1.5 mb-3">
-          <span
-            className={`text-5xl font-bold tracking-tight ${
-              highlighted ? "text-white dark:text-neutral-900" : "text-neutral-900 dark:text-white"
-            }`}
-          >
-            {price}
-          </span>
-          {period && (
-            <span
-              className={`text-sm mb-2 ${
-                highlighted ? "text-neutral-400 dark:text-neutral-500" : "text-neutral-400 dark:text-neutral-500"
-              }`}
-            >
-              {period}
-            </span>
-          )}
-        </div>
-        <p
-          className={`text-sm leading-relaxed ${
-            highlighted ? "text-neutral-400 dark:text-neutral-500" : "text-neutral-500 dark:text-neutral-400"
-          }`}
-        >
-          {description}
-        </p>
+      <div className="mt-3 flex items-baseline gap-2">
+        <span className="tabular text-[2.6rem] font-semibold leading-none tracking-[-0.03em] ink">
+          {price}
+        </span>
+        {period && <span className="text-[14px] ink-3">{period}</span>}
       </div>
 
-      {/* CTA */}
-      <div className="mb-8">
+      <p className="mt-3 text-[14.5px] leading-relaxed ink-2 text-pretty">
+        {description}
+      </p>
+
+      <ul className="mt-7 flex-1 space-y-2.5">
+        {features.map((f) => (
+          <li key={f.text} className="flex items-start gap-2.5 text-[14.5px]">
+            {f.included ? (
+              <Check className="mt-[3px] h-4 w-4 shrink-0 signal" />
+            ) : (
+              <Dash className="mt-[3px] h-4 w-4 shrink-0 ink-3" />
+            )}
+            <span className={f.included ? "ink" : "ink-3"}>{f.text}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-8">
         {ctaHref ? (
           <Link
             href={ctaHref}
-            className={`block w-full py-3 px-6 rounded-2xl text-sm font-semibold text-center transition-all duration-150 ${
-              highlighted
-                ? "bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800"
-                : "bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:bg-neutral-700 dark:hover:bg-neutral-100"
-            }`}
+            className="block rounded-lg border px-5 py-3 text-center text-[15px] font-medium ink transition-colors duration-150 hover:bg-[color-mix(in_srgb,var(--ink)_5%,transparent)]"
+            style={{ borderColor: "var(--edge)" }}
           >
             {cta}
           </Link>
@@ -128,54 +86,13 @@ export default function PricingCard({
           <button
             onClick={onCtaClick}
             disabled={loading}
-            className={`w-full py-3 px-6 rounded-2xl text-sm font-semibold transition-all duration-150 flex items-center justify-center gap-2 ${
-              highlighted
-                ? "bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 disabled:opacity-60"
-                : "bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:bg-neutral-700 dark:hover:bg-neutral-100 disabled:opacity-60"
-            }`}
+            className="w-full rounded-lg px-5 py-3 text-[15px] font-medium transition-transform duration-150 active:scale-[0.985] disabled:opacity-60"
+            style={{ background: "var(--signal)", color: "var(--signal-ink)" }}
           >
-            {loading && (
-              <svg
-                className="animate-spin w-4 h-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-              </svg>
-            )}
-            {loading ? "Redirecting…" : cta}
+            {loading ? "Opening checkout" : cta}
           </button>
         )}
       </div>
-
-      {/* Divider */}
-      <div
-        className={`border-t mb-6 ${
-          highlighted ? "border-neutral-800 dark:border-neutral-200" : "border-neutral-100 dark:border-neutral-800"
-        }`}
-      />
-
-      {/* Features */}
-      <ul className="flex flex-col gap-3 flex-1">
-        {features.map((feat) => (
-          <li key={feat.text} className="flex items-center gap-3">
-            <CheckIcon included={feat.included} />
-            <span
-              className={`text-sm ${
-                feat.included
-                  ? highlighted
-                    ? "text-neutral-200 dark:text-neutral-700"
-                    : "text-neutral-700 dark:text-neutral-200"
-                  : "text-neutral-400 dark:text-neutral-600"
-              }`}
-            >
-              {feat.text}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </motion.div>
+    </div>
   );
 }
