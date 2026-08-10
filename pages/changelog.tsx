@@ -7,12 +7,27 @@ import Link from "next/link";
 
 const changelog: ChangelogEntry[] = [
   {
-    version: "1.2",
-    date: "March 2026",
+    version: "1.3",
+    date: "August 2026",
     tag: "latest",
     changes: [
-      { type: "added", text: "Clipboard history: recall your last copied items from the menu bar. Free users get up to 5 entries." },
-      { type: "added", text: "Pro users can customize the clipboard history limit from 5 up to 50 items via Settings → Clipboard." },
+      { type: "added", text: "Workspaces: arrange your windows, save the layout, and restore it whenever you want." },
+      { type: "added", text: "Bind a workspace to a monitor arrangement and it restores itself when you reconnect that setup." },
+      { type: "added", text: "A 14-day trial of every Pro feature, with no card required to start it." },
+      { type: "improved", text: "Window Snap Pro is now Redock. New name, new icon, and a rebuilt interface throughout." },
+      { type: "improved", text: "The app follows your system light and dark appearance instead of forcing a dark theme." },
+      { type: "improved", text: "Clipboard history keeps 10 items on Free and 50 on Pro, with search and pinning on Pro." },
+      { type: "improved", text: "Now a universal build, so it runs natively on both Apple Silicon and Intel Macs." },
+      { type: "fixed", text: "Clipboard and workspace shortcuts could trigger the wrong action when several were registered." },
+    ],
+  },
+  {
+    version: "1.2",
+    date: "March 2026",
+    tag: "stable",
+    changes: [
+      { type: "added", text: "Clipboard history: recall your last copied items from the menu bar." },
+      { type: "added", text: "Pro users can raise the clipboard history limit via Settings → Clipboard." },
       { type: "improved", text: "Clipboard entries support rich previews for text, URLs, and code snippets." },
     ],
   },
