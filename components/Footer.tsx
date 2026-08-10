@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SnapMark } from "./Marks";
+import { CONTACT_EMAIL } from "../lib/site";
 
 const LINKS = [
   { label: "Features", href: "/#features" },
@@ -62,6 +63,17 @@ export default function Footer() {
               {link.label}
             </Link>
           ))}
+          {/*
+            A plain mailto rather than a contact form. Someone deciding whether
+            to trust an unsigned download wants to see a real address, and one
+            they can reach without filling anything in.
+          */}
+          <a
+            href={`mailto:${CONTACT_EMAIL}`}
+            className="text-[14px] ink-2 transition-colors duration-150 hover:ink"
+          >
+            Contact
+          </a>
         </nav>
       </div>
     </footer>

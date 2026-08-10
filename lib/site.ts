@@ -19,6 +19,14 @@ export const SITE_ORIGIN = (
 export const SITE_URL = `${SITE_ORIGIN}${BASE_PATH}`;
 
 /**
+ * The one address customers write to. Defined once because it appears in the
+ * footer, the privacy policy, checkout error recovery and the licence email,
+ * and those drifted apart before: the privacy page was pointing at
+ * windowsnappro.com, a domain we do not own.
+ */
+export const CONTACT_EMAIL = "raf@bhopstudio.com";
+
+/**
  * Absolute public URL for a route.
  *
  * `router.asPath` excludes basePath (Next strips it), so it is added back here.

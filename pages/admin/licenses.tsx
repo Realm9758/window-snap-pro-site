@@ -80,7 +80,18 @@ export default function AdminLicenses() {
 
   const [licenses, setLicenses]     = useState<LicenseRow[]>([]);
   const [fetching, setFetching]     = useState(true);
-  const [accessDenied, setAccessDenied] = useState(false);
+
+  /**
+   * Authorisation is a separate question from authentication, and this page
+   * used to conflate them: it rendered the whole admin shell as soon as someone
+   * was signed in, then swapped to Access Denied once the API came back 403.
+   * Any signed-in non-admin saw the interface for the length of that round trip.
+   *
+   * Nothing renders now until the API has actually said yes. Starts unresolved
+   * and fails closed: only "allowed" reaches the admin UI.
+   */
+  const [access, setAccess] =
+    useState<"checking" | "allowed" | "denied" | "error">("checking");
 
   // Create form
   const [formEmail, setFormEmail]       = useState("");
@@ -103,22 +114,37 @@ export default function AdminLicenses() {
 
   const fetchLicenses = useCallback(async () => {
     const token = await getToken();
+    // No token means not signed in, which the redirect effect below handles.
+    // Access stays unresolved, so nothing renders in the meantime.
     if (!token) return;
 
     setFetching(true);
-    const res = await fetch(apiPath("/api/admin/licenses"), {
-      headers: { Authorization: `Bearer ${token}` },
-    });
 
-    if (res.status === 403) {
-      setAccessDenied(true);
+    try {
+      const res = await fetch(apiPath("/api/admin/licenses"), {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (res.status === 403) {
+        setAccess("denied");
+        return;
+      }
+
+      // Anything else that is not a success is treated as not-allowed too, so
+      // a failing API can never fall through into the admin interface.
+      if (!res.ok) {
+        setAccess("error");
+        return;
+      }
+
+      const data = await res.json();
+      setLicenses(data.licenses ?? []);
+      setAccess("allowed");
+    } catch {
+      setAccess("error");
+    } finally {
       setFetching(false);
-      return;
     }
-
-    const data = await res.json();
-    setLicenses(data.licenses ?? []);
-    setFetching(false);
   }, [getToken]);
 
   useEffect(() => {
@@ -188,13 +214,39 @@ export default function AdminLicenses() {
 
   if (loading || !user) return null;
 
-  if (accessDenied) {
+  // Signed in is not the same as allowed. Until the API has confirmed it,
+  // nothing of this page exists, not even its shell.
+  if (access === "checking") return null;
+
+  if (access === "denied") {
     return (
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] flex items-center justify-center">
         <div className="text-center">
           <p className="text-4xl mb-4">⛔</p>
           <h1 className="text-xl font-semibold text-neutral-900 dark:text-white mb-2">Access Denied</h1>
           <p className="text-sm text-neutral-500 dark:text-neutral-400">You are not authorised to view this page.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (access === "error") {
+    return (
+      <div className="min-h-screen bg-white dark:bg-[#0a0a0a] flex items-center justify-center px-6">
+        <div className="text-center">
+          <h1 className="text-xl font-semibold text-neutral-900 dark:text-white mb-2">Could not load licenses</h1>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-5">
+            The license service did not respond. Your permissions have not changed.
+          </p>
+          <button
+            onClick={() => {
+              setAccess("checking");
+              fetchLicenses();
+            }}
+            className="px-4 py-2 bg-accent text-white text-sm font-semibold rounded-xl hover:bg-accent/90 transition-all duration-150 shadow-sm shadow-accent/25"
+          >
+            Try again
+          </button>
         </div>
       </div>
     );

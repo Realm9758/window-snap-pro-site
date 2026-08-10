@@ -1,13 +1,24 @@
 import { Resend } from "resend";
 import { APP_URL } from "./stripe";
+import { CONTACT_EMAIL } from "./site";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+/**
+ * Still Resend's shared sandbox sender, because no domain is verified on the
+ * Resend account yet. Sending as raf@bhopstudio.com requires verifying
+ * bhopstudio.com there first, and setting this to an unverified address would
+ * make every licence email fail outright.
+ *
+ * reply_to is safe either way and does not depend on verification, so a buyer
+ * who hits reply reaches a real address rather than a no-reply void.
+ */
 const FROM = "Redock <onboarding@resend.dev>";
 
 export async function sendLicenseEmail(email: string, licenseKey: string): Promise<void> {
   const { error } = await resend.emails.send({
     from: FROM,
+    reply_to: CONTACT_EMAIL,
     to: email,
     subject: "Your Redock License Key",
     html: buildLicenseEmailHtml(licenseKey),
@@ -90,13 +101,17 @@ function buildLicenseEmailHtml(licenseKey: string): string {
 
       <!-- Manage -->
       <div style="border-top:1px solid #e5e5ea;padding-top:24px;text-align:center;">
-        <p style="font-size:13px;color:#8e8e93;margin:0 0 6px;">Need to manage your subscription?</p>
+        <p style="font-size:13px;color:#8e8e93;margin:0 0 6px;">Need to look up or move your licence?</p>
         <a href="${APP_URL}/manage-license" style="font-size:13px;color:#0071E3;text-decoration:none;font-weight:500;">Manage License →</a>
       </div>
     </div>
 
     <!-- Footer -->
     <div style="background:#f5f5f7;padding:24px 40px;text-align:center;border-top:1px solid #e5e5ea;">
+      <p style="font-size:12px;color:#8e8e93;margin:0 0 10px;">
+        Any trouble activating, reply to this email or write to
+        <a href="mailto:${CONTACT_EMAIL}" style="color:#0071E3;text-decoration:none;">${CONTACT_EMAIL}</a>.
+      </p>
       <p style="font-size:12px;color:#aeaeb2;margin:0;">
         &copy; ${new Date().getFullYear()} Redock · All rights reserved<br>
         <a href="${APP_URL}/privacy" style="color:#aeaeb2;text-decoration:none;">Privacy Policy</a>

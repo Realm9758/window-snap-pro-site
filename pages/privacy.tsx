@@ -2,6 +2,7 @@ import Head from "next/head";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { CONTACT_EMAIL } from "../lib/site";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
@@ -156,8 +157,8 @@ export default function Privacy() {
               <Section title="Contact">
                 <p>
                   If you have any questions about this Privacy Policy, please contact us at:{" "}
-                  <a href="mailto:privacy@windowsnappro.com" className="text-accent hover:underline">
-                    privacy@windowsnappro.com
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="text-accent hover:underline">
+                    {CONTACT_EMAIL}
                   </a>
                 </p>
               </Section>

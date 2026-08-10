@@ -6,7 +6,7 @@ import Features from "../components/Features";
 import Footer from "../components/Footer";
 import PricingCard from "../components/PricingCard";
 import { getStripe } from "../lib/stripe-browser";
-import { apiPath } from "../lib/site";
+import { apiPath, CONTACT_EMAIL } from "../lib/site";
 
 const FREE_FEATURES = [
   { text: "Snap with keyboard shortcuts", included: true },
@@ -96,7 +96,7 @@ function Pricing() {
         {error && (
           <p role="alert" className="mt-4 text-[14px]" style={{ color: "#c0392b" }}>
             {error} You can also{" "}
-            <a className="underline" href="mailto:hello@bhopstudio.com">
+            <a className="underline" href={`mailto:${CONTACT_EMAIL}`}>
               email us
             </a>{" "}
             and we will sort it out.
