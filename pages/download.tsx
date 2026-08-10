@@ -73,7 +73,7 @@ export default function Download() {
                   </div>
                 </div>
                 <motion.a
-                  href={assetPath("/Redock.zip")}
+                  href={assetPath("/Redock.dmg")}
                   download
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
@@ -101,9 +101,46 @@ export default function Download() {
               </div>
             </motion.div>
 
-            {/* Release notes */}
+            {/*
+              Installing is worth spelling out. The app is signed to run
+              locally rather than with a Developer ID certificate, so the first
+              launch shows a dialog saying macOS cannot verify the developer,
+              with no obvious way past it. Saying so here is better than letting
+              someone meet that dialog cold and assume the download is malware.
+            */}
             <motion.div
               custom={4} variants={fadeUp} initial="hidden" animate="show"
+              className="rounded-3xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-8 mb-8"
+            >
+              <h3 className="text-base font-semibold text-neutral-900 dark:text-white mb-5">
+                Installing
+              </h3>
+              <ol className="flex flex-col gap-4">
+                {[
+                  "Open Redock.dmg and drag Redock into your Applications folder.",
+                  "The first time you open it, macOS will say it cannot verify the developer. Go to System Settings, then Privacy & Security, scroll to the bottom and click Open Anyway.",
+                  "Redock will ask for Accessibility permission. It needs this to move windows belonging to other apps, and it cannot work without it.",
+                ].map((step, i) => (
+                  <li key={step} className="flex items-start gap-3.5">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 text-xs font-semibold flex items-center justify-center mt-0.5">
+                      {i + 1}
+                    </span>
+                    <span className="text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+                      {step}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+              <p className="mt-5 pt-5 border-t border-neutral-100 dark:border-neutral-800 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
+                That second step exists because Redock is not yet notarised by
+                Apple. It is a one-time step, and the warning is about the
+                absence of a certificate, not about anything found in the app.
+              </p>
+            </motion.div>
+
+            {/* Release notes */}
+            <motion.div
+              custom={5} variants={fadeUp} initial="hidden" animate="show"
               className="rounded-3xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-8 mb-8"
             >
               <h3 className="text-base font-semibold text-neutral-900 dark:text-white mb-5 flex items-center gap-2">
@@ -146,7 +183,7 @@ export default function Download() {
 
             {/* Pro upsell */}
             <motion.div
-              custom={5} variants={fadeUp} initial="hidden" animate="show"
+              custom={6} variants={fadeUp} initial="hidden" animate="show"
               className="rounded-3xl bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 p-8 text-center"
             >
               <p className="text-sm font-medium text-neutral-900 dark:text-white mb-1">

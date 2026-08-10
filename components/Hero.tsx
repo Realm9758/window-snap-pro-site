@@ -28,7 +28,7 @@ export default function Hero() {
 
         <div className="settle settle-3 mt-9 flex flex-wrap items-center gap-3">
           <a
-            href={assetPath("/Redock.zip")}
+            href={assetPath("/Redock.dmg")}
             download
             className="group inline-flex items-center gap-2.5 rounded-lg px-5 py-3 text-[15px] font-medium transition-transform duration-150 active:scale-[0.985]"
             style={{ background: "var(--signal-fill)", color: "var(--signal-ink)" }}

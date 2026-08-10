@@ -49,7 +49,7 @@ export function apiPath(path: string): string {
  * Path to a file in /public.
  *
  * Same trap as apiPath: `basePath` rewrites next/link and next/image, but a raw
- * <a href> or <img src> is resolved against the origin, so /Redock.zip 404s from
+ * <a href> or <img src> is resolved against the origin, so /Redock.dmg 404s from
  * a page served under /redock. Every hand-written asset URL goes through here.
  */
 export function assetPath(path: string): string {
