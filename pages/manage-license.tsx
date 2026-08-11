@@ -81,10 +81,13 @@ export default function ManageLicense() {
     if (!user?.email) return;
     setResendLoading(true);
     try {
+      const { data: { session } } = await getSupabaseBrowser().auth.getSession();
+      if (!session) return;
+
+      // The address comes from the token now, not from this request.
       await fetch(apiPath("/api/license/resend"), {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: user.email }),
+        headers: { Authorization: `Bearer ${session.access_token}` },
       });
       setResendSent(true);
       setTimeout(() => setResendSent(false), 4000);
@@ -100,10 +103,16 @@ export default function ManageLicense() {
     setPortalLoading(true);
     setError("");
     try {
+      const { data: { session } } = await getSupabaseBrowser().auth.getSession();
+      if (!session) {
+        setError("Your session has expired. Please sign in again.");
+        return;
+      }
+
+      // The email is no longer sent: the endpoint reads it from the token.
       const res = await fetch(apiPath("/api/manage/portal"), {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: user.email }),
+        headers: { Authorization: `Bearer ${session.access_token}` },
       });
       const data = await res.json();
       if (data.url) window.location.href = data.url;

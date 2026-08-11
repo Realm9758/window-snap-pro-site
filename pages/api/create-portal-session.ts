@@ -1,31 +1,20 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { createClient } from "@supabase/supabase-js";
 import { stripe, APP_URL } from "../../lib/stripe";
 import { getLicenseByEmail } from "../../lib/db";
+import { requireUser, normalizeEmail } from "../../lib/auth-server";
 
 // POST /api/create-portal-session
 // Requires: Authorization: Bearer <supabase_access_token>
-// Returns: { url: string } — Stripe Customer Portal URL
+// Returns: { url: string } — Stripe Customer Portal URL for the caller only.
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") return res.status(405).end();
 
-  const token = req.headers.authorization?.replace("Bearer ", "").trim();
-  if (!token) return res.status(401).json({ error: "Unauthorized" });
+  const user = await requireUser(req);
+  if (!user?.email) return res.status(401).json({ error: "Invalid or expired session." });
 
-  const admin = createClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { persistSession: false } }
-  );
-
-  const { data: { user }, error: authError } = await admin.auth.getUser(token);
-  if (authError || !user?.email) {
-    return res.status(401).json({ error: "Invalid or expired session." });
-  }
-
-  const license = await getLicenseByEmail(user.email);
+  const license = await getLicenseByEmail(normalizeEmail(user.email));
   if (!license?.stripe_customer_id) {
-    return res.status(404).json({ error: "No subscription found for this account." });
+    return res.status(404).json({ error: "No purchase found for this account." });
   }
 
   try {
@@ -35,8 +24,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
     return res.status(200).json({ url: session.url });
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Failed to create portal session";
-    console.error("[create-portal-session]", message);
-    return res.status(500).json({ error: message });
+    // Stripe's own message can name internal objects and account
+    // configuration, so it is logged rather than handed to the browser.
+    console.error("[create-portal-session]", err instanceof Error ? err.message : err);
+    return res.status(500).json({ error: "Could not open the billing portal. Please try again." });
   }
 }

@@ -1,19 +1,17 @@
 import type { NextApiRequest } from "next";
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { getServiceClient, requireUser } from "./auth-server";
 
 /**
  * Shared plumbing for /api/admin/* routes.
  *
- * The client is created lazily. A module-level createClient would throw while
- * the route module loads when env vars are missing, and Next turns that into an
- * HTML 500 page instead of a JSON error the dashboard can show.
+ * Admin is a single address held in ADMIN_EMAIL, compared against the email on
+ * a verified Supabase session. It is deliberately not a flag in the database or
+ * anything a request can assert about itself.
  */
+
 export function getAdminClient(): SupabaseClient {
-  return createClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { persistSession: false } }
-  );
+  return getServiceClient();
 }
 
 /** Returns a JSON error message if required env vars are missing, else null. */
@@ -30,14 +28,17 @@ export function adminEnvError(): string | null {
 /**
  * Resolves the bearer token to a Supabase user and checks it is the admin.
  * Returns the admin email, or null for anything short of that.
+ *
+ * Fails closed on a blank ADMIN_EMAIL: without that guard an unset variable
+ * would make the comparison pass for any user whose email was also blank.
  */
 export async function verifyAdmin(req: NextApiRequest): Promise<string | null> {
-  const token = req.headers.authorization?.replace("Bearer ", "").trim();
-  if (!token) return null;
+  const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+  if (!adminEmail) return null;
 
-  const { data: { user }, error } = await getAdminClient().auth.getUser(token);
-  if (error || !user?.email) return null;
-  if (user.email !== process.env.ADMIN_EMAIL) return null;
+  const user = await requireUser(req);
+  if (!user?.email) return null;
+  if (user.email.trim().toLowerCase() !== adminEmail) return null;
 
   return user.email;
 }

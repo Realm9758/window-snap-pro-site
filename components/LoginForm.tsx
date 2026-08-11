@@ -3,6 +3,21 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { supabaseClient } from "@/lib/supabaseClient";
 
+/**
+ * Where to land after signing in.
+ *
+ * `?redirect=` is attacker-writable — it arrives in a link someone can send —
+ * so it is confined to same-site paths. Anything else lands on /profile.
+ * Rejected shapes: "https://evil.com", "//evil.com" and "/\evil.com", the last
+ * two because browsers read them as off-site even though they start with "/".
+ */
+function safeRedirect(value: unknown): string {
+  if (typeof value !== "string") return "/profile";
+  if (!value.startsWith("/")) return "/profile";
+  if (value.startsWith("//") || value.startsWith("/\\")) return "/profile";
+  return value;
+}
+
 export default function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -21,8 +36,7 @@ export default function LoginForm() {
       setError(error.message);
       setLoading(false);
     } else {
-      const redirect = (router.query.redirect as string) || "/profile";
-      router.push(redirect);
+      router.push(safeRedirect(router.query.redirect));
     }
   };
 

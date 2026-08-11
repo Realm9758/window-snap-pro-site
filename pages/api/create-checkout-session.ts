@@ -1,8 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { stripe, STRIPE_PRICE_ID, APP_URL } from "../../lib/stripe";
+import { checkRateLimit } from "../../lib/rateLimit";
+import { clientIp } from "../../lib/auth-server";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") return res.status(405).end();
+
+  // Buying is deliberately open to anonymous visitors, so the only brake on
+  // someone scripting this into Stripe's API rate limits is per-IP.
+  if (!checkRateLimit(`checkout:${clientIp(req)}`, 10, 60_000).allowed) {
+    return res.status(429).json({ error: "Too many requests. Please try again shortly." });
+  }
 
   try {
     const { email } = req.body as { email?: string };
@@ -31,8 +39,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     return res.status(200).json({ url: session.url, id: session.id });
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Internal server error";
-    console.error("[checkout] error:", message);
-    return res.status(500).json({ error: message });
+    // Logged, not returned: Stripe errors quote price ids and account settings.
+    console.error("[checkout] error:", err instanceof Error ? err.message : err);
+    return res.status(500).json({ error: "Could not start checkout. Please try again." });
   }
 }

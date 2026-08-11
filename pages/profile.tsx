@@ -104,10 +104,13 @@ export default function Profile() {
     setPortalError("");
     setPortalLoading(true);
     try {
+      const { data: { session } } = await getSupabaseBrowser().auth.getSession();
+      if (!session) throw new Error("Your session has expired. Please sign in again.");
+
+      // The email is no longer sent: the endpoint reads it from the token.
       const res = await fetch(apiPath("/api/manage/portal"), {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: user?.email }),
+        headers: { Authorization: `Bearer ${session.access_token}` },
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong.");

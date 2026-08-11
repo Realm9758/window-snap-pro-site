@@ -1,19 +1,29 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { stripe, APP_URL } from "../../../lib/stripe";
 import { getLicenseByEmail } from "../../../lib/db";
+import { requireUser } from "../../../lib/auth-server";
 
+/**
+ * POST /api/manage/portal
+ * Requires: Authorization: Bearer <supabase_access_token>
+ * Returns: { url } — a Stripe Customer Portal session for the caller.
+ *
+ * This route used to take an email from the request body and open a portal for
+ * whatever customer that email resolved to, with no authentication at all.
+ * Anyone who knew or guessed a customer's email address could read their
+ * invoices and billing address, change the payment method, and cancel the
+ * purchase. The email now comes from the verified token and the body is
+ * ignored entirely.
+ */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") return res.status(405).end();
 
-  const { email } = req.body as { email?: string };
-  if (!email || typeof email !== "string") {
-    return res.status(400).json({ error: "Email is required." });
-  }
+  const user = await requireUser(req);
+  if (!user?.email) return res.status(401).json({ error: "Unauthorized" });
 
-  const license = await getLicenseByEmail(email);
-
-  if (!license || !license.stripe_customer_id) {
-    return res.status(404).json({ error: "No subscription found for that email address." });
+  const license = await getLicenseByEmail(user.email);
+  if (!license?.stripe_customer_id) {
+    return res.status(404).json({ error: "No purchase found for this account." });
   }
 
   try {
@@ -23,8 +33,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
     return res.status(200).json({ url: session.url });
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Failed to create billing portal session";
-    console.error("[portal] error:", message);
-    return res.status(500).json({ error: message });
+    // Stripe's message can name internal objects and configuration, so it is
+    // logged rather than returned.
+    console.error("[manage/portal]", err instanceof Error ? err.message : err);
+    return res.status(500).json({ error: "Could not open the billing portal. Please try again." });
   }
 }

@@ -16,10 +16,28 @@ import { sendLicenseEmail } from "../../lib/email";
 // Disable body parsing — Stripe needs the raw body for signature verification
 export const config = { api: { bodyParser: false } };
 
+/**
+ * The endpoint is public — the signature is checked after the body is read, so
+ * anyone can make this function buffer bytes. Without a ceiling a single
+ * request can stream until the instance runs out of memory. Real Stripe events
+ * are a few KB; 1 MB is far above the largest and far below dangerous.
+ */
+const MAX_BODY_BYTES = 1_048_576;
+
 async function getRawBody(req: IncomingMessage): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
-    req.on("data", (chunk: Buffer) => chunks.push(chunk));
+    let size = 0;
+
+    req.on("data", (chunk: Buffer) => {
+      size += chunk.length;
+      if (size > MAX_BODY_BYTES) {
+        reject(new Error("Request body too large"));
+        req.destroy();
+        return;
+      }
+      chunks.push(chunk);
+    });
     req.on("end", () => resolve(Buffer.concat(chunks)));
     req.on("error", reject);
   });
