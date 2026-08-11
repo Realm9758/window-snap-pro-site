@@ -7,9 +7,26 @@ import Link from "next/link";
 
 const changelog: ChangelogEntry[] = [
   {
-    version: "1.3",
+    version: "1.4",
     date: "August 2026",
     tag: "latest",
+    changes: [
+      { type: "fixed", text: "Layouts now restore after you unplug and replug the same monitor, or when a display sleeps and wakes. Previously only a change in which displays were connected counted." },
+      { type: "fixed", text: "Dragging a window between displays snaps it where the preview showed. It could land on the display it came from instead." },
+      { type: "fixed", text: "App rules resize the app that launched, rather than whatever window happened to take focus while Redock waited for it." },
+      { type: "fixed", text: "Activating a licence unlocks the app straight away. Settings used to keep showing padlocks until you relaunched." },
+      { type: "fixed", text: "Reinstalling macOS or clearing preferences no longer spends one of your three activations." },
+      { type: "fixed", text: "A system clock that was wrong and then corrected can no longer end a trial early." },
+      { type: "added", text: "Redock now tells you when macOS refuses one of its shortcuts, which happens when Rectangle or Magnet already owns the same keys." },
+      { type: "added", text: "Pin or delete individual clipboard entries and shelf files from a right-click menu." },
+      { type: "improved", text: "The permission screen states what Redock actually reads, names the publisher, discloses clipboard history, and offers a restart if macOS does not pick up the change." },
+      { type: "improved", text: "Licences are re-checked once a day instead of only when the Pro settings pane is opened." },
+    ],
+  },
+  {
+    version: "1.3",
+    date: "August 2026",
+    tag: "stable",
     changes: [
       { type: "added", text: "Workspaces: arrange your windows, save the layout, and restore it whenever you want." },
       { type: "added", text: "Bind a workspace to a monitor arrangement and it restores itself when you reconnect that setup." },
