@@ -7,9 +7,19 @@ import Link from "next/link";
 
 const changelog: ChangelogEntry[] = [
   {
-    version: "1.7",
+    version: "1.8",
     date: "August 2026",
     tag: "latest",
+    changes: [
+      { type: "improved", text: "The installer window now shows what to do, including the step everyone missed: open Redock from your Applications folder, not from the disk image." },
+      { type: "fixed", text: "Redock refuses to run from the disk image instead of starting up and quietly failing later. macOS discards permissions granted to an app opened that way, which is why window snapping appeared broken for some people after they had granted it correctly." },
+      { type: "improved", text: "If you already dragged Redock to Applications, it offers to open that copy for you rather than making you find it." },
+    ],
+  },
+  {
+    version: "1.7",
+    date: "August 2026",
+    tag: "stable",
     changes: [
       { type: "added", text: "Redock updates itself. New versions are found in the background and installed with one click, so you no longer have to download and reinstall by hand." },
       { type: "fixed", text: "Dragging a window to the screen edge did nothing for new users. The permission was fine: macOS decides whether an app may watch for drags when that app starts, so granting it to an already-running Redock left dragging dead until a restart, and nothing said so. Redock now detects this and offers the restart." },

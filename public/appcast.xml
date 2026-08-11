@@ -27,6 +27,29 @@
     <language>en</language>
 
     <item>
+      <title>Version 1.8</title>
+      <pubDate>Tue, 11 Aug 2026 19:30:00 +0100</pubDate>
+      <sparkle:version>8</sparkle:version>
+      <sparkle:shortVersionString>1.8</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+      <link>https://bhopstudio.com/redock/changelog</link>
+      <description><![CDATA[
+        <ul>
+          <li>The installer window now shows what to do, including the step everyone missed: open Redock from Applications, not from the disk image.</li>
+          <li>Redock refuses to run from the disk image instead of starting up and quietly failing later. Permissions granted there are discarded by macOS, which is why window snapping appeared broken for some people.</li>
+          <li>If you already dragged Redock to Applications, it offers to open that copy for you.</li>
+        </ul>
+      ]]></description>
+      <enclosure
+        url="https://bhopstudio.com/redock/Redock.dmg"
+        sparkle:version="8"
+        sparkle:shortVersionString="1.8"
+        sparkle:edSignature="WlIh5KFaZvDZHVITmmindlCP2DBH1BeFODb5pDIw8eRwJsx96WJytNpEUWUyV8nqXqDabY0vu/FtuQ4hDFnlBQ=="
+        length="2954048"
+        type="application/octet-stream" />
+    </item>
+
+    <item>
       <title>Version 1.7</title>
       <pubDate>Tue, 11 Aug 2026 17:20:00 +0100</pubDate>
       <sparkle:version>7</sparkle:version>
