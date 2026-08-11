@@ -12,15 +12,46 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const db = getAdminClient();
 
-    // GET — list all licenses
+    // GET — one page of licenses, newest first.
+    //
+    // This used to select every row with no limit and filter in the browser,
+    // which is fine at a few hundred licences and a growing liability after
+    // that. Searching now happens in the database too, so a search reaches
+    // matches beyond whatever the first page happened to contain.
     if (req.method === "GET") {
-      const { data, error } = await db
+      const page = Math.max(1, parseInt(String(req.query.page ?? "1"), 10) || 1);
+      const perPage = Math.min(100, Math.max(1, parseInt(String(req.query.per_page ?? "50"), 10) || 50));
+      const search = typeof req.query.q === "string" ? req.query.q.trim() : "";
+
+      let query = db
         .from("licenses")
-        .select("id, license_key, email, product_tier, subscription_status, current_period_end, active, created_at")
-        .order("created_at", { ascending: false });
+        .select(
+          "id, license_key, email, product_tier, subscription_status, current_period_end, active, created_at, amount_total, currency, activation_count, max_activations",
+          { count: "exact" }
+        );
+
+      if (search) {
+        // Escape the PostgREST or() delimiters: an unescaped comma or paren in
+        // the search box would otherwise be parsed as extra filter syntax.
+        const safe = search.replace(/[,()]/g, " ");
+        query = query.or(
+          `license_key.ilike.%${safe}%,email.ilike.%${safe}%,product_tier.ilike.%${safe}%`
+        );
+      }
+
+      const { data, error, count } = await query
+        .order("created_at", { ascending: false })
+        .range((page - 1) * perPage, page * perPage - 1);
 
       if (error) return res.status(500).json({ error: error.message });
-      return res.status(200).json({ licenses: data });
+
+      return res.status(200).json({
+        licenses: data,
+        page,
+        perPage,
+        total: count ?? 0,
+        totalPages: Math.max(1, Math.ceil((count ?? 0) / perPage)),
+      });
     }
 
     // POST — create a license manually

@@ -28,6 +28,12 @@ CREATE TABLE IF NOT EXISTS licenses (
   max_activations           INTEGER NOT NULL DEFAULT 3,
   last_validated_at         TIMESTAMPTZ,
 
+  -- What was actually paid, in minor units (1900 = £19.00), recorded by the
+  -- Stripe webhook. Null for manually issued licences and for purchases made
+  -- before this column existed.
+  amount_total              INTEGER,
+  currency                  TEXT,
+
   -- Timestamps
   created_at                TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at                TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -42,6 +48,11 @@ CREATE TABLE IF NOT EXISTS license_activations (
   device_name  TEXT,
   activated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   last_seen_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+  -- Reported by the app on each licence check. Nullable forever: builds older
+  -- than this feature never send them.
+  app_version  TEXT,
+  os_version   TEXT,
 
   UNIQUE (license_id, device_id)
 );

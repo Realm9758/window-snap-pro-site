@@ -116,6 +116,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           // "Renews" row when this is null.
           current_period_end: null,
           last_validated_at: null,
+          // What was actually paid, recorded here so the dashboard never has to
+          // ask Stripe to total up revenue. Promotion codes are enabled on
+          // checkout, so this is the discounted amount, not the list price.
+          amount_total: session.amount_total ?? null,
+          currency: session.currency ?? null,
         });
 
         if (!created) {

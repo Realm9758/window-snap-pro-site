@@ -30,6 +30,9 @@ export interface License {
   activation_count: number;
   max_activations: number;
   active: boolean;
+  /** Minor units (1900 = £19.00). Null for manual and pre-tracking licences. */
+  amount_total: number | null;
+  currency: string | null;
 }
 
 export type LicenseInsert = Omit<License, "id" | "created_at" | "updated_at">;
@@ -41,6 +44,8 @@ export interface LicenseActivation {
   device_name: string | null;
   activated_at: string;
   last_seen_at: string;
+  app_version: string | null;
+  os_version: string | null;
 }
 
 // ─── Queries ─────────────────────────────────────────────────────────────────
@@ -147,19 +152,34 @@ export async function getActivationByDevice(
 export async function upsertActivation(
   licenseId: string,
   deviceId: string,
-  deviceName: string
+  deviceName: string,
+  versions: { appVersion?: string | null; osVersion?: string | null } = {}
 ): Promise<void> {
   const now = new Date().toISOString();
   const existing = await getActivationByDevice(licenseId, deviceId);
 
+  // Only overwrite a version we were actually told about. An older build sends
+  // nothing, and letting that null out what a newer build already reported
+  // would make the adoption numbers decay towards "unknown" every time an old
+  // copy checked in.
+  const versionFields: Record<string, string> = {};
+  if (versions.appVersion) versionFields.app_version = versions.appVersion;
+  if (versions.osVersion)  versionFields.os_version  = versions.osVersion;
+
   if (existing) {
     await supabase
       .from("license_activations")
-      .update({ last_seen_at: now, device_name: deviceName })
+      .update({ last_seen_at: now, device_name: deviceName, ...versionFields })
       .eq("id", existing.id);
   } else {
     await supabase.from("license_activations").insert([
-      { license_id: licenseId, device_id: deviceId, device_name: deviceName, last_seen_at: now },
+      {
+        license_id: licenseId,
+        device_id: deviceId,
+        device_name: deviceName,
+        last_seen_at: now,
+        ...versionFields,
+      },
     ]);
     // Increment activation count
     await supabase.rpc("increment_activation_count", { license_id_param: licenseId });

@@ -17,11 +17,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
   }
 
-  const { license_key, device_id, device_name } = req.body as {
+  // app_version and os_version are optional and always will be: every build
+  // shipped before they existed omits them, and those licence checks must keep
+  // working exactly as they did.
+  const { license_key, device_id, device_name, app_version, os_version } = req.body as {
     license_key?: string;
     device_id?: string;
     device_name?: string;
+    app_version?: string;
+    os_version?: string;
   };
+
+  // Short, bounded strings only. These are displayed in the admin dashboard and
+  // grouped on, so a long or odd value is worth dropping rather than storing.
+  const clean = (v: unknown): string | null =>
+    typeof v === "string" && /^[\w. ()-]{1,32}$/.test(v.trim()) ? v.trim() : null;
 
   // Normalise and validate format
   const normalized = normalizeLicenseKey(license_key ?? "");
@@ -72,7 +82,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
 
-    await upsertActivation(licenseId, device_id, device_name ?? "Unknown Mac");
+    await upsertActivation(licenseId, device_id, device_name ?? "Unknown Mac", {
+      appVersion: clean(app_version),
+      osVersion:  clean(os_version),
+    });
   }
 
   return res.status(200).json({
