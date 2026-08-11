@@ -91,6 +91,12 @@ export default function Features() {
               Press Command-Shift-V for the last ten things on your clipboard.
               Pick one and it pastes where your cursor is.
             </p>
+            {/* Reviewer point: Raycast and Maccy users see this as redundant.
+                The off switch already exists in the app; saying so here is the fix. */}
+            <p className="mt-2 text-[13px] ink-3">
+              Already use Raycast or Maccy? Turn this off in Settings and keep
+              the rest.
+            </p>
           </div>
         </div>
 
@@ -116,17 +122,33 @@ export default function Features() {
           ))}
         </ul>
 
-        {/* Honest constraint, stated rather than buried */}
-        <div
-          className="mt-16 flex items-start gap-3 rounded-lg border px-4 py-3.5"
-          style={{ borderColor: "var(--hairline)" }}
-        >
-          <SnapMark className="mt-0.5 h-4 w-4 shrink-0 ink-3" />
-          <p className="text-[13.5px] leading-relaxed ink-2">
-            Redock needs macOS Accessibility permission, because moving another
-            app&apos;s windows is not possible without it. Nothing leaves your
-            Mac, and you can revoke it at any time in System Settings.
-          </p>
+        {/* Honest constraints, stated rather than buried */}
+        <div className="mt-16 flex flex-col gap-3">
+          <div
+            className="flex items-start gap-3 rounded-lg border px-4 py-3.5"
+            style={{ borderColor: "var(--hairline)" }}
+          >
+            <SnapMark className="mt-0.5 h-4 w-4 shrink-0 ink-3" />
+            <p className="text-[13.5px] leading-relaxed ink-2">
+              Redock needs macOS Accessibility permission, because moving another
+              app&apos;s windows is not possible without it. Nothing leaves your
+              Mac, and you can revoke it at any time in System Settings.
+            </p>
+          </div>
+          {/* Reviewer point: Spaces behaviour was unstated. Redock has no Spaces
+              handling in code, so the honest move is to say so, not imply it. */}
+          <div
+            className="flex items-start gap-3 rounded-lg border px-4 py-3.5"
+            style={{ borderColor: "var(--hairline)" }}
+          >
+            <SnapMark className="mt-0.5 h-4 w-4 shrink-0 ink-3" />
+            <p className="text-[13.5px] leading-relaxed ink-2">
+              Redock works with displays, not macOS Spaces. It restores each
+              window&apos;s size and position, and the window stays on whichever
+              Space it is already on. Moving windows between Spaces is not
+              something macOS lets apps do reliably, so Redock does not claim to.
+            </p>
+          </div>
         </div>
       </div>
     </section>
