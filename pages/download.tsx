@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
 import Seo from "../components/Seo";
 import Footer from "../components/Footer";
-import { assetPath } from "../lib/site";
+import { apiPath } from "../lib/site";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -73,7 +73,7 @@ export default function Download() {
                   </div>
                 </div>
                 <motion.a
-                  href={assetPath("/Redock.dmg")}
+                  href={apiPath("/api/download?source=download-page")}
                   download
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}

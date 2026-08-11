@@ -1,36 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { createClient } from "@supabase/supabase-js";
 import { generateLicenseKey } from "../../../lib/license";
-
-// Creates a Supabase admin client lazily — avoids module-level throws
-// when env vars are missing (which would return HTML 500 instead of JSON).
-function getAdminClient() {
-  return createClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { persistSession: false } }
-  );
-}
-
-async function verifyAdmin(req: NextApiRequest): Promise<string | null> {
-  const token = req.headers.authorization?.replace("Bearer ", "").trim();
-  if (!token) return null;
-
-  const { data: { user }, error } = await getAdminClient().auth.getUser(token);
-  if (error || !user?.email) return null;
-  if (user.email !== process.env.ADMIN_EMAIL) return null;
-
-  return user.email;
-}
+import { adminEnvError, getAdminClient, verifyAdmin } from "../../../lib/admin";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      return res.status(500).json({ error: "Server misconfiguration: missing Supabase env vars." });
-    }
-    if (!process.env.ADMIN_EMAIL) {
-      return res.status(500).json({ error: "Server misconfiguration: ADMIN_EMAIL not set." });
-    }
+    const envError = adminEnvError();
+    if (envError) return res.status(500).json({ error: envError });
 
     const adminEmail = await verifyAdmin(req);
     if (!adminEmail) return res.status(403).json({ error: "Forbidden" });

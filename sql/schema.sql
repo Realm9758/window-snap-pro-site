@@ -46,6 +46,19 @@ CREATE TABLE IF NOT EXISTS license_activations (
   UNIQUE (license_id, device_id)
 );
 
+-- ─── Download Events ──────────────────────────────────────────────────────────
+-- One row per .dmg download served through /api/download. No IP or other
+-- personal data is stored; user_agent and referer are kept so obvious bot
+-- traffic can be filtered out later if the numbers ever look off.
+
+CREATE TABLE IF NOT EXISTS download_events (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  source      TEXT,          -- which button: 'hero', 'download-page', …
+  user_agent  TEXT,
+  referer     TEXT,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 -- ─── Indexes ──────────────────────────────────────────────────────────────────
 
 CREATE INDEX IF NOT EXISTS idx_licenses_email
@@ -62,6 +75,9 @@ CREATE INDEX IF NOT EXISTS idx_licenses_stripe_checkout_session_id
 
 CREATE INDEX IF NOT EXISTS idx_license_activations_license_id
   ON license_activations (license_id);
+
+CREATE INDEX IF NOT EXISTS idx_download_events_created_at
+  ON download_events (created_at);
 
 -- ─── Helper Function ──────────────────────────────────────────────────────────
 -- Called by db.ts to atomically increment activation count
@@ -81,6 +97,7 @@ $$;
 
 ALTER TABLE licenses              ENABLE ROW LEVEL SECURITY;
 ALTER TABLE license_activations   ENABLE ROW LEVEL SECURITY;
+ALTER TABLE download_events       ENABLE ROW LEVEL SECURITY;
 
 -- Allow only service_role (backend) to read/write; deny everything else by default.
 -- No additional policies needed since the backend uses the service role key.

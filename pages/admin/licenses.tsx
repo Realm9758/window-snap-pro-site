@@ -17,6 +17,29 @@ interface LicenseRow {
   created_at: string;
 }
 
+interface RecentSignup {
+  email: string | null;
+  created_at: string;
+  last_sign_in_at: string | null;
+}
+
+interface SiteStats {
+  users: {
+    total: number;
+    last7: number;
+    last30: number;
+    recent: RecentSignup[];
+  };
+  downloads: {
+    /** false until the download_events migration has been run in Supabase */
+    available: boolean;
+    total: number;
+    last7: number;
+    last30: number;
+    daily: { date: string; count: number }[];
+  };
+}
+
 const fadeUp = {
   hidden: { opacity: 0, y: 12 },
   show: (i: number) => ({
@@ -74,12 +97,76 @@ function CopyButton({ text }: { text: string }) {
   );
 }
 
+const cardClass =
+  "rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-[0_4px_24px_rgba(0,0,0,0.04)]";
+
+function StatTile({ label, value, sub }: { label: string; value: string; sub?: string }) {
+  return (
+    <div className={`${cardClass} p-5`}>
+      <p className="text-xs font-medium text-neutral-400 dark:text-neutral-500 mb-1">{label}</p>
+      <p className="text-2xl font-semibold text-neutral-900 dark:text-white tabular-nums">{value}</p>
+      {sub && <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-1">{sub}</p>}
+    </div>
+  );
+}
+
+function formatDay(isoDate: string) {
+  // Buckets are UTC days; format in UTC too, or the label can drift a day.
+  return new Date(`${isoDate}T00:00:00Z`).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    timeZone: "UTC",
+  });
+}
+
+function DownloadsChart({ daily }: { daily: { date: string; count: number }[] }) {
+  const max = Math.max(...daily.map((d) => d.count), 0);
+  const peakIndex = max > 0 ? daily.findIndex((d) => d.count === max) : -1;
+
+  return (
+    <div>
+      <div className="flex items-end gap-[3px] h-28 border-b border-neutral-100 dark:border-neutral-800">
+        {daily.map((d, i) => (
+          <div key={d.date} className="relative flex-1 h-full flex items-end justify-center group">
+            <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 px-2 py-1 rounded-lg bg-neutral-900 dark:bg-neutral-700 text-white text-[10px] font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-100 z-10">
+              {d.count} {d.count === 1 ? "download" : "downloads"} · {formatDay(d.date)}
+            </div>
+            {i === peakIndex && (
+              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-0.5 text-[10px] font-medium text-neutral-500 dark:text-neutral-400 tabular-nums group-hover:opacity-0 transition-opacity duration-100">
+                {d.count}
+              </span>
+            )}
+            {/* Zero days keep a faint 2px stub so the day stays visible */}
+            <div
+              className="w-full rounded-t-[4px] bg-accent"
+              style={
+                d.count === 0
+                  ? { height: "2px", opacity: 0.15 }
+                  : { height: `${Math.max((d.count / max) * 100, 4)}%` }
+              }
+            />
+          </div>
+        ))}
+      </div>
+      <div className="flex justify-between mt-1.5">
+        <span className="text-[10px] text-neutral-400 dark:text-neutral-500">
+          {daily.length > 0 ? formatDay(daily[0].date) : ""}
+        </span>
+        <span className="text-[10px] text-neutral-400 dark:text-neutral-500">
+          {daily.length > 0 ? formatDay(daily[daily.length - 1].date) : ""}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export default function AdminLicenses() {
   const router = useRouter();
   const { user, loading } = useAuth();
 
   const [licenses, setLicenses]     = useState<LicenseRow[]>([]);
   const [fetching, setFetching]     = useState(true);
+  const [stats, setStats]           = useState<SiteStats | null>(null);
 
   /**
    * Authorisation is a separate question from authentication, and this page
@@ -147,13 +234,32 @@ export default function AdminLicenses() {
     }
   }, [getToken]);
 
+  // Analytics ride alongside the licence list but never gate it: if this
+  // call fails, the section shows placeholders and the rest still works.
+  const fetchStats = useCallback(async () => {
+    const token = await getToken();
+    if (!token) return;
+    try {
+      const res = await fetch(apiPath("/api/admin/stats"), {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) return;
+      setStats(await res.json());
+    } catch {
+      // Placeholders stay up; nothing else to do.
+    }
+  }, [getToken]);
+
   useEffect(() => {
     if (!loading && !user) router.replace("/login");
   }, [user, loading, router]);
 
   useEffect(() => {
-    if (user) fetchLicenses();
-  }, [user, fetchLicenses]);
+    if (user) {
+      fetchLicenses();
+      fetchStats();
+    }
+  }, [user, fetchLicenses, fetchStats]);
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
@@ -255,7 +361,7 @@ export default function AdminLicenses() {
   return (
     <>
       <Head>
-        <title>Licence manager</title>
+        <title>Admin dashboard</title>
       </Head>
 
       <div className="min-h-screen bg-neutral-50 dark:bg-[#0a0a0a] transition-colors duration-300">
@@ -273,18 +379,96 @@ export default function AdminLicenses() {
               </div>
               <span className="text-sm font-semibold text-neutral-900 dark:text-white">Admin</span>
               <span className="text-neutral-300 dark:text-neutral-700">/</span>
-              <span className="text-sm text-neutral-500 dark:text-neutral-400">License Manager</span>
+              <span className="text-sm text-neutral-500 dark:text-neutral-400">Dashboard</span>
             </div>
             <span className="text-xs text-neutral-400 dark:text-neutral-500 font-mono">{user.email}</span>
           </div>
         </div>
 
         <main className="max-w-6xl mx-auto px-6 py-10">
+
+          {/* ── Site analytics ── */}
+          <motion.section
+            custom={0} variants={fadeUp} initial="hidden" animate="show"
+            className="mb-6"
+          >
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+              <StatTile
+                label="Accounts"
+                value={stats ? String(stats.users.total) : "—"}
+                sub={stats ? `+${stats.users.last7} this week` : undefined}
+              />
+              <StatTile
+                label="New accounts · 30 days"
+                value={stats ? String(stats.users.last30) : "—"}
+              />
+              <StatTile
+                label="Downloads"
+                value={stats?.downloads.available ? String(stats.downloads.total) : "—"}
+                sub={stats?.downloads.available ? `+${stats.downloads.last7} this week` : undefined}
+              />
+              <StatTile
+                label="Downloads · 30 days"
+                value={stats?.downloads.available ? String(stats.downloads.last30) : "—"}
+              />
+            </div>
+
+            <div className="grid lg:grid-cols-3 gap-4">
+              {/* Daily downloads */}
+              <div className={`${cardClass} p-5 lg:col-span-2`}>
+                <div className="flex items-baseline justify-between mb-4">
+                  <h2 className="text-sm font-semibold text-neutral-900 dark:text-white">Downloads</h2>
+                  <span className="text-xs text-neutral-400 dark:text-neutral-500">Last 14 days</span>
+                </div>
+                {stats === null ? (
+                  <div className="h-28 bg-neutral-100 dark:bg-neutral-800 rounded-xl animate-pulse" />
+                ) : stats.downloads.available ? (
+                  <DownloadsChart daily={stats.downloads.daily} />
+                ) : (
+                  <div className="h-28 flex items-center justify-center px-6 text-center">
+                    <p className="text-xs text-neutral-400 dark:text-neutral-500 leading-relaxed">
+                      Download tracking is not set up yet. Run the download_events
+                      section of sql/schema.sql in the Supabase SQL editor, then
+                      reload this page.
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Recent signups */}
+              <div className={`${cardClass} p-5`}>
+                <h2 className="text-sm font-semibold text-neutral-900 dark:text-white mb-4">Recent signups</h2>
+                {stats === null ? (
+                  <div className="flex flex-col gap-2 animate-pulse">
+                    {[...Array(4)].map((_, i) => (
+                      <div key={i} className="h-7 bg-neutral-100 dark:bg-neutral-800 rounded-lg" />
+                    ))}
+                  </div>
+                ) : stats.users.recent.length === 0 ? (
+                  <p className="text-xs text-neutral-400 dark:text-neutral-500">No accounts yet.</p>
+                ) : (
+                  <ul className="flex flex-col gap-2.5">
+                    {stats.users.recent.map((u) => (
+                      <li key={`${u.email}-${u.created_at}`} className="flex items-center justify-between gap-3">
+                        <span className="text-xs text-neutral-600 dark:text-neutral-400 truncate">
+                          {u.email ?? <span className="text-neutral-300 dark:text-neutral-600">no email</span>}
+                        </span>
+                        <span className="text-xs text-neutral-400 dark:text-neutral-500 whitespace-nowrap tabular-nums">
+                          {new Date(u.created_at).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          </motion.section>
+
           <div className="grid lg:grid-cols-3 gap-6">
 
             {/* ── Create License Form ── */}
             <motion.div
-              custom={0} variants={fadeUp} initial="hidden" animate="show"
+              custom={1} variants={fadeUp} initial="hidden" animate="show"
               className="lg:col-span-1"
             >
               <div className="rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-[0_4px_24px_rgba(0,0,0,0.04)] p-6">
@@ -387,7 +571,7 @@ export default function AdminLicenses() {
 
               {/* Stats card */}
               <motion.div
-                custom={1} variants={fadeUp} initial="hidden" animate="show"
+                custom={2} variants={fadeUp} initial="hidden" animate="show"
                 className="mt-4 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-[0_4px_24px_rgba(0,0,0,0.04)] p-5"
               >
                 <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500 mb-3">Overview</p>
@@ -408,7 +592,7 @@ export default function AdminLicenses() {
 
             {/* ── License Table ── */}
             <motion.div
-              custom={2} variants={fadeUp} initial="hidden" animate="show"
+              custom={3} variants={fadeUp} initial="hidden" animate="show"
               className="lg:col-span-2"
             >
               <div className="rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-[0_4px_24px_rgba(0,0,0,0.04)] overflow-hidden">
