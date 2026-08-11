@@ -48,7 +48,7 @@ export default function Hero() {
         </div>
 
         <p className="settle settle-3 mt-4 text-[13px] ink-3">
-          <span className="tabular">Version 1.5</span>. Free to use, with a
+          <span className="tabular">Version 1.7</span>. Free to use, with a
           14&#8209;day trial of everything in Pro. Requires macOS 13 or later.
         </p>
       </div>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Sparkle update feed, served at https://bhopstudio.com/redock/appcast.xml
+  (the URL in the app's SUFeedURL).
+
+  Every release needs an entry here or existing users are never told about it.
+  The enclosure must carry an EdDSA signature produced by Sparkle's sign_update
+  against the exact file being shipped: Sparkle verifies it against the public
+  key baked into the app and refuses anything that does not match, which is what
+  makes updating safe without a Developer ID certificate.
+
+  To add a release:
+    1. Build and package Redock.dmg
+    2. sign_update /path/to/Redock.dmg
+    3. Paste the printed sparkle:edSignature and length into a new <item> at the
+       top, with the new version numbers
+    4. Deploy the site with both the DMG and this file
+
+  sparkle:version is the build number (CFBundleVersion) and is what Sparkle
+  compares. sparkle:shortVersionString is the human one.
+-->
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>Redock</title>
+    <link>https://bhopstudio.com/redock/appcast.xml</link>
+    <description>Updates for Redock, a window manager for macOS.</description>
+    <language>en</language>
+
+    <item>
+      <title>Version 1.7</title>
+      <pubDate>Tue, 11 Aug 2026 17:20:00 +0100</pubDate>
+      <sparkle:version>7</sparkle:version>
+      <sparkle:shortVersionString>1.7</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+      <link>https://bhopstudio.com/redock/changelog</link>
+      <description><![CDATA[
+        <ul>
+          <li>Redock now updates itself, so you no longer have to download and reinstall by hand.</li>
+          <li>Fixed dragging a window to the screen edge doing nothing after granting permission. The permission was fine; macOS decides whether an app may watch for drags when it starts, so it needed a restart and nothing said so.</li>
+          <li>Redock now warns you if it is running from the disk image instead of your Applications folder, which quietly broke permissions.</li>
+          <li>Drag snapping keeps working with apps that are slow to respond or use a non-standard title bar.</li>
+        </ul>
+      ]]></description>
+      <enclosure
+        url="https://bhopstudio.com/redock/Redock.dmg"
+        sparkle:version="7"
+        sparkle:shortVersionString="1.7"
+        sparkle:edSignature="oziUOXdL8oXOsEvK5caCLhPTgVQEstDL4u2l/25LYrnzUfdKaeGMIEpsYDUO0xXgJ9+GdOBD5O9q6WrELO+iAA=="
+        length="2880922"
+        type="application/octet-stream" />
+    </item>
+
+  </channel>
+</rss>

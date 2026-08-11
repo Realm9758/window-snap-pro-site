@@ -7,9 +7,20 @@ import Link from "next/link";
 
 const changelog: ChangelogEntry[] = [
   {
-    version: "1.5",
+    version: "1.7",
     date: "August 2026",
     tag: "latest",
+    changes: [
+      { type: "added", text: "Redock updates itself. New versions are found in the background and installed with one click, so you no longer have to download and reinstall by hand." },
+      { type: "fixed", text: "Dragging a window to the screen edge did nothing for new users. The permission was fine: macOS decides whether an app may watch for drags when that app starts, so granting it to an already-running Redock left dragging dead until a restart, and nothing said so. Redock now detects this and offers the restart." },
+      { type: "fixed", text: "Opening Redock from the disk image instead of the Applications folder made every permission you granted worthless, because macOS runs it from a temporary location. Redock now spots this and tells you before you grant anything." },
+      { type: "fixed", text: "Drag snapping no longer gives up when an app is slow to respond or uses a non-standard title bar." },
+    ],
+  },
+  {
+    version: "1.5",
+    date: "August 2026",
+    tag: "stable",
     changes: [
       { type: "fixed", text: "Upgrading from an older version no longer resets your drag zone settings back to defaults." },
       { type: "fixed", text: "Lowering the clipboard history size, or reaching the end of a trial, no longer silently deletes everything over the limit the next time you copy something." },

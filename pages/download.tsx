@@ -65,9 +65,9 @@ export default function Download() {
                     Redock
                   </h2>
                   <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-400 dark:text-neutral-500">
-                    <span>Version 1.5</span>
+                    <span>Version 1.7</span>
                     <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-600" />
-                    <span>1.9 MB</span>
+                    <span>2.7 MB</span>
                     <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-600" />
                     <span>Released August 2026</span>
                   </div>
@@ -89,7 +89,7 @@ export default function Download() {
               {/* Meta row */}
               <div className="px-8 py-5 grid grid-cols-3 divide-x divide-neutral-100 dark:divide-neutral-800">
                 {[
-                  { label: "Version", value: "1.5" },
+                  { label: "Version", value: "1.7" },
                   { label: "Requires", value: "macOS 13+" },
                   { label: "Architecture", value: "Apple Silicon + Intel" },
                 ].map((item) => (
@@ -149,15 +149,15 @@ export default function Download() {
                     <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z" />
                   </svg>
                 </span>
-                What&apos;s new in 1.5
+                What&apos;s new in 1.7
               </h3>
               <ul className="flex flex-col gap-2.5">
                 {[
-                  "Upgrading no longer resets your drag zone settings",
-                  "Lowering the clipboard size no longer deletes everything over the limit the next time you copy",
-                  "Consistent colours throughout, and a Pro pane that reads correctly on every system accent colour",
-                  "Buy Redock directly from the upgrade screen without starting a trial first",
-                  "In 1.4: layouts restore after replugging the same monitor, dragging between displays snaps where the preview showed, and activating a licence unlocks the app without a restart",
+                  "Redock updates itself now, so you no longer have to download and reinstall by hand",
+                  "Fixed dragging a window to the screen edge doing nothing after granting permission",
+                  "Redock warns you if it is running from the disk image instead of Applications, which quietly broke permissions",
+                  "Drag snapping keeps working with apps that are slow to respond or use a non-standard title bar",
+                  "In 1.5 and 1.6: upgrading no longer resets drag zone settings, and lowering the clipboard size no longer deletes items without warning",
                 ].map((note) => (
                   <li key={note} className="flex items-start gap-3 text-sm text-neutral-600 dark:text-neutral-400">
                     <svg className="w-4 h-4 text-neutral-300 dark:text-neutral-600 flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="currentColor">
