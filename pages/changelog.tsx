@@ -7,9 +7,22 @@ import Link from "next/link";
 
 const changelog: ChangelogEntry[] = [
   {
-    version: "1.4",
+    version: "1.5",
     date: "August 2026",
     tag: "latest",
+    changes: [
+      { type: "fixed", text: "Upgrading from an older version no longer resets your drag zone settings back to defaults." },
+      { type: "fixed", text: "Lowering the clipboard history size, or reaching the end of a trial, no longer silently deletes everything over the limit the next time you copy something." },
+      { type: "fixed", text: "The clipboard item counter counts the entries the limit actually applies to, so pinning things no longer makes it read past the maximum." },
+      { type: "improved", text: "Colours come from one set of tokens across the whole app, so warnings, successes and Pro markers look the same everywhere and adapt properly to light and dark." },
+      { type: "improved", text: "The Pro pane no longer relies on a white icon that disappeared against a light system accent colour." },
+      { type: "improved", text: "You can buy Redock straight from the upgrade screen instead of having to start a trial or find the licence pane first." },
+    ],
+  },
+  {
+    version: "1.4",
+    date: "August 2026",
+    tag: "stable",
     changes: [
       { type: "fixed", text: "Layouts now restore after you unplug and replug the same monitor, or when a display sleeps and wakes. Previously only a change in which displays were connected counted." },
       { type: "fixed", text: "Dragging a window between displays snaps it where the preview showed. It could land on the display it came from instead." },

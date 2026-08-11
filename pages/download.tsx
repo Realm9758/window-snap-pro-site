@@ -65,7 +65,7 @@ export default function Download() {
                     Redock
                   </h2>
                   <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-400 dark:text-neutral-500">
-                    <span>Version 1.4</span>
+                    <span>Version 1.5</span>
                     <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-600" />
                     <span>1.9 MB</span>
                     <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-600" />
@@ -89,7 +89,7 @@ export default function Download() {
               {/* Meta row */}
               <div className="px-8 py-5 grid grid-cols-3 divide-x divide-neutral-100 dark:divide-neutral-800">
                 {[
-                  { label: "Version", value: "1.4" },
+                  { label: "Version", value: "1.5" },
                   { label: "Requires", value: "macOS 13+" },
                   { label: "Architecture", value: "Apple Silicon + Intel" },
                 ].map((item) => (
@@ -149,19 +149,15 @@ export default function Download() {
                     <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z" />
                   </svg>
                 </span>
-                What&apos;s new in 1.4
+                What&apos;s new in 1.5
               </h3>
               <ul className="flex flex-col gap-2.5">
                 {[
-                  "Layouts now restore after unplugging and replugging the same monitor, not only when the set of displays changes",
-                  "Dragging a window across displays snaps it where the preview showed, instead of on the display it came from",
-                  "Redock tells you when macOS refuses one of its shortcuts, which happens if Rectangle or Magnet already owns those keys",
-                  "App rules resize the app that launched rather than whatever window took focus while waiting",
-                  "Pin and delete individual clipboard entries and shelf files from a right-click menu",
-                  "Activating a licence unlocks the app immediately, with no restart",
-                  "Reinstalling macOS no longer uses up one of your three activations",
-                  "A wrong system clock being corrected can no longer end a trial early",
-                  "Clearer permission screen, with a way out if macOS does not detect the change",
+                  "Upgrading no longer resets your drag zone settings",
+                  "Lowering the clipboard size no longer deletes everything over the limit the next time you copy",
+                  "Consistent colours throughout, and a Pro pane that reads correctly on every system accent colour",
+                  "Buy Redock directly from the upgrade screen without starting a trial first",
+                  "In 1.4: layouts restore after replugging the same monitor, dragging between displays snaps where the preview showed, and activating a licence unlocks the app without a restart",
                 ].map((note) => (
                   <li key={note} className="flex items-start gap-3 text-sm text-neutral-600 dark:text-neutral-400">
                     <svg className="w-4 h-4 text-neutral-300 dark:text-neutral-600 flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="currentColor">
