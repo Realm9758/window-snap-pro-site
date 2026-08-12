@@ -19,12 +19,21 @@ import { checkRateLimit } from "../../lib/rateLimit";
  * redirect. A visitor must never lose the download to analytics.
  */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "GET") return res.status(405).end();
+  // HEAD is answered like GET but never counted. Link checkers and download
+  // managers probe with it before fetching, and a 405 there reads as a broken
+  // link; counting it would inflate the figure with requests for no bytes.
+  const isHead = req.method === "HEAD";
+  if (req.method !== "GET" && !isHead) {
+    res.setHeader("Allow", "GET, HEAD");
+    return res.status(405).end();
+  }
 
-  try {
-    await recordDownload(req);
-  } catch (err) {
-    console.error("[api/download] failed to record:", err instanceof Error ? err.message : err);
+  if (!isHead) {
+    try {
+      await recordDownload(req);
+    } catch (err) {
+      console.error("[api/download] failed to record:", err instanceof Error ? err.message : err);
+    }
   }
 
   // A cached redirect would be followed without ever reaching this function,
