@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect, FormEvent } from "react";
 import { motion } from "framer-motion";
 import { getSupabaseBrowser } from "../lib/supabase-browser";
+import { authErrorMessage } from "../lib/auth-errors";
 import { useAuth } from "../lib/auth-context";
 
 export default function Login() {
@@ -25,16 +26,25 @@ export default function Login() {
     setError("");
     setSubmitting(true);
 
-    const { error: authError } = await getSupabaseBrowser().auth.signInWithPassword({
-      email: email.trim().toLowerCase(),
-      password,
-    });
+    // try/catch as well as the returned error: a build with no Supabase keys,
+    // or a dropped connection, throws here instead of answering. Without this
+    // the button sat on "Logging in…" for ever and said nothing.
+    try {
+      const { error: authError } = await getSupabaseBrowser().auth.signInWithPassword({
+        email: email.trim().toLowerCase(),
+        password,
+      });
 
-    if (authError) {
-      setError(authError.message);
-      setSubmitting(false);
-    } else {
+      if (authError) {
+        setError(authErrorMessage(authError, "login"));
+        setSubmitting(false);
+        return;
+      }
+
       router.push("/profile");
+    } catch (err) {
+      setError(authErrorMessage(err, "login"));
+      setSubmitting(false);
     }
   }
 
@@ -106,11 +116,18 @@ export default function Login() {
                 />
               </div>
 
+              {/*
+                role="alert" so a screen reader announces the failure: the
+                message appears below the fields, after focus has already moved
+                on, and is otherwise silent. red-600 rather than red-500 clears
+                4.5:1 against the tinted background at this size.
+              */}
               {error && (
                 <motion.p
+                  role="alert"
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-xs text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-3 py-2 rounded-lg"
+                  className="text-sm leading-relaxed text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-3 py-2.5 rounded-lg"
                 >
                   {error}
                 </motion.p>

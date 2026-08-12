@@ -142,7 +142,7 @@ export default function Changelog() {
           >
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-sm text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors duration-150 mb-6 group"
+              className="inline-flex items-center gap-1.5 min-h-[44px] text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200 transition-colors duration-150 mb-2 group"
             >
               <svg
                 width="14"
@@ -160,7 +160,7 @@ export default function Changelog() {
               Back to home
             </Link>
 
-            <span className="text-xs font-semibold tracking-widest uppercase text-neutral-400 dark:text-neutral-500 mb-3 block">
+            <span className="text-xs font-semibold tracking-widest uppercase text-neutral-600 dark:text-neutral-400 mb-3 block">
               Release Notes
             </span>
             <h1 className="text-[clamp(2rem,6vw,3rem)] font-bold tracking-tight text-neutral-900 dark:text-white mb-3">
@@ -192,8 +192,12 @@ export default function Changelog() {
               <div className="font-semibold text-neutral-900 dark:text-white mb-0.5">Ready to try it?</div>
               <div className="text-sm text-neutral-500 dark:text-neutral-400">Download Redock for free.</div>
             </div>
+            {/*
+              Was /#download, an anchor the homepage no longer has, so the
+              button scrolled nowhere. The download page is the destination.
+            */}
             <Link
-              href="/#download"
+              href="/download"
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-semibold rounded-xl hover:bg-neutral-700 dark:hover:bg-neutral-100 transition-colors duration-150 whitespace-nowrap"
             >
               <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">

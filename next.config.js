@@ -89,6 +89,56 @@ const securityHeaders = [
   { key: "Strict-Transport-Security", value: "max-age=31536000" },
 ];
 
+/**
+ * Caching for the files in /public.
+ *
+ * Next fingerprints its own bundles under /_next/static and caches those for a
+ * year already. Everything hand-placed in /public got no Cache-Control at all,
+ * so the browser revalidated the icon on every navigation: a round trip per
+ * page view to be told nothing changed.
+ *
+ * Three different answers are needed, because these files do not change at the
+ * same rate.
+ */
+
+// Brand assets. Their contents are stable for the life of the design, so they
+// are cached hard and never revalidated. The cost of that bargain: editing one
+// in place will not reach anyone who has already loaded it. Ship a changed icon
+// or card image under a NEW filename and update the reference.
+const immutableAsset = [
+  { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+];
+
+// The Sparkle update feed. Cached for five minutes so a release is picked up
+// promptly; caching it like the brand assets would leave installed copies
+// checking a frozen feed and never seeing the update.
+const updateFeed = [
+  { key: "Cache-Control", value: "public, max-age=300, must-revalidate" },
+];
+
+/**
+ * The installer.
+ *
+ * Content-Disposition is the fix for a download that behaved like a page. The
+ * link points at /api/download, which counts the hit and redirects here; with
+ * no disposition header the browser was free to treat the result as a document
+ * to navigate to, which is what made a click read as a page load and made
+ * repeat clicks fetch the file again. attachment settles it: every browser
+ * saves the file and leaves the current page alone.
+ *
+ * Content-Type is stated for the same reason. Guessed types vary by host, and
+ * a .dmg served as octet-stream or, worse, text/plain, is what produces
+ * "Redock.dmg.txt" in someone's Downloads folder.
+ *
+ * The filename is fixed across releases, so this one cannot be immutable: a
+ * cached copy would hand out the previous version indefinitely.
+ */
+const installer = [
+  { key: "Content-Type", value: "application/x-apple-diskimage" },
+  { key: "Content-Disposition", value: 'attachment; filename="Redock.dmg"' },
+  { key: "Cache-Control", value: "public, max-age=0, must-revalidate" },
+];
+
 // Canonical URLs are emitted per-page in _app.tsx — a single site-wide value
 // here would tell Google every page is the homepage.
 const nextConfig = {
@@ -98,8 +148,16 @@ const nextConfig = {
   // Version banner in responses; free reconnaissance for anyone fingerprinting.
   poweredByHeader: false,
 
+  // basePath is prefixed onto every source below automatically, so these match
+  // /redock/icon.svg and friends as served.
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [
+      { source: "/:path*", headers: securityHeaders },
+      { source: "/icon.svg", headers: immutableAsset },
+      { source: "/og.png", headers: immutableAsset },
+      { source: "/appcast.xml", headers: updateFeed },
+      { source: "/Redock.dmg", headers: installer },
+    ];
   },
 };
 

@@ -8,6 +8,12 @@ import { checkRateLimit } from "../../lib/rateLimit";
  * download_events for the admin dashboard. The file itself stays a static
  * asset; this route only counts and forwards.
  *
+ * Why a redirect and not the bytes: /public is not part of the serverless
+ * bundle, so this function cannot read the file, and streaming 3MB through a
+ * function per download would be paid for twice over. The attachment behaviour
+ * lives on the target instead, as Content-Disposition in next.config.js, which
+ * is what stops the browser treating the response as a page to navigate to.
+ *
  * Recording is strictly best-effort. Whatever goes wrong, from missing env
  * vars to a missing table to a Supabase outage, the response is still the
  * redirect. A visitor must never lose the download to analytics.
@@ -20,6 +26,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } catch (err) {
     console.error("[api/download] failed to record:", err instanceof Error ? err.message : err);
   }
+
+  // A cached redirect would be followed without ever reaching this function,
+  // and the count would quietly stop moving.
+  res.setHeader("Cache-Control", "no-store");
+
+  // Nothing here is a page. Keeping it out of the index also keeps crawlers
+  // from pulling the installer on every recrawl.
+  res.setHeader("X-Robots-Tag", "noindex");
 
   return res.redirect(302, assetPath("/Redock.dmg"));
 }

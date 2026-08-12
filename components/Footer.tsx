@@ -53,12 +53,19 @@ export default function Footer() {
           </p>
         </div>
 
-        <nav aria-label="Footer" className="grid grid-cols-2 gap-x-10 gap-y-2.5 sm:flex sm:flex-col sm:items-end">
+        {/*
+          On a phone this grid is two columns of 14px text, which gave each
+          link a ~20px tall target. min-h-[44px] with the label centred fixes
+          that without changing how the column reads. Released from sm up,
+          where the pointer is precise and the extra height would only stretch
+          the footer.
+        */}
+        <nav aria-label="Footer" className="grid grid-cols-2 gap-x-10 sm:gap-y-2.5 sm:flex sm:flex-col sm:items-end">
           {LINKS.map((link) => (
             <Link
               key={link.label}
               href={link.href}
-              className="text-[14px] ink-2 transition-colors duration-150 hover:ink"
+              className="flex min-h-[44px] items-center text-[14px] ink-2 transition-colors duration-150 hover:ink sm:min-h-0"
             >
               {link.label}
             </Link>
@@ -70,7 +77,7 @@ export default function Footer() {
           */}
           <a
             href={`mailto:${CONTACT_EMAIL}`}
-            className="text-[14px] ink-2 transition-colors duration-150 hover:ink"
+            className="flex min-h-[44px] items-center text-[14px] ink-2 transition-colors duration-150 hover:ink sm:min-h-0"
           >
             Contact
           </a>

@@ -75,6 +75,7 @@ export default function Download() {
                 <motion.a
                   href={apiPath("/api/download?source=download-page")}
                   download
+                  rel="nofollow"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                   className="inline-flex items-center gap-2.5 px-6 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-semibold text-sm rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 flex-shrink-0"

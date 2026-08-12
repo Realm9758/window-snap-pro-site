@@ -124,14 +124,24 @@ export default function Pricing() {
               />
             </motion.div>
 
-            {/* Reassurance */}
+            {/*
+              Reassurance row.
+
+              neutral-400 measured 2.5:1 on white, under the 4.5:1 floor for
+              text this size; neutral-600 is 7.5:1, and neutral-400 is 8.9:1
+              against the dark page.
+
+              "Cancel any time" used to sit in this list. There is nothing to
+              cancel: it is a one-time purchase, and saying otherwise on the
+              pricing page implies a subscription we do not sell.
+            */}
             <motion.div
               custom={4} variants={fadeUp} initial="hidden" animate="show"
-              className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-neutral-400 dark:text-neutral-500"
+              className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-neutral-600 dark:text-neutral-400"
             >
               {[
                 { icon: "🔒", text: "Secure checkout via Stripe" },
-                { icon: "↩️", text: "Cancel any time" },
+                { icon: "↩️", text: "14-day trial, no card" },
                 { icon: "📧", text: "License key emailed instantly" },
                 { icon: "🖥️", text: "Up to 3 Mac activations" },
               ].map((item) => (

@@ -85,7 +85,7 @@ export default function ChangelogCard({
                 </span>
               )}
             </div>
-            <span className="text-sm text-neutral-400 dark:text-neutral-500 font-medium">{entry.date}</span>
+            <span className="text-sm text-neutral-600 dark:text-neutral-400 font-medium">{entry.date}</span>
           </div>
 
           {/* Changes */}

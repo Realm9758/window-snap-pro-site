@@ -65,6 +65,12 @@ export default function Navbar() {
 
   const avatar = user?.email?.charAt(0).toUpperCase() ?? "?";
 
+  // Every row in the mobile sheet. These are the primary navigation targets on
+  // a phone, and py-2.5 left them 40px tall, under the 44px touch minimum.
+  // min-h with centred content grows the target without moving the text.
+  const mobileRow =
+    "flex items-center min-h-[44px] px-4 text-sm font-medium rounded-xl transition-all duration-150";
+
   return (
     <motion.header
       initial={{ y: -60, opacity: 0 }}
@@ -101,10 +107,15 @@ export default function Navbar() {
 
         {/* Right controls */}
         <div className="flex items-center gap-2">
-          {/* Dark mode toggle */}
+          {/*
+            44px on touch, 32px from md up. The icon is the same size either
+            way; what grows is the area a thumb has to hit, which at 32px was
+            under every touch-target guideline going. Pointer devices do not
+            need the extra room, and the header is only 60px tall.
+          */}
           <button
             onClick={toggleDark}
-            className="w-8 h-8 flex items-center justify-center rounded-full text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white transition-all duration-150"
+            className="w-11 h-11 md:w-8 md:h-8 flex items-center justify-center rounded-full text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white transition-all duration-150"
             aria-label="Toggle dark mode"
           >
             {dark ? (
@@ -204,7 +215,9 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden w-8 h-8 flex items-center justify-center rounded-full text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all duration-150"
+            className="md:hidden w-11 h-11 flex items-center justify-center rounded-full text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all duration-150"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               {menuOpen ? (
@@ -233,7 +246,7 @@ export default function Navbar() {
                   key={link.label}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="px-4 py-2.5 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl transition-all duration-150"
+                  className={`${mobileRow} text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800`}
                 >
                   {link.label}
                 </Link>
@@ -243,19 +256,19 @@ export default function Navbar() {
                   <div className="border-t border-neutral-100 dark:border-neutral-800 my-1" />
                   {user ? (
                     <>
-                      <Link href="/profile" onClick={() => setMenuOpen(false)} className="px-4 py-2.5 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl transition-all duration-150">
+                      <Link href="/profile" onClick={() => setMenuOpen(false)} className={`${mobileRow} text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800`}>
                         My Account
                       </Link>
-                      <button onClick={handleSignOut} className="px-4 py-2.5 text-sm font-medium text-red-500 dark:text-red-400 text-left hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all duration-150">
+                      <button onClick={handleSignOut} className={`${mobileRow} w-full text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20`}>
                         Log out
                       </button>
                     </>
                   ) : (
                     <>
-                      <Link href="/login" onClick={() => setMenuOpen(false)} className="px-4 py-2.5 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl transition-all duration-150">
+                      <Link href="/login" onClick={() => setMenuOpen(false)} className={`${mobileRow} text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800`}>
                         Log in
                       </Link>
-                      <Link href="/signup" onClick={() => setMenuOpen(false)} className="px-4 py-2.5 text-sm font-semibold text-accent hover:bg-accent/5 rounded-xl transition-all duration-150">
+                      <Link href="/signup" onClick={() => setMenuOpen(false)} className={`${mobileRow} font-semibold text-accent hover:bg-accent/5`}>
                         Create account
                       </Link>
                     </>

@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect, FormEvent } from "react";
 import { motion } from "framer-motion";
 import { getSupabaseBrowser } from "../lib/supabase-browser";
+import { authErrorMessage } from "../lib/auth-errors";
 import { useAuth } from "../lib/auth-context";
 import { SITE_URL } from "../lib/site";
 
@@ -37,19 +38,25 @@ export default function Signup() {
 
     setSubmitting(true);
 
-    const { error: authError } = await getSupabaseBrowser().auth.signUp({
-      email: email.trim().toLowerCase(),
-      password,
-      options: {
-        emailRedirectTo: `${SITE_URL}/profile`,
-      },
-    });
+    try {
+      const { error: authError } = await getSupabaseBrowser().auth.signUp({
+        email: email.trim().toLowerCase(),
+        password,
+        options: {
+          emailRedirectTo: `${SITE_URL}/profile`,
+        },
+      });
 
-    if (authError) {
-      setError(authError.message);
-      setSubmitting(false);
-    } else {
+      if (authError) {
+        setError(authErrorMessage(authError, "signup"));
+        setSubmitting(false);
+        return;
+      }
+
       setDone(true);
+    } catch (err) {
+      setError(authErrorMessage(err, "signup"));
+      setSubmitting(false);
     }
   }
 
@@ -162,9 +169,10 @@ export default function Signup() {
 
                   {error && (
                     <motion.p
+                      role="alert"
                       initial={{ opacity: 0, y: -4 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="text-xs text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-3 py-2 rounded-lg"
+                      className="text-sm leading-relaxed text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-3 py-2.5 rounded-lg"
                     >
                       {error}
                     </motion.p>
