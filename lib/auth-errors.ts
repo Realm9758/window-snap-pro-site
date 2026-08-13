@@ -67,6 +67,18 @@ export function authErrorMessage(err: unknown, form: "login" | "signup"): string
 
     case "validation_failed":
       return "Check the email address: that one is not a valid address.";
+
+    /*
+      The one that read as "unknown reason" to a reviewer on 13 August 2026.
+      Supabase rejects addresses it judges undeliverable, test@gmail.com among
+      them, and this code had no case for it. It fell through to the generic
+      line at the bottom, which named nothing and looked like a broken site.
+    */
+    case "email_address_invalid":
+      return (
+        "That address was rejected as undeliverable. Use an inbox you can " +
+        "actually open, then try again."
+      );
   }
 
   // 429 without a code, and anything else the auth server rejects on its own
@@ -76,6 +88,15 @@ export function authErrorMessage(err: unknown, form: "login" | "signup"): string
   return form === "login"
     ? "Could not log you in. Check your email and password, then try again."
     : "Could not create the account. Check the details and try again.";
+}
+
+/**
+ * The raw error code, for callers that need to offer a way out rather than
+ * only describe the problem: an unconfirmed account gets a resend button, a
+ * wrong password gets the reset link. Empty string when there is no code.
+ */
+export function authErrorCode(err: unknown): string {
+  return isAuthError(err) ? err.code ?? "" : "";
 }
 
 function isAuthError(err: unknown): err is AuthError {

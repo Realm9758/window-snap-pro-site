@@ -1,31 +1,172 @@
 import { Resend } from "resend";
-import { APP_URL } from "./stripe";
-import { CONTACT_EMAIL } from "./site";
+import { SITE_URL as APP_URL, CONTACT_EMAIL } from "./site";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 /**
- * Still Resend's shared sandbox sender, because no domain is verified on the
- * Resend account yet. Sending as raf@bhopstudio.com requires verifying
- * bhopstudio.com there first, and setting this to an unverified address would
- * make every licence email fail outright.
+ * Who the mail comes from.
  *
- * reply_to is safe either way and does not depend on verification, so a buyer
- * who hits reply reaches a real address rather than a no-reply void.
+ * This was "Redock <onboarding@resend.dev>", Resend's shared sandbox sender,
+ * left in place while bhopstudio.com was unverified. The catch nobody sees in
+ * testing: the sandbox sender is only allowed to deliver to the address that
+ * owns the Resend account. Every licence email to an actual buyer was being
+ * refused, and the caller logged the refusal and returned as though it had
+ * sent. bhopstudio.com has been verified on Resend since 11 August 2026, so
+ * the from address moves onto it and delivery works for everyone.
+ *
+ * RESEND_FROM overrides it, so changing the sending domain is an environment
+ * variable rather than a deploy.
  */
-const FROM = "Redock <onboarding@resend.dev>";
+const FROM = process.env.RESEND_FROM ?? "Redock <redock@bhopstudio.com>";
 
-export async function sendLicenseEmail(email: string, licenseKey: string): Promise<void> {
-  const { error } = await resend.emails.send({
-    from: FROM,
-    reply_to: CONTACT_EMAIL,
-    to: email,
-    subject: "Your Redock License Key",
-    html: buildLicenseEmailHtml(licenseKey),
-  });
-  if (error) {
-    console.error("[email] sendLicenseEmail error:", error);
+export interface SendResult {
+  ok: boolean;
+  /** Present when ok is false. Safe to log; not safe to show to a visitor. */
+  error?: string;
+}
+
+async function send(
+  to: string,
+  subject: string,
+  html: string,
+  label: string
+): Promise<SendResult> {
+  if (!process.env.RESEND_API_KEY) {
+    console.error(`[email] ${label}: RESEND_API_KEY is not set`);
+    return { ok: false, error: "Email is not configured." };
   }
+
+  try {
+    const { error } = await resend.emails.send({
+      from: FROM,
+      reply_to: CONTACT_EMAIL,
+      to,
+      subject,
+      html,
+    });
+    if (error) {
+      console.error(`[email] ${label} error:`, error);
+      return { ok: false, error: error.message };
+    }
+    return { ok: true };
+  } catch (err) {
+    // Resend throws rather than returning on network faults and bad keys.
+    console.error(`[email] ${label} threw:`, err);
+    return { ok: false, error: err instanceof Error ? err.message : "Unknown error" };
+  }
+}
+
+/**
+ * Returns the outcome instead of swallowing it. A caller that cannot tell a
+ * delivered email from a rejected one will happily tell a buyer their key is
+ * on the way when it never left the building.
+ */
+export async function sendLicenseEmail(
+  email: string,
+  licenseKey: string
+): Promise<SendResult> {
+  return send(
+    email,
+    "Your Redock License Key",
+    buildLicenseEmailHtml(licenseKey),
+    "sendLicenseEmail"
+  );
+}
+
+/**
+ * Confirmation and password-reset mail, sent by us rather than by Supabase.
+ *
+ * Supabase's built-in email service is capped at a couple of messages an hour
+ * and is documented as being for development only. That cap is what a reviewer
+ * hit: two signups failed, the third came back "email rate limit exceeded".
+ * The links are generated with the admin API and delivered through the same
+ * Resend account as the licence email, which removes the cap entirely.
+ */
+export async function sendAuthEmail(
+  kind: "confirm" | "reset",
+  email: string,
+  link: string
+): Promise<SendResult> {
+  const copy =
+    kind === "confirm"
+      ? {
+          subject: "Confirm your Redock account",
+          heading: "Confirm your email",
+          body: "Click below to activate your Redock account. The link works once and expires in 24 hours.",
+          button: "Confirm my email",
+          footnote:
+            "If you did not create a Redock account, ignore this email and nothing will happen.",
+        }
+      : {
+          subject: "Reset your Redock password",
+          heading: "Reset your password",
+          body: "Click below to choose a new password. The link works once and expires in one hour.",
+          button: "Choose a new password",
+          footnote:
+            "If you did not ask to reset your password, ignore this email. Your current password still works.",
+        };
+
+  return send(
+    email,
+    copy.subject,
+    buildAuthEmailHtml(copy, link),
+    `sendAuthEmail:${kind}`
+  );
+}
+
+function buildAuthEmailHtml(
+  copy: { heading: string; body: string; button: string; footnote: string },
+  link: string
+): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${copy.heading}</title>
+</head>
+<body style="margin:0;padding:40px 20px;background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;">
+  <div style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 4px 40px rgba(0,0,0,0.08);">
+
+    <div style="background:#1d1d1f;padding:32px 40px;text-align:center;">
+      <h1 style="color:#ffffff;font-size:20px;font-weight:700;margin:0;letter-spacing:-0.3px;">Redock</h1>
+    </div>
+
+    <div style="padding:40px;">
+      <h2 style="font-size:18px;font-weight:600;color:#1d1d1f;margin:0 0 10px;">${copy.heading}</h2>
+      <p style="color:#6e6e73;font-size:14px;line-height:1.65;margin:0 0 28px;">${copy.body}</p>
+
+      <div style="text-align:center;margin-bottom:28px;">
+        <a href="${link}" style="display:inline-block;background:#0071E3;color:#fff;font-size:15px;font-weight:600;padding:14px 36px;border-radius:980px;text-decoration:none;">
+          ${copy.button}
+        </a>
+      </div>
+
+      <!-- Some clients strip buttons, and some people will not click one. -->
+      <p style="color:#8e8e93;font-size:12px;line-height:1.6;margin:0 0 24px;word-break:break-all;">
+        Or paste this into your browser:<br>
+        <a href="${link}" style="color:#0071E3;text-decoration:none;">${link}</a>
+      </p>
+
+      <div style="border-top:1px solid #e5e5ea;padding-top:20px;">
+        <p style="font-size:12px;color:#8e8e93;line-height:1.6;margin:0;">${copy.footnote}</p>
+      </div>
+    </div>
+
+    <div style="background:#f5f5f7;padding:20px 40px;text-align:center;border-top:1px solid #e5e5ea;">
+      <p style="font-size:12px;color:#8e8e93;margin:0;">
+        Stuck? Reply to this email or write to
+        <a href="mailto:${CONTACT_EMAIL}" style="color:#0071E3;text-decoration:none;">${CONTACT_EMAIL}</a>.
+      </p>
+      <p style="font-size:12px;color:#aeaeb2;margin:10px 0 0;">
+        &copy; ${new Date().getFullYear()} Redock &middot;
+        <a href="${APP_URL}/privacy" style="color:#aeaeb2;text-decoration:none;">Privacy</a>
+      </p>
+    </div>
+
+  </div>
+</body>
+</html>`;
 }
 
 function buildLicenseEmailHtml(licenseKey: string): string {

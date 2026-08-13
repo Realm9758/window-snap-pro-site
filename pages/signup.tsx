@@ -1,13 +1,20 @@
-import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect, FormEvent } from "react";
 import { motion } from "framer-motion";
-import { getSupabaseBrowser } from "../lib/supabase-browser";
-import { authErrorMessage } from "../lib/auth-errors";
 import { useAuth } from "../lib/auth-context";
-import { SITE_URL } from "../lib/site";
+import AuthShell, { AuthError, authButton, authInput, authLabel } from "../components/AuthShell";
+import { apiPath, CONTACT_EMAIL } from "../lib/site";
 
+/**
+ * Account creation.
+ *
+ * This form used to call supabase.auth.signUp from the browser, which handed
+ * the confirmation email to Supabase's built-in mailer and its two-an-hour cap.
+ * It now posts to /api/auth/signup, which generates the link server-side and
+ * sends it through Resend. See that route for the full account of what was
+ * failing and why the failure was unreadable.
+ */
 export default function Signup() {
   const router = useRouter();
   const { user, loading } = useAuth();
@@ -16,6 +23,7 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm]   = useState("");
   const [error, setError]       = useState("");
+  const [errorCode, setErrorCode] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone]         = useState(false);
 
@@ -26,6 +34,7 @@ export default function Signup() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
+    setErrorCode("");
 
     if (password !== confirm) {
       setError("Passwords don't match.");
@@ -39,169 +48,157 @@ export default function Signup() {
     setSubmitting(true);
 
     try {
-      const { error: authError } = await getSupabaseBrowser().auth.signUp({
-        email: email.trim().toLowerCase(),
-        password,
-        options: {
-          emailRedirectTo: `${SITE_URL}/profile`,
-        },
+      const res = await fetch(apiPath("/api/auth/signup"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim().toLowerCase(), password }),
       });
+      const data = await res.json().catch(() => ({}));
 
-      if (authError) {
-        setError(authErrorMessage(authError, "signup"));
+      if (!res.ok) {
+        setError(data.error ?? "Could not create the account. Try again.");
+        setErrorCode(data.code ?? "");
         setSubmitting(false);
         return;
       }
 
       setDone(true);
-    } catch (err) {
-      setError(authErrorMessage(err, "signup"));
+    } catch {
+      // The request never landed: offline, or the deployment is down.
+      setError(
+        `We could not reach the server. Check your connection and try again, ` +
+          `or email ${CONTACT_EMAIL}.`
+      );
       setSubmitting(false);
     }
   }
 
   if (loading) return null;
 
-  return (
-    <>
-      <Head>
-        <title>Create a Redock account</title>
-      </Head>
-      <div className="min-h-screen bg-white dark:bg-[#0a0a0a] flex items-center justify-center px-6">
+  if (done) {
+    return (
+      <AuthShell title="Check your email">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-          className="w-full max-w-sm"
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="text-center py-4"
         >
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 justify-center mb-10 group">
-            <div className="w-8 h-8 rounded-[10px] bg-accent flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow duration-200">
-              <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
-                <rect x="1" y="1" width="6" height="6" rx="1.5" fill="white" />
-                <rect x="9" y="1" width="6" height="6" rx="1.5" fill="white" opacity="0.7" />
-                <rect x="1" y="9" width="6" height="6" rx="1.5" fill="white" opacity="0.7" />
-                <rect x="9" y="9" width="6" height="6" rx="1.5" fill="white" opacity="0.4" />
-              </svg>
-            </div>
-            <span className="font-semibold text-base tracking-tight text-neutral-900 dark:text-white">
-              Redock
-            </span>
+          <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
+            <svg className="w-6 h-6 text-green-600 dark:text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </div>
+          <h1 className="text-lg font-semibold text-neutral-900 dark:text-white mb-2">
+            Check your email
+          </h1>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+            We sent a confirmation link to{" "}
+            <strong className="text-neutral-700 dark:text-neutral-300">{email}</strong>.
+            Click it to activate your account.
+          </p>
+          {/*
+            Every "check your email" screen needs the sentence that follows,
+            because the one thing it cannot promise is that the mail arrived.
+          */}
+          <p className="text-xs text-neutral-400 dark:text-neutral-500 leading-relaxed mt-4">
+            Nothing after a few minutes? Look in spam, then write to{" "}
+            <a href={`mailto:${CONTACT_EMAIL}`} className="text-accent hover:underline">
+              {CONTACT_EMAIL}
+            </a>{" "}
+            and we will confirm the account by hand.
+          </p>
+          <Link href="/login" className="inline-block mt-6 text-sm text-accent font-medium hover:underline">
+            Back to log in
           </Link>
+        </motion.div>
+      </AuthShell>
+    );
+  }
 
-          <div className="rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-[0_8px_40px_rgba(0,0,0,0.06)] p-8">
-            {done ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="text-center py-4"
-              >
-                <div className="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-6 h-6 text-green-600 dark:text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                </div>
-                <h2 className="text-lg font-semibold text-neutral-900 dark:text-white mb-2">Check your email</h2>
-                <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
-                  We sent a confirmation link to <strong className="text-neutral-700 dark:text-neutral-300">{email}</strong>. Click it to activate your account.
-                </p>
-                <Link
-                  href="/login"
-                  className="inline-block mt-6 text-sm text-accent font-medium hover:underline"
-                >
-                  Back to log in
+  return (
+    <AuthShell
+      title="Create a Redock account"
+      heading="Create your account"
+      intro="Manage your license and subscription in one place."
+      footer={
+        <>
+          Already have an account?{" "}
+          <Link href="/login" className="text-accent font-medium hover:underline">
+            Log in
+          </Link>
+        </>
+      }
+    >
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="email" className={authLabel}>Email</label>
+          <input
+            id="email"
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className={authInput}
+            placeholder="you@example.com"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="password" className={authLabel}>Password</label>
+          <input
+            id="password"
+            type="password"
+            autoComplete="new-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className={authInput}
+            placeholder="Min. 8 characters"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="confirm" className={authLabel}>Confirm password</label>
+          <input
+            id="confirm"
+            type="password"
+            autoComplete="new-password"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
+            required
+            className={authInput}
+            placeholder="••••••••"
+          />
+        </div>
+
+        {error && (
+          <div className="flex flex-col gap-2">
+            <AuthError>{error}</AuthError>
+            {/*
+              An error that names the way out is worth twice one that does not.
+              "That email already has an account" is only useful next to the
+              two links that resolve it.
+            */}
+            {errorCode === "email_exists" && (
+              <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                <Link href="/login" className="text-accent font-medium hover:underline">
+                  Log in
                 </Link>
-              </motion.div>
-            ) : (
-              <>
-                <h1 className="text-xl font-semibold text-neutral-900 dark:text-white mb-1">
-                  Create your account
-                </h1>
-                <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-7">
-                  Manage your license and subscription in one place.
-                </p>
-
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-neutral-600 dark:text-neutral-400">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      autoComplete="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="w-full px-4 py-3 rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-sm text-neutral-900 dark:text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-150"
-                      placeholder="you@example.com"
-                    />
-                  </div>
-
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-neutral-600 dark:text-neutral-400">
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      autoComplete="new-password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      className="w-full px-4 py-3 rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-sm text-neutral-900 dark:text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-150"
-                      placeholder="Min. 8 characters"
-                    />
-                  </div>
-
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-medium text-neutral-600 dark:text-neutral-400">
-                      Confirm password
-                    </label>
-                    <input
-                      type="password"
-                      autoComplete="new-password"
-                      value={confirm}
-                      onChange={(e) => setConfirm(e.target.value)}
-                      required
-                      className="w-full px-4 py-3 rounded-xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-sm text-neutral-900 dark:text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent transition-all duration-150"
-                      placeholder="••••••••"
-                    />
-                  </div>
-
-                  {error && (
-                    <motion.p
-                      role="alert"
-                      initial={{ opacity: 0, y: -4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="text-sm leading-relaxed text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-3 py-2.5 rounded-lg"
-                    >
-                      {error}
-                    </motion.p>
-                  )}
-
-                  <motion.button
-                    type="submit"
-                    disabled={submitting}
-                    whileHover={{ scale: submitting ? 1 : 1.02 }}
-                    whileTap={{ scale: submitting ? 1 : 0.98 }}
-                    className="w-full py-3 bg-accent text-white font-semibold text-sm rounded-xl shadow-sm shadow-accent/30 hover:bg-accent/90 transition-all duration-150 disabled:opacity-60 mt-1"
-                  >
-                    {submitting ? "Creating account…" : "Create account"}
-                  </motion.button>
-                </form>
-              </>
+                {" or "}
+                <Link href="/forgot-password" className="text-accent font-medium hover:underline">
+                  reset your password
+                </Link>
+                .
+              </p>
             )}
           </div>
+        )}
 
-          {!done && (
-            <p className="text-center text-sm text-neutral-500 dark:text-neutral-400 mt-5">
-              Already have an account?{" "}
-              <Link href="/login" className="text-accent font-medium hover:underline">
-                Log in
-              </Link>
-            </p>
-          )}
-        </motion.div>
-      </div>
-    </>
+        <button type="submit" disabled={submitting} className={authButton}>
+          {submitting ? "Creating account…" : "Create account"}
+        </button>
+      </form>
+    </AuthShell>
   );
 }

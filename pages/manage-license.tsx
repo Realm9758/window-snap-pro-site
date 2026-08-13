@@ -80,19 +80,35 @@ export default function ManageLicense() {
   const handleResend = async () => {
     if (!user?.email) return;
     setResendLoading(true);
+    setError("");
     try {
       const { data: { session } } = await getSupabaseBrowser().auth.getSession();
-      if (!session) return;
+      if (!session) {
+        setError("Your session has expired. Please sign in again.");
+        return;
+      }
 
       // The address comes from the token now, not from this request.
-      await fetch(apiPath("/api/license/resend"), {
+      const res = await fetch(apiPath("/api/license/resend"), {
         method: "POST",
         headers: { Authorization: `Bearer ${session.access_token}` },
       });
+
+      /*
+        This used to claim "Email sent!" no matter what came back, including a
+        refusal. The key is already on this page, so a failure is survivable —
+        but only if it is said out loud instead of being swallowed.
+      */
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error ?? "Could not send that email. Your key is on this page.");
+        return;
+      }
+
       setResendSent(true);
       setTimeout(() => setResendSent(false), 4000);
     } catch {
-      // silently ignore
+      setError("Could not send that email. Check your connection and try again.");
     } finally {
       setResendLoading(false);
     }

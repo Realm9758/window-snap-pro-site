@@ -37,7 +37,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // else, and nothing about whether a purchase exists under another address.
   if (!license) return res.status(200).json({ success: true });
 
-  await sendLicenseEmail(license.email, license.license_key);
+  // A rejected send used to be logged and reported as a success, which left a
+  // buyer refreshing an inbox that was never going to receive anything.
+  const sent = await sendLicenseEmail(license.email, license.license_key);
+  if (!sent.ok) {
+    return res.status(502).json({
+      error:
+        "We could not send that email just now. Your key is on this page, and " +
+        "you can copy it from here.",
+    });
+  }
 
   return res.status(200).json({ success: true });
 }
