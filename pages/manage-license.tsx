@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { getSupabaseBrowser } from "../lib/supabase-browser";
@@ -37,7 +36,6 @@ const STATUS_MAP: Record<string, { label: string; color: string }> = {
 };
 
 export default function ManageLicense() {
-  const router = useRouter();
   const { user, loading } = useAuth();
 
   const [license, setLicense]           = useState<LicenseInfo | null>(null);
@@ -47,12 +45,13 @@ export default function ManageLicense() {
   const [portalLoading, setPortalLoading] = useState(false);
   const [error, setError]               = useState("");
 
-  // Must be logged in; redirect to login if not
-  useEffect(() => {
-    if (!loading && !user) {
-      router.replace("/login?redirect=/manage-license");
-    }
-  }, [user, loading, router]);
+  // Logged-out recovery form. Most buyers check out without an account, so
+  // this page cannot be a login wall: the FAQ and the licence email both
+  // send people here to get their key back by purchase email alone.
+  const [recoverEmail, setRecoverEmail]     = useState("");
+  const [recoverLoading, setRecoverLoading] = useState(false);
+  const [recoverDone, setRecoverDone]       = useState(false);
+  const [recoverError, setRecoverError]     = useState("");
 
   // Fetch own license via the authenticated /api/auth/user endpoint
   useEffect(() => {
@@ -114,6 +113,29 @@ export default function ManageLicense() {
     }
   };
 
+  const handleRecover = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setRecoverLoading(true);
+    setRecoverError("");
+    try {
+      const res = await fetch(apiPath("/api/license/recover"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: recoverEmail }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setRecoverError(data.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+      setRecoverDone(true);
+    } catch {
+      setRecoverError("Could not reach the server. Check your connection and try again.");
+    } finally {
+      setRecoverLoading(false);
+    }
+  };
+
   const handlePortal = async () => {
     if (!user?.email) return;
     setPortalLoading(true);
@@ -140,7 +162,99 @@ export default function ManageLicense() {
     }
   };
 
-  if (loading || !user) return null;
+  if (loading) return null;
+
+  if (!user) {
+    return (
+      <>
+        <Seo
+          title="Recover your Redock licence"
+          description="Enter your purchase email and we'll send your Redock licence key straight to it. No account needed."
+          noindex
+        />
+        <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
+          <Navbar />
+          <main className="pt-32 pb-24 px-6">
+            <div className="max-w-lg mx-auto">
+              <div className="text-center mb-12">
+                <motion.h1
+                  custom={0} variants={fadeUp} initial="hidden" animate="show"
+                  className="text-[clamp(2rem,5vw,2.8rem)] font-bold tracking-tight text-neutral-900 dark:text-white mb-3"
+                >
+                  Get your license key
+                </motion.h1>
+                <motion.p
+                  custom={1} variants={fadeUp} initial="hidden" animate="show"
+                  className="text-neutral-500 dark:text-neutral-400 leading-relaxed"
+                >
+                  Enter the email you used at checkout and we&apos;ll send your
+                  key to it. No account needed.
+                </motion.p>
+              </div>
+
+              <motion.div
+                custom={2} variants={fadeUp} initial="hidden" animate="show"
+                className="rounded-3xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-[0_4px_24px_rgba(0,0,0,0.05)] p-6"
+              >
+                {recoverDone ? (
+                  <div className="text-center py-4">
+                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 mb-4">
+                      <svg className="w-6 h-6 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20 6L9 17l-5-5" />
+                      </svg>
+                    </div>
+                    <p className="font-semibold text-neutral-900 dark:text-white mb-2">Check your inbox</p>
+                    <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+                      If <span className="font-medium text-neutral-700 dark:text-neutral-300">{recoverEmail}</span> has
+                      a Redock licence, the key is on its way. Give it a few
+                      minutes and check spam too.
+                    </p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleRecover} className="flex flex-col gap-4">
+                    <label className="text-xs font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500" htmlFor="recover-email">
+                      Purchase email
+                    </label>
+                    <input
+                      id="recover-email"
+                      type="email"
+                      required
+                      value={recoverEmail}
+                      onChange={(e) => setRecoverEmail(e.target.value)}
+                      placeholder="you@example.com"
+                      className="w-full px-4 py-3 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-sm placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all duration-150"
+                    />
+                    <button
+                      type="submit"
+                      disabled={recoverLoading}
+                      className="w-full py-3 px-6 rounded-2xl bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-semibold hover:bg-neutral-700 dark:hover:bg-neutral-100 transition-colors duration-150 disabled:opacity-60"
+                    >
+                      {recoverLoading ? "Sending…" : "Email me my key"}
+                    </button>
+                    {recoverError && (
+                      <p className="text-sm text-red-500 dark:text-red-400 text-center">{recoverError}</p>
+                    )}
+                  </form>
+                )}
+              </motion.div>
+
+              <motion.p
+                custom={3} variants={fadeUp} initial="hidden" animate="show"
+                className="text-center text-sm text-neutral-400 dark:text-neutral-500 mt-8"
+              >
+                Want to see your devices or billing?{" "}
+                <Link href="/login?redirect=/manage-license" className="text-accent hover:underline">
+                  Log in
+                </Link>{" "}
+                with your purchase email.
+              </motion.p>
+            </div>
+          </main>
+          <Footer />
+        </div>
+      </>
+    );
+  }
 
   const statusInfo = license ? (STATUS_MAP[license.subscription_status] ?? STATUS_MAP["inactive"]) : null;
   const renewDate = license?.current_period_end
