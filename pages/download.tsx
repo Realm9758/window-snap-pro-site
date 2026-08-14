@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import Seo from "../components/Seo";
 import Footer from "../components/Footer";
 import { apiPath } from "../lib/site";
+import PurchaseTrustLine from "../components/PurchaseTrustLine";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -65,7 +66,7 @@ export default function Download() {
                     Redock
                   </h2>
                   <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-400 dark:text-neutral-500">
-                    <span>Version 1.9.1</span>
+                    <span>Version 1.9.2</span>
                     <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-600" />
                     <span>3.0 MB</span>
                     <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-600" />
@@ -90,7 +91,7 @@ export default function Download() {
               {/* Meta row */}
               <div className="px-8 py-5 grid grid-cols-3 divide-x divide-neutral-100 dark:divide-neutral-800">
                 {[
-                  { label: "Version", value: "1.9.1" },
+                  { label: "Version", value: "1.9.2" },
                   { label: "Requires", value: "macOS 13+" },
                   { label: "Architecture", value: "Apple Silicon + Intel" },
                 ].map((item) => (
@@ -156,14 +157,14 @@ export default function Download() {
                     <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z" />
                   </svg>
                 </span>
-                What&apos;s new in 1.9.1
+                What&apos;s new in 1.9.2
               </h3>
               <ul className="flex flex-col gap-2.5">
                 {[
-                  "Checks for signed updates when Redock launches and brings the update prompt to the front when a newer version is available",
-                  "Launch at Login is enabled for new installs, with a clear toggle in General Settings to turn it off",
-                  "Includes the new thirds, two-thirds, Almost Maximize, multi-display and Restore Previous actions introduced in 1.9",
-                  "Stronger snapping for Electron apps, clearer shortcut and permission failures, and a more coherent File Shelf",
+                  "Secure purchase links open Redock and activate this Mac automatically; the licence key remains available as a fallback",
+                  "Workspace, app-rule and Clipboard Pro prompts now preview the result you asked for and can start the 14-day trial directly",
+                  "The menu's Save a Workspace action now leads free users to the workspace-specific preview instead of a generic licence screen",
+                  "Includes the update checks, Launch at Login default and expanded window actions introduced in 1.9 and 1.9.1",
                 ].map((note) => (
                   <li key={note} className="flex items-start gap-3 text-sm text-neutral-600 dark:text-neutral-400">
                     <svg className="w-4 h-4 text-neutral-300 dark:text-neutral-600 flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="currentColor">
@@ -193,7 +194,7 @@ export default function Download() {
                 Already purchased Pro?
               </p>
               <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-4">
-                Open Redock → Settings → Pro and paste your license key to activate.
+                Use the secure Open Redock link in your purchase email. Your licence key remains available as a fallback.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link
@@ -210,6 +211,7 @@ export default function Download() {
                   Manage license
                 </Link>
               </div>
+              <PurchaseTrustLine className="mt-4 text-center" />
             </motion.div>
 
           </div>

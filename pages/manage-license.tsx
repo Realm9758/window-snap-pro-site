@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar";
 import Seo from "../components/Seo";
 import Footer from "../components/Footer";
 import LicenseKeyDisplay from "../components/LicenseKeyDisplay";
+import PurchaseTrustLine from "../components/PurchaseTrustLine";
 import { apiPath } from "../lib/site";
 
 interface LicenseInfo {
@@ -339,6 +340,7 @@ export default function ManageLicense() {
                     >
                       Buy Redock, £19 once
                     </Link>
+                    <PurchaseTrustLine />
                   </div>
                 )}
               </motion.div>
@@ -354,7 +356,7 @@ export default function ManageLicense() {
                   </p>
                   <LicenseKeyDisplay licenseKey={license.license_key} />
                   <p className="text-xs text-neutral-400 dark:text-neutral-500 leading-relaxed mt-4">
-                    Open <strong className="text-neutral-600 dark:text-neutral-400">Redock</strong> → Settings → License and paste this key to activate.
+                    Your email includes a secure Open Redock link for one-click activation. This key is the fallback.
                   </p>
                 </motion.div>
               )}

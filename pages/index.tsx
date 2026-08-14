@@ -5,6 +5,7 @@ import ProductSchema from "../components/ProductSchema";
 import Hero from "../components/Hero";
 import Features from "../components/Features";
 import Footer from "../components/Footer";
+import Guides from "../components/Guides";
 import PricingCard from "../components/PricingCard";
 import { getStripe } from "../lib/stripe-browser";
 import { apiPath, CONTACT_EMAIL } from "../lib/site";
@@ -68,8 +69,8 @@ function Pricing() {
         </h2>
         <p className="measure mt-3 leading-relaxed ink-2 text-pretty">
           No subscription. Buy it once and it stays yours, on up to three Macs,
-          including every future update. Pro is free to try for 14 days without
-          a card.
+          including every future update. Try Pro for 14 days without a card;
+          purchases also have a 14-day money-back guarantee.
         </p>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2">
@@ -112,8 +113,8 @@ export default function Home() {
   return (
     <>
       <Seo
-        title="Redock: save and restore Mac window layouts"
-        description="Redock saves the position of every window on every display and puts them back when you reconnect your monitor. A window manager for macOS. £19 once, no subscription."
+        title="Redock: your Mac workspace restores itself"
+        description="Plug in your display and Redock restores your complete Mac workspace. Save layouts, route apps automatically and restore windows across displays. £19 once."
       />
       <ProductSchema />
 
@@ -121,6 +122,7 @@ export default function Home() {
       <main>
         <Hero />
         <Features />
+        <Guides />
         <Pricing />
       </main>
       <Footer />

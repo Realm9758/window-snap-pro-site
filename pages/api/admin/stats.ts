@@ -99,48 +99,84 @@ async function collectUsers(db: SupabaseClient) {
 
 // ─── Downloads ───────────────────────────────────────────────────────────────
 
+/**
+ * A download event that was not a person.
+ *
+ * The download button is a plain link, so every crawler that reads the page
+ * "downloads" the app: at the point this filter was written, 34 of the 46
+ * recorded events were bots — index crawlers, a referer-spam scanner faking
+ * MSIE 9, and one burst of 7 hits in 12 seconds under rotated Chrome UAs.
+ * Steering the product by that number meant steering by crawler traffic.
+ *
+ * Raw rows are kept in the table untouched; bots are excluded at read time so
+ * the classification can improve without losing history. MSIE is included
+ * because no modern browser sends it — the only source here is the daily
+ * referer-spam scanner.
+ */
+function isBotUA(ua: string | null): boolean {
+  if (!ua) return true;
+  return /bot|spider|crawl|curl|wget|python|scan|slurp|headless|monitor|probe|externalagent|msie/i.test(ua);
+}
+
+/**
+ * Scrapers that rotate real-looking Chrome UAs still give themselves away in
+ * the referer: real browsers on an https-only site never send a plain-http
+ * referer, and never claim the download endpoint referred them to itself.
+ * (The observed burst sent "http://bhopstudio.com/redock/api/download?..." as
+ * its own referer, seven hits in twelve seconds.)
+ */
+function isBotRow(row: { user_agent: string | null; referer: string | null }): boolean {
+  if (isBotUA(row.user_agent)) return true;
+  if (row.referer) {
+    if (row.referer.startsWith("http://")) return true;
+    if (row.referer.includes("/api/download")) return true;
+  }
+  return false;
+}
+
 async function collectDownloads(db: SupabaseClient) {
   const empty = {
     available: false,
     total: 0,
     last7: 0,
     last30: 0,
+    botsExcluded: 0,
     daily: [] as { date: string; count: number }[],
     sources: [] as { source: string; count: number }[],
     referrers: [] as { referrer: string; count: number }[],
   };
 
-  const { count: total, error: totalError } = await db
+  // All-time rows, filtered in code: the bot test is one regex over a UA
+  // string, which PostgREST cannot express cleanly, and the table grows by a
+  // handful of rows a day — the 10k cap is years away.
+  const { data: allRows, error: rowsError } = await db
     .from("download_events")
-    .select("id", { count: "exact", head: true });
+    .select("created_at, source, referer, user_agent")
+    .order("created_at", { ascending: false })
+    .limit(10000);
 
   // 42P01: table does not exist, i.e. the migration has not been run.
-  if (totalError) {
-    if (totalError.code === "42P01") return empty;
-    throw new Error(`download_events count failed: ${totalError.message}`);
+  if (rowsError) {
+    if (rowsError.code === "42P01") return empty;
+    throw new Error(`download_events fetch failed: ${rowsError.message}`);
   }
 
-  const [{ count: last7 }, { count: last30 }, { data: recentRows, error: rowsError }] =
-    await Promise.all([
-      db.from("download_events").select("id", { count: "exact", head: true })
-        .gte("created_at", daysAgoIso(7)),
-      db.from("download_events").select("id", { count: "exact", head: true })
-        .gte("created_at", daysAgoIso(30)),
-      db.from("download_events").select("created_at, source, referer")
-        .gte("created_at", daysAgoIso(30)).limit(10000),
-    ]);
+  const rows = allRows ?? [];
+  const human = rows.filter((r) => !isBotRow(r));
 
-  if (rowsError) throw new Error(`download_events fetch failed: ${rowsError.message}`);
+  const cutoff7 = daysAgoIso(7);
+  const cutoff30 = daysAgoIso(30);
+  const recent = human.filter((r) => r.created_at >= cutoff30);
 
   const daily = bucketByDay(
-    (recentRows ?? []).filter((r) => r.created_at >= daysAgoIso(DAILY_WINDOW_DAYS)),
+    recent.filter((r) => r.created_at >= daysAgoIso(DAILY_WINDOW_DAYS)),
     emptyDailyBuckets(DAILY_WINDOW_DAYS)
   );
 
   const sourceCounts = new Map<string, number>();
   const referrerCounts = new Map<string, number>();
 
-  for (const row of recentRows ?? []) {
+  for (const row of recent) {
     const source = row.source || "direct";
     sourceCounts.set(source, (sourceCounts.get(source) ?? 0) + 1);
 
@@ -161,9 +197,10 @@ async function collectDownloads(db: SupabaseClient) {
 
   return {
     available: true,
-    total: total ?? 0,
-    last7: last7 ?? 0,
-    last30: last30 ?? 0,
+    total: human.length,
+    last7: human.filter((r) => r.created_at >= cutoff7).length,
+    last30: recent.length,
+    botsExcluded: rows.length - human.length,
     daily,
     sources: topOf(sourceCounts, "source"),
     referrers: topOf(referrerCounts, "referrer"),

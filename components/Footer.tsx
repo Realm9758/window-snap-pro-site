@@ -4,11 +4,13 @@ import { CONTACT_EMAIL } from "../lib/site";
 
 const LINKS = [
   { label: "Features", href: "/#features" },
+  { label: "Guides", href: "/#guides" },
   { label: "Pricing", href: "/pricing" },
   { label: "Download", href: "/download" },
   { label: "Changelog", href: "/changelog" },
   { label: "Manage licence", href: "/manage-license" },
   { label: "Privacy", href: "/privacy" },
+  { label: "Refunds", href: "/refunds" },
 ];
 
 export default function Footer() {
@@ -23,7 +25,7 @@ export default function Footer() {
             <span className="text-[15px] font-semibold tracking-[-0.02em] ink">Redock</span>
           </div>
           <p className="mt-3 max-w-xs text-[13.5px] leading-relaxed ink-3">
-            A window manager for people who work at more than one desk.
+            Plug in your display. Your workspace puts itself back.
           </p>
 
           {/*

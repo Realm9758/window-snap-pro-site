@@ -59,6 +59,15 @@ export async function getLicenseByKey(licenseKey: string): Promise<License | nul
   return data ?? null;
 }
 
+export async function getLicenseById(id: string): Promise<License | null> {
+  const { data } = await supabase
+    .from("licenses")
+    .select("*")
+    .eq("id", id)
+    .single();
+  return data ?? null;
+}
+
 export async function getLicenseByEmail(email: string): Promise<License | null> {
   const { data } = await supabase
     .from("licenses")

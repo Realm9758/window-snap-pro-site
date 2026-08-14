@@ -40,7 +40,7 @@ export default function App({ Component, pageProps, router }: AppProps) {
         <meta property="og:image:height" content="630" key="og:image:height" />
         <meta
           property="og:image:alt"
-          content="Redock: plug in your monitor and everything goes back where it was."
+          content="Redock: plug in your display and your workspace puts itself back."
           key="og:image:alt"
         />
         <meta name="twitter:card" content="summary_large_image" key="twitter:card" />

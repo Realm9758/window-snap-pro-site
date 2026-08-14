@@ -8,6 +8,7 @@ import { useAuth } from "../lib/auth-context";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import LicenseKeyDisplay from "../components/LicenseKeyDisplay";
+import PurchaseTrustLine from "../components/PurchaseTrustLine";
 import { apiPath } from "../lib/site";
 
 interface LicenseInfo {
@@ -218,6 +219,7 @@ export default function Profile() {
                     </svg>
                     Buy Redock, £19 once
                   </Link>
+                  <PurchaseTrustLine />
                 </div>
               )}
             </motion.div>
@@ -233,7 +235,7 @@ export default function Profile() {
                 <div className="flex flex-col gap-4">
                   <LicenseKeyDisplay licenseKey={license.license_key} />
                   <p className="text-xs text-neutral-400 dark:text-neutral-500 leading-relaxed">
-                    Open <strong className="text-neutral-600 dark:text-neutral-400">Redock</strong> → Settings → Pro and paste this key to activate.
+                    Your purchase email has a secure Open Redock link. This key remains available as a fallback.
                   </p>
                 </div>
               ) : (

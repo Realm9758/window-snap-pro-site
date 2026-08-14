@@ -45,7 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const license = await getLicenseByEmail(email);
   if (license) {
-    const sent = await sendLicenseEmail(license.email, license.license_key);
+    const sent = await sendLicenseEmail(license.email, license.license_key, license.id);
     if (!sent.ok) console.error("[recover] send failed for licence", license.id, sent.error);
   }
 

@@ -51,6 +51,7 @@ export default function Navbar() {
 
   const navLinks = [
     { label: "Features",  href: isHome ? "#features" : "/#features" },
+    { label: "Guides",    href: isHome ? "#guides" : "/#guides" },
     { label: "Pricing",   href: "/pricing" },
     { label: "Changelog", href: "/changelog" },
     { label: "Download",  href: "/download" },

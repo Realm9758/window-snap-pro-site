@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { Check, Dash } from "./Marks";
+import PurchaseTrustLine from "./PurchaseTrustLine";
 
 export interface Feature {
   text: string;
@@ -91,6 +92,9 @@ export default function PricingCard({
           >
             {loading ? "Opening checkout" : cta}
           </button>
+        )}
+        {highlighted && (
+          <PurchaseTrustLine className="mt-3 text-center" />
         )}
       </div>
     </div>

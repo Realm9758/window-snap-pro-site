@@ -59,7 +59,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     switch (action as Action) {
       case "resend": {
-        await sendLicenseEmail(license.email, license.license_key);
+        await sendLicenseEmail(license.email, license.license_key, license.id);
         console.log(`[admin] ${adminEmail} resent licence to ${license.email}`);
         return res.status(200).json({ ok: true, message: `Licence key sent to ${license.email}.` });
       }

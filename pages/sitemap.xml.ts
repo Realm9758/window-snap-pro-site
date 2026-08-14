@@ -22,7 +22,13 @@ const PAGES: { path: string; priority: string; changefreq: string }[] = [
   { path: "/pricing", priority: "0.9", changefreq: "monthly" },
   { path: "/download", priority: "0.9", changefreq: "weekly" },
   { path: "/changelog", priority: "0.6", changefreq: "weekly" },
+  { path: "/compare/macos-window-tiling", priority: "0.8", changefreq: "monthly" },
+  { path: "/compare/redock-vs-rectangle", priority: "0.8", changefreq: "monthly" },
+  { path: "/guides/best-window-manager-multiple-monitors", priority: "0.8", changefreq: "monthly" },
+  { path: "/guides/restore-window-positions-after-reconnecting-monitor", priority: "0.8", changefreq: "monthly" },
+  { path: "/guides/ultrawide-window-layouts", priority: "0.7", changefreq: "monthly" },
   { path: "/privacy", priority: "0.3", changefreq: "yearly" },
+  { path: "/refunds", priority: "0.4", changefreq: "yearly" },
 ];
 
 function buildSitemap(lastmod: string): string {

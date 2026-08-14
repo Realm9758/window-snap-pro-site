@@ -10,20 +10,13 @@ import { apiPath } from "../lib/site";
 
 type State = "loading" | "found" | "timeout" | "error";
 
-const STEPS = [
-  "Download Redock from the button below",
-  "Open Redock on your Mac",
-  "Open the app menu → Settings",
-  'Select the "Pro" tab',
-  'Paste your license key and click "Activate Pro"',
-];
-
 export default function Success() {
   const router = useRouter();
   const { session_id } = router.query;
 
   const [state, setState] = useState<State>("loading");
   const [licenseKey, setLicenseKey] = useState<string>("");
+  const [activationUrl, setActivationUrl] = useState<string>("");
   const [email, setEmail] = useState<string>("");
 
   useEffect(() => {
@@ -40,6 +33,7 @@ export default function Success() {
         const data = await res.json();
         if (data.found) {
           setLicenseKey(data.license_key);
+          setActivationUrl(data.activation_url ?? "");
           setEmail(data.email ?? "");
           setState("found");
           return;
@@ -108,7 +102,7 @@ export default function Success() {
                       </svg>
                     </motion.div>
                     <h1 className="text-[clamp(1.8rem,4vw,2.5rem)] font-bold tracking-tight text-neutral-900 dark:text-white mb-3">
-                      Purchase Confirmed!
+                      Redock Pro is ready
                     </h1>
                     <p className="text-neutral-500 dark:text-neutral-400 leading-relaxed">
                       Welcome to Redock Pro.
@@ -120,37 +114,53 @@ export default function Success() {
                     </p>
                   </div>
 
-                  {/* License key */}
+                  {/* One-click activation is the primary path. The signed link
+                      contains no licence key and expires after 30 days. */}
                   <motion.div
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.25, duration: 0.5 }}
+                    className="rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-7 text-center"
                   >
-                    <LicenseKeyDisplay licenseKey={licenseKey} large />
+                    <p className="text-xs font-semibold tracking-widest uppercase text-accent mb-3">
+                      Buy → Open Redock → Activated
+                    </p>
+                    <h2 className="text-lg font-semibold text-neutral-900 dark:text-white mb-2">
+                      Activate this Mac in one click
+                    </h2>
+                    <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed mb-6">
+                      The secure link opens Redock and validates your licence automatically. It expires after 30 days.
+                    </p>
+                    {activationUrl && (
+                      <a
+                        href={activationUrl}
+                        className="inline-flex w-full sm:w-auto items-center justify-center gap-2 px-7 py-3 bg-accent text-white font-semibold text-sm rounded-2xl hover:bg-accent/90 transition-colors duration-150"
+                      >
+                        Open Redock and activate
+                      </a>
+                    )}
                   </motion.div>
 
-                  {/* Steps */}
+                  {/* Durable fallback for email clients or browsers that block
+                      custom app links. It is deliberately secondary. */}
                   <motion.div
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.35, duration: 0.5 }}
-                    className="rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-7"
+                    className="rounded-2xl border border-neutral-200 dark:border-neutral-800 overflow-hidden"
                   >
-                    <h2 className="text-base font-semibold text-neutral-900 dark:text-white mb-5">
-                      Activate your license
-                    </h2>
-                    <ol className="flex flex-col gap-4">
-                      {STEPS.map((step, i) => (
-                        <li key={step} className="flex items-start gap-4">
-                          <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent text-white text-xs font-bold flex items-center justify-center">
-                            {i + 1}
-                          </span>
-                          <span className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed pt-0.5">
-                            {step}
-                          </span>
-                        </li>
-                      ))}
-                    </ol>
+                    <details className="group">
+                      <summary className="cursor-pointer list-none px-6 py-4 text-sm font-medium text-neutral-700 dark:text-neutral-300 flex items-center justify-between">
+                        Use my licence key instead
+                        <span className="text-neutral-400 group-open:rotate-180 transition-transform">⌄</span>
+                      </summary>
+                      <div className="px-6 pb-6">
+                        <LicenseKeyDisplay licenseKey={licenseKey} large />
+                        <p className="mt-3 text-xs text-neutral-500 dark:text-neutral-400 text-center">
+                          Open Redock → Settings → License and paste this key.
+                        </p>
+                      </div>
+                    </details>
                   </motion.div>
 
                   {/* Actions */}
@@ -167,7 +177,7 @@ export default function Success() {
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
                       </svg>
-                      Download Redock
+                      Download Redock first
                     </Link>
                     <Link
                       href="/manage-license"

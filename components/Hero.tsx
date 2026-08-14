@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AppleGlyph } from "./Marks";
 import RestoreAnimation from "./RestoreAnimation";
 import { apiPath } from "../lib/site";
+import PurchaseTrustLine from "./PurchaseTrustLine";
 
 
 /**
@@ -17,13 +18,12 @@ export default function Hero() {
     <section className="relative px-6 pt-20 pb-14 sm:pt-28 sm:pb-20">
       <div className="mx-auto max-w-5xl">
         <h1 className="settle settle-1 max-w-[19ch] text-[clamp(2.4rem,6.4vw,4.25rem)] font-semibold leading-[1.04] tracking-[-0.035em] text-balance ink">
-          Plug in your monitor. Everything goes back where it was.
+          Plug in your display. Your workspace puts itself back.
         </h1>
 
         <p className="settle settle-2 measure mt-6 text-[clamp(1.02rem,1.6vw,1.2rem)] leading-relaxed ink-2 text-pretty">
-          Redock saves the size and position of every open window on every
-          display. Reconnect that setup later and it puts them all back, without
-          you touching anything.
+          Save complete workspaces, route apps automatically, restore windows
+          across displays, and keep the tools you use every day one shortcut away.
         </p>
 
         <div className="settle settle-3 mt-9 flex flex-wrap items-center gap-3">
@@ -53,8 +53,10 @@ export default function Hero() {
           </Link>
         </div>
 
-        <p className="settle settle-3 mt-4 text-[13px] ink-3">
-          <span className="tabular">Version 1.9.1</span>. Free to use, with a
+        <PurchaseTrustLine className="settle settle-3 mt-4 max-w-3xl" />
+
+        <p className="settle settle-3 mt-2 text-[13px] ink-3">
+          <span className="tabular">Version 1.9.2</span>. Free to use, with a
           14&#8209;day trial of everything in Pro. Requires macOS 13 or later.
         </p>
       </div>

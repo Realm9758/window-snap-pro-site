@@ -9,6 +9,7 @@ interface Stats {
   users: { total: number; last7: number; last30: number;
            recent: { email: string | null; created_at: string; last_sign_in_at: string | null }[] } | null;
   downloads: { available: boolean; total: number; last7: number; last30: number;
+               botsExcluded: number;
                daily: { date: string; count: number }[];
                sources: { source: string; count: number }[];
                referrers: { referrer: string; count: number }[] } | null;
@@ -77,7 +78,11 @@ export default function AdminOverview() {
         <StatTile
           label="Downloads"
           value={stats?.downloads?.available ? String(stats.downloads.total) : "—"}
-          sub={stats?.downloads?.available ? `+${stats.downloads.last7} this week` : undefined}
+          // The bot figure stays visible so a sudden gap between the two
+          // numbers reads as "scanner", not "the counter broke".
+          sub={stats?.downloads?.available
+            ? `+${stats.downloads.last7} this week · ${stats.downloads.botsExcluded} bot hits excluded`
+            : undefined}
           loading={loading}
         />
       </div>

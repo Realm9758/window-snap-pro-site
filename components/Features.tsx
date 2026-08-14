@@ -60,8 +60,9 @@ export default function Features() {
                 reconnect. No hotkey, no menu.
               </p>
               <p className="mt-5 text-[13.5px] ink-3">
-                Rectangle, Magnet and the tiling built into macOS all snap
-                windows. None of them save layouts.
+                macOS already handles everyday tiling. Redock starts where
+                tiling stops: remembering a complete multi-display workspace
+                and bringing it back when that display setup returns.
               </p>
             </div>
           </div>

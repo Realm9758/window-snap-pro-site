@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { getLicenseBySessionId } from "../../../lib/db";
 import { checkRateLimit } from "../../../lib/rateLimit";
 import { clientIp } from "../../../lib/auth-server";
+import { createActivationURL } from "../../../lib/activation-link";
 
 /**
  * GET /api/license/by-session?session_id=cs_xxx
@@ -43,6 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   return res.status(200).json({
     found: true,
     license_key: license.license_key,
+    activation_url: createActivationURL(license.id),
     email: license.email,
     plan: license.product_tier,
     status: license.subscription_status,

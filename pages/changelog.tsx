@@ -7,9 +7,19 @@ import Link from "next/link";
 
 const changelog: ChangelogEntry[] = [
   {
-    version: "1.9.1",
+    version: "1.9.2",
     date: "August 2026",
     tag: "latest",
+    changes: [
+      { type: "added", text: "Purchase-success pages and licence emails can open Redock and activate this Mac automatically through a signed, expiring link. The licence key remains available as a fallback." },
+      { type: "improved", text: "Workspace, app-rule, drag-zone and Clipboard Pro prompts now show the specific result you were trying to get, preview how it works and start the 14-day trial directly." },
+      { type: "improved", text: "Free users choosing Save a Workspace or a Pro clipboard tool now land on that feature's contextual offer instead of a generic licence screen." },
+    ],
+  },
+  {
+    version: "1.9.1",
+    date: "August 2026",
+    tag: "stable",
     changes: [
       { type: "improved", text: "Redock checks for signed updates when it launches if the previous check is more than a day old. The update prompt is brought to the front instead of hiding behind another app." },
       { type: "improved", text: "Launch at Login is enabled for new installs so Redock is ready after every login. It remains an ordinary toggle in General Settings and an existing opt-out is always preserved." },

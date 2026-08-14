@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PurchaseTrustLine from "./PurchaseTrustLine";
 import type { License } from "@/lib/db";
 import { useAuth } from "@/lib/auth-context";
 import { apiPath } from "@/lib/site";
@@ -163,6 +164,9 @@ export default function SubscriptionCard({ license }: SubscriptionCardProps) {
             </svg>
             Upgrade to Pro
           </a>
+        )}
+        {!license?.stripe_customer_id && (
+          <PurchaseTrustLine className="text-center" />
         )}
       </div>
     </div>

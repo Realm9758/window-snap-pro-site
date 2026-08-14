@@ -129,7 +129,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         // Fire-and-forget email
-        sendLicenseEmail(email, licenseKey).catch((e) =>
+        sendLicenseEmail(email, licenseKey, created.id).catch((e) =>
           console.error("[webhook] sendLicenseEmail error:", e)
         );
         break;

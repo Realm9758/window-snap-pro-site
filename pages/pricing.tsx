@@ -93,8 +93,8 @@ export default function Pricing() {
                 custom={2} variants={fadeUp} initial="hidden" animate="show"
                 className="text-lg text-neutral-500 dark:text-neutral-400 max-w-lg mx-auto leading-relaxed"
               >
-                Start for free. Upgrade to Pro when you need more power.
-                No subscription to cancel.
+                Start for free. Buy Pro when you want complete workspaces to
+                restore themselves. No subscription to cancel.
               </motion.p>
             </div>
 
@@ -142,8 +142,9 @@ export default function Pricing() {
               {[
                 { icon: "🔒", text: "Secure checkout via Stripe" },
                 { icon: "↩️", text: "14-day trial, no card" },
-                { icon: "📧", text: "License key emailed instantly" },
+                { icon: "✨", text: "One-click app activation" },
                 { icon: "🖥️", text: "Up to 3 Mac activations" },
+                { icon: "✓", text: "14-day money-back guarantee" },
               ].map((item) => (
                 <div key={item.text} className="flex items-center gap-2">
                   <span>{item.icon}</span>
@@ -164,7 +165,7 @@ export default function Pricing() {
                 {[
                   {
                     q: "How do I activate Pro after buying?",
-                    a: "After you buy, you'll receive a license key by email. Open Redock, go to Settings → Pro, paste your key, and click Activate.",
+                    a: "Click Open Redock on the purchase-success page or in your licence email. The signed link opens the app and activates this Mac automatically. Your licence key remains available as a fallback.",
                   },
                   {
                     q: "Can I use my license on multiple Macs?",
@@ -176,7 +177,11 @@ export default function Pricing() {
                   },
                   {
                     q: "I lost my license key. Can I recover it?",
-                    a: "Yes. Visit the Manage License page, enter your purchase email, and we'll resend your key immediately.",
+                    a: "Yes. Visit the Manage License page, enter your purchase email, and we'll resend a fresh activation link and your fallback key immediately.",
+                  },
+                  {
+                    q: "What if Redock is not right for me?",
+                    a: "Email us within 14 days of purchase for a full refund. You can also test every Pro feature for 14 days before buying, with no card required.",
                   },
                 ].map((faq) => (
                   <div key={faq.q} className="py-5">

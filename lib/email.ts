@@ -1,5 +1,6 @@
 import { Resend } from "resend";
 import { SITE_URL as APP_URL, CONTACT_EMAIL } from "./site";
+import { createActivationURL } from "./activation-link";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -63,12 +64,14 @@ async function send(
  */
 export async function sendLicenseEmail(
   email: string,
-  licenseKey: string
+  licenseKey: string,
+  licenseId: string
 ): Promise<SendResult> {
+  const activationURL = createActivationURL(licenseId);
   return send(
     email,
-    "Your Redock License Key",
-    buildLicenseEmailHtml(licenseKey),
+    "Open Redock — your Pro licence is ready",
+    buildLicenseEmailHtml(licenseKey, activationURL),
     "sendLicenseEmail"
   );
 }
@@ -169,15 +172,7 @@ function buildAuthEmailHtml(
 </html>`;
 }
 
-function buildLicenseEmailHtml(licenseKey: string): string {
-  const steps = [
-    "Download Redock from our website",
-    "Open Redock on your Mac",
-    "Open Redock → Settings",
-    'Select the "Pro" tab',
-    'Paste your license key and click "Activate Pro"',
-  ];
-
+function buildLicenseEmailHtml(licenseKey: string, activationURL: string): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -204,39 +199,29 @@ function buildLicenseEmailHtml(licenseKey: string): string {
 
     <!-- Body -->
     <div style="padding:40px;">
-      <h2 style="font-size:18px;font-weight:600;color:#1d1d1f;margin:0 0 8px;">Your License Key</h2>
+      <h2 style="font-size:18px;font-weight:600;color:#1d1d1f;margin:0 0 8px;">Buy → Open Redock → Activated</h2>
       <p style="color:#6e6e73;font-size:14px;line-height:1.65;margin:0 0 28px;">
-        Thanks for buying Redock Pro. Copy the license key below and paste it into the app to unlock all Pro features.
+        Thanks for buying Redock Pro. Open Redock with the secure button below and this Mac will activate automatically.
       </p>
 
-      <!-- Key box -->
-      <div style="background:#f5f5f7;border:1.5px solid #e5e5ea;border-radius:14px;padding:24px;text-align:center;margin-bottom:36px;">
-        <p style="color:#8e8e93;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;margin:0 0 10px;">License Key</p>
-        <p style="font-size:24px;font-weight:700;letter-spacing:3px;color:#1d1d1f;font-family:'SF Mono','Fira Code','Courier New',monospace;margin:0;">${licenseKey}</p>
+      <div style="text-align:center;margin-bottom:32px;">
+        <a href="${activationURL}" style="display:inline-block;background:#0071E3;color:#fff;font-size:15px;font-weight:600;padding:14px 36px;border-radius:980px;text-decoration:none;">
+          Open Redock and activate
+        </a>
+        <p style="color:#8e8e93;font-size:12px;line-height:1.5;margin:12px 0 0;">The secure link expires after 30 days.</p>
       </div>
 
-      <!-- Steps -->
-      <h3 style="font-size:15px;font-weight:600;color:#1d1d1f;margin:0 0 16px;">Getting Started</h3>
-      <table style="width:100%;border-collapse:collapse;margin-bottom:36px;">
-        ${steps
-          .map(
-            (step, i) => `
-        <tr>
-          <td style="width:32px;padding:0 12px 12px 0;vertical-align:top;">
-            <div style="width:24px;height:24px;background:#0071E3;border-radius:50%;text-align:center;line-height:24px;font-size:11px;font-weight:700;color:#fff;">${i + 1}</div>
-          </td>
-          <td style="padding:0 0 12px;vertical-align:middle;">
-            <span style="font-size:14px;color:#1d1d1f;line-height:24px;">${step}</span>
-          </td>
-        </tr>`
-          )
-          .join("")}
-      </table>
+      <!-- The key remains a durable fallback for clients that block app links. -->
+      <div style="background:#f5f5f7;border:1.5px solid #e5e5ea;border-radius:14px;padding:24px;text-align:center;margin-bottom:36px;">
+        <p style="color:#8e8e93;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;margin:0 0 10px;">Fallback licence key</p>
+        <p style="font-size:24px;font-weight:700;letter-spacing:3px;color:#1d1d1f;font-family:'SF Mono','Fira Code','Courier New',monospace;margin:0;">${licenseKey}</p>
+        <p style="color:#8e8e93;font-size:12px;line-height:1.5;margin:12px 0 0;">If the button is blocked, paste this in Redock → Settings → License.</p>
+      </div>
 
       <!-- CTA -->
       <div style="text-align:center;margin-bottom:36px;">
         <a href="${APP_URL}/download" style="display:inline-block;background:#0071E3;color:#fff;font-size:15px;font-weight:600;padding:14px 36px;border-radius:980px;text-decoration:none;">
-          Download Redock
+          Download Redock first
         </a>
       </div>
 

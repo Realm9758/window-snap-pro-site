@@ -39,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // A rejected send used to be logged and reported as a success, which left a
   // buyer refreshing an inbox that was never going to receive anything.
-  const sent = await sendLicenseEmail(license.email, license.license_key);
+  const sent = await sendLicenseEmail(license.email, license.license_key, license.id);
   if (!sent.ok) {
     return res.status(502).json({
       error:

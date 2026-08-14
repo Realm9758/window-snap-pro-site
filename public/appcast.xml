@@ -28,6 +28,29 @@
     <language>en</language>
 
     <item>
+      <title>Version 1.9.2</title>
+      <pubDate>Fri, 14 Aug 2026 16:24:44 +0100</pubDate>
+      <sparkle:version>11</sparkle:version>
+      <sparkle:shortVersionString>1.9.2</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+      <link>https://bhopstudio.com/redock/changelog</link>
+      <description><![CDATA[
+        <ul>
+          <li>Purchase-success pages and licence emails can now open Redock and activate this Mac automatically through a signed, expiring link. The licence key remains available as a fallback.</li>
+          <li>Workspace, app-rule, drag-zone and Clipboard Pro prompts now preview the specific result you asked for and can start the 14-day trial directly.</li>
+          <li>Save a Workspace and Pro clipboard actions now lead to their contextual offer instead of a generic licence screen.</li>
+        </ul>
+      ]]></description>
+      <enclosure
+        url="https://bhopstudio.com/redock/Redock-1.9.2.dmg"
+        sparkle:version="11"
+        sparkle:shortVersionString="1.9.2"
+        sparkle:edSignature="4nYEtNYSeWQfcgZZ1DkkwLcy9CJmeqyry/4d2WuUO5K3lSC0LzW5e3Rv66pFYkeyL/FSIbyPSaHOamxROemmBg=="
+        length="3214015"
+        type="application/octet-stream" />
+    </item>
+
+    <item>
       <title>Version 1.9.1</title>
       <pubDate>Fri, 14 Aug 2026 15:58:23 +0100</pubDate>
       <sparkle:version>10</sparkle:version>
