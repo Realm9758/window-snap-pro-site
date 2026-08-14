@@ -206,7 +206,7 @@ function buildLicenseEmailHtml(licenseKey: string): string {
     <div style="padding:40px;">
       <h2 style="font-size:18px;font-weight:600;color:#1d1d1f;margin:0 0 8px;">Your License Key</h2>
       <p style="color:#6e6e73;font-size:14px;line-height:1.65;margin:0 0 28px;">
-        Thanks for subscribing to Redock Pro. Copy the license key below and paste it into the app to unlock all Pro features.
+        Thanks for buying Redock Pro. Copy the license key below and paste it into the app to unlock all Pro features.
       </p>
 
       <!-- Key box -->

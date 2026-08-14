@@ -7,9 +7,32 @@ import Link from "next/link";
 
 const changelog: ChangelogEntry[] = [
   {
-    version: "1.8",
+    version: "1.9.1",
     date: "August 2026",
     tag: "latest",
+    changes: [
+      { type: "improved", text: "Redock checks for signed updates when it launches if the previous check is more than a day old. The update prompt is brought to the front instead of hiding behind another app." },
+      { type: "improved", text: "Launch at Login is enabled for new installs so Redock is ready after every login. It remains an ordinary toggle in General Settings and an existing opt-out is always preserved." },
+    ],
+  },
+  {
+    version: "1.9",
+    date: "August 2026",
+    tag: "stable",
+    changes: [
+      { type: "added", text: "Snap windows to thirds, two-thirds, or an almost-maximized frame. Center sizing is configurable, and repeated Left or Right Half shortcuts can cycle through half, third, and two-thirds sizes." },
+      { type: "added", text: "Move the current window to the next or previous display while preserving its relative size and position, then restore its pre-snap frame when you need it back." },
+      { type: "improved", text: "Workspaces can be renamed and report how many windows moved or which apps were skipped. App rules can be edited without deleting and recreating them." },
+      { type: "improved", text: "Clipboard history supports Cmd+1–9 selection and Delete, while File Shelf limits, disabled state, stale files, and cached icons now behave consistently." },
+      { type: "fixed", text: "Snapping is verified after each final Accessibility write, with a second pass for apps that clamp window sizes. Electron apps now snap instantly and accurately across displays." },
+      { type: "fixed", text: "Permission revocation, refused workspace shortcuts, launch-at-login failures, rule timeouts, and corrupted saved layouts no longer fail invisibly." },
+      { type: "improved", text: "Redock 1.8 settings migrate automatically to stable action IDs. This preference upgrade is one-way, so downgrading after opening 1.9 is not supported." },
+    ],
+  },
+  {
+    version: "1.8",
+    date: "August 2026",
+    tag: "stable",
     changes: [
       { type: "improved", text: "The installer window now shows what to do, including the step everyone missed: open Redock from your Applications folder, not from the disk image." },
       { type: "fixed", text: "Redock refuses to run from the disk image instead of starting up and quietly failing later. macOS discards permissions granted to an app opened that way, which is why window snapping appeared broken for some people after they had granted it correctly." },

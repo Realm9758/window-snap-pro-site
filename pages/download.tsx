@@ -65,9 +65,9 @@ export default function Download() {
                     Redock
                   </h2>
                   <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-400 dark:text-neutral-500">
-                    <span>Version 1.8</span>
+                    <span>Version 1.9.1</span>
                     <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-600" />
-                    <span>2.8 MB</span>
+                    <span>3.0 MB</span>
                     <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-600" />
                     <span>Released August 2026</span>
                   </div>
@@ -90,7 +90,7 @@ export default function Download() {
               {/* Meta row */}
               <div className="px-8 py-5 grid grid-cols-3 divide-x divide-neutral-100 dark:divide-neutral-800">
                 {[
-                  { label: "Version", value: "1.8" },
+                  { label: "Version", value: "1.9.1" },
                   { label: "Requires", value: "macOS 13+" },
                   { label: "Architecture", value: "Apple Silicon + Intel" },
                 ].map((item) => (
@@ -119,7 +119,7 @@ export default function Download() {
               <ol className="flex flex-col gap-4">
                 {[
                   "Open Redock.dmg and drag Redock into your Applications folder.",
-                  "The first time you open it, macOS will say it cannot verify the developer. Go to System Settings, then Privacy & Security, scroll to the bottom and click Open Anyway.",
+                  "In Applications, Control-click or right-click Redock, choose Open, then click Open again. If macOS still blocks it, use Open Anyway at the bottom of System Settings → Privacy & Security.",
                   "Redock will ask for Accessibility permission. It needs this to move windows belonging to other apps, and it cannot work without it.",
                 ].map((step, i) => (
                   <li key={step} className="flex items-start gap-3.5">
@@ -132,11 +132,17 @@ export default function Download() {
                   </li>
                 ))}
               </ol>
-              <p className="mt-5 pt-5 border-t border-neutral-100 dark:border-neutral-800 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
-                That second step exists because Redock is not yet notarised by
-                Apple. It is a one-time step, and the warning is about the
-                absence of a certificate, not about anything found in the app.
-              </p>
+              <details className="group mt-5 pt-5 border-t border-neutral-100 dark:border-neutral-800">
+                <summary className="cursor-pointer list-none text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                  Why does macOS say Redock is from an unidentified developer?
+                </summary>
+                <p className="mt-2 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
+                  Redock is not yet notarised by Apple, so macOS cannot verify
+                  its developer certificate. The right-click Open step is a
+                  one-time bypass for that missing certificate; it is not a
+                  warning that macOS found anything harmful in the app.
+                </p>
+              </details>
             </motion.div>
 
             {/* Release notes */}
@@ -150,14 +156,14 @@ export default function Download() {
                     <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z" />
                   </svg>
                 </span>
-                What&apos;s new in 1.8
+                What&apos;s new in 1.9.1
               </h3>
               <ul className="flex flex-col gap-2.5">
                 {[
-                  "The installer window now shows what to do, including the step everyone missed: open Redock from Applications, not from the disk image",
-                  "Redock refuses to run from the disk image rather than starting up and quietly failing later, which is what made window snapping look broken",
-                  "If you already dragged Redock to Applications, it offers to open that copy for you",
-                  "In 1.7: Redock updates itself, so you no longer download and reinstall by hand",
+                  "Checks for signed updates when Redock launches and brings the update prompt to the front when a newer version is available",
+                  "Launch at Login is enabled for new installs, with a clear toggle in General Settings to turn it off",
+                  "Includes the new thirds, two-thirds, Almost Maximize, multi-display and Restore Previous actions introduced in 1.9",
+                  "Stronger snapping for Electron apps, clearer shortcut and permission failures, and a more coherent File Shelf",
                 ].map((note) => (
                   <li key={note} className="flex items-start gap-3 text-sm text-neutral-600 dark:text-neutral-400">
                     <svg className="w-4 h-4 text-neutral-300 dark:text-neutral-600 flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="currentColor">

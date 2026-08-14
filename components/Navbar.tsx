@@ -165,7 +165,6 @@ export default function Navbar() {
                           {[
                             { label: "Profile",           href: "/profile" },
                             { label: "Manage License",    href: "/profile" },
-                            { label: "Manage Subscription", href: "/profile" },
                           ].map((item) => (
                             <Link
                               key={item.label}

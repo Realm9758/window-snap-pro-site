@@ -64,7 +64,7 @@ export default function SubscriptionCard({ license }: SubscriptionCardProps) {
       {/* Header */}
       <div className="px-6 py-5 border-b border-neutral-100 dark:border-neutral-800/60">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-semibold text-neutral-900 dark:text-white">Subscription</h2>
+          <h2 className="text-base font-semibold text-neutral-900 dark:text-white">Licence</h2>
           <span
             className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${
               isPro
@@ -119,7 +119,7 @@ export default function SubscriptionCard({ license }: SubscriptionCardProps) {
 
         {license?.cancel_at_period_end && (
           <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800/50 rounded-xl text-xs text-yellow-700 dark:text-yellow-400">
-            Your subscription will cancel at the end of the billing period.
+            Your licence will remain active until the end of the current billing period.
           </div>
         )}
 
@@ -149,7 +149,7 @@ export default function SubscriptionCard({ license }: SubscriptionCardProps) {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
                 </svg>
-                Manage Subscription
+                Manage Licence
               </>
             )}
           </button>

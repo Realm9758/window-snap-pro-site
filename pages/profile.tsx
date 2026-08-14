@@ -156,7 +156,7 @@ export default function Profile() {
             <motion.div custom={1} variants={fadeUp} initial="hidden" animate="show"
               className="rounded-3xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-[0_4px_24px_rgba(0,0,0,0.05)] p-6 mb-4"
             >
-              <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500 mb-4">Subscription</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500 mb-4">Licence</p>
               {fetching ? (
                 <div className="flex flex-col gap-2 animate-pulse">
                   <div className="h-4 bg-neutral-100 dark:bg-neutral-800 rounded-full w-1/3" />
@@ -198,7 +198,7 @@ export default function Profile() {
                             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                           </svg>
                         )}
-                        Manage Subscription
+                        Manage Licence
                       </motion.button>
                     </div>
                   )}
@@ -208,7 +208,7 @@ export default function Profile() {
                   <div className="flex items-center gap-3">
                     <PlanBadge tier="free" />
                   </div>
-                  <p className="text-sm text-neutral-500 dark:text-neutral-400">No active Pro subscription found for this account.</p>
+                  <p className="text-sm text-neutral-500 dark:text-neutral-400">No active Pro licence found for this account.</p>
                   <Link
                     href="/pricing"
                     className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white text-sm font-semibold rounded-xl shadow-sm shadow-accent/30 hover:bg-accent/90 transition-all duration-150 w-fit"

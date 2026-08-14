@@ -119,7 +119,7 @@ export default function Signup() {
     <AuthShell
       title="Create a Redock account"
       heading="Create your account"
-      intro="Manage your license and subscription in one place."
+      intro="Manage your licence, key and activated Macs in one place."
       footer={
         <>
           Already have an account?{" "}

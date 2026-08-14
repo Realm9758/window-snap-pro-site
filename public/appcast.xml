@@ -10,8 +10,9 @@
   makes updating safe without a Developer ID certificate.
 
   To add a release:
-    1. Build and package Redock.dmg
-    2. sign_update /path/to/Redock.dmg
+    1. Build and package Redock-X.Y.dmg, then copy the same bytes to Redock.dmg
+       as the latest-download alias
+    2. sign_update /path/to/Redock-X.Y.dmg
     3. Paste the printed sparkle:edSignature and length into a new <item> at the
        top, with the new version numbers
     4. Deploy the site with both the DMG and this file
@@ -25,6 +26,54 @@
     <link>https://bhopstudio.com/redock/appcast.xml</link>
     <description>Updates for Redock, a window manager for macOS.</description>
     <language>en</language>
+
+    <item>
+      <title>Version 1.9.1</title>
+      <pubDate>Fri, 14 Aug 2026 15:58:23 +0100</pubDate>
+      <sparkle:version>10</sparkle:version>
+      <sparkle:shortVersionString>1.9.1</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+      <link>https://bhopstudio.com/redock/changelog</link>
+      <description><![CDATA[
+        <ul>
+          <li>Redock now checks for signed updates at launch when its previous check is more than a day old, and brings an available-update prompt to the front.</li>
+          <li>Launch at Login is enabled for new installs and remains an ordinary opt-out toggle in General Settings.</li>
+        </ul>
+      ]]></description>
+      <enclosure
+        url="https://bhopstudio.com/redock/Redock-1.9.1.dmg"
+        sparkle:version="10"
+        sparkle:shortVersionString="1.9.1"
+        sparkle:edSignature="CoPW0wpXpCj9IgxhCC/uhA2XwXO8HqHhkzL0VqFwfDMcjMM2EC8TkbHfJPcuc9ST2sQRKNDoxpmQoBCgac/yCw=="
+        length="3173284"
+        type="application/octet-stream" />
+    </item>
+
+    <item>
+      <title>Version 1.9</title>
+      <pubDate>Fri, 14 Aug 2026 11:56:41 +0100</pubDate>
+      <sparkle:version>9</sparkle:version>
+      <sparkle:shortVersionString>1.9</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+      <link>https://bhopstudio.com/redock/changelog</link>
+      <description><![CDATA[
+        <ul>
+          <li>Added thirds, two-thirds, Almost Maximize, configurable Center sizing, and repeated-press size cycling.</li>
+          <li>Move windows to the next or previous display and restore their pre-snap size from the menu or a shortcut.</li>
+          <li>Workspaces can be renamed and report restore results; app-rule positions can be edited in place.</li>
+          <li>Improved Electron and cross-display snapping with verified final frames, safer Accessibility handling, and clearer failure feedback.</li>
+          <li>Added clipboard number/delete controls and made File Shelf limits, disabled state, and stale-file cleanup consistent.</li>
+          <li>Redock 1.8 preferences migrate automatically to stable action IDs. This upgrade is one-way, so downgrading after opening 1.9 is not supported.</li>
+        </ul>
+      ]]></description>
+      <enclosure
+        url="https://bhopstudio.com/redock/Redock-1.9.dmg"
+        sparkle:version="9"
+        sparkle:shortVersionString="1.9"
+        sparkle:edSignature="KuB49A+nu9IqPkbJeda3Bx3exa4ry1OhEhBON98q+MDBeJxDK+JWZsdAwHTcYNqDZsMjNJ21vIaQU74zx7FxCQ=="
+        length="3165733"
+        type="application/octet-stream" />
+    </item>
 
     <item>
       <title>Version 1.8</title>
@@ -41,7 +90,7 @@
         </ul>
       ]]></description>
       <enclosure
-        url="https://bhopstudio.com/redock/Redock.dmg"
+        url="https://bhopstudio.com/redock/Redock-1.8.dmg"
         sparkle:version="8"
         sparkle:shortVersionString="1.8"
         sparkle:edSignature="WlIh5KFaZvDZHVITmmindlCP2DBH1BeFODb5pDIw8eRwJsx96WJytNpEUWUyV8nqXqDabY0vu/FtuQ4hDFnlBQ=="
@@ -65,7 +114,7 @@
         </ul>
       ]]></description>
       <enclosure
-        url="https://bhopstudio.com/redock/Redock.dmg"
+        url="https://bhopstudio.com/redock/Redock-1.7.dmg"
         sparkle:version="7"
         sparkle:shortVersionString="1.7"
         sparkle:edSignature="oziUOXdL8oXOsEvK5caCLhPTgVQEstDL4u2l/25LYrnzUfdKaeGMIEpsYDUO0xXgJ9+GdOBD5O9q6WrELO+iAA=="

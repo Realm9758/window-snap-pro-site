@@ -106,7 +106,7 @@ export default function Login() {
     <AuthShell
       title="Log in to Redock"
       heading="Welcome back"
-      intro="Log in to manage your license and subscription."
+      intro="Log in to manage your licence and activated Macs."
       footer={
         <>
           Don&apos;t have an account?{" "}

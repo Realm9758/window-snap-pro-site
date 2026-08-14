@@ -299,7 +299,7 @@ export default function ManageLicense() {
                 className="rounded-3xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-[0_4px_24px_rgba(0,0,0,0.05)] p-6"
               >
                 <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400 dark:text-neutral-500 mb-4">
-                  Subscription
+                  Licence
                 </p>
                 {fetching ? (
                   <div className="flex flex-col gap-2 animate-pulse">
@@ -392,7 +392,7 @@ export default function ManageLicense() {
                         </svg>
                         Opening…
                       </>
-                    ) : "Manage Subscription"}
+                    ) : "Manage Licence"}
                   </button>
 
                   {error && <p className="text-sm text-red-500 dark:text-red-400 text-center">{error}</p>}

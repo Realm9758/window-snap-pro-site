@@ -67,11 +67,11 @@ export default function Privacy() {
                 </p>
                 <p>
                   <strong className="text-neutral-800 dark:text-neutral-200">Purchase information.</strong>{" "}
-                  When you subscribe to Redock, payment is processed by Stripe. We receive a confirmation of payment and a customer identifier, but we never store your card details.
+                  When you buy Redock Pro, payment is processed by Stripe. We receive a confirmation of payment and a customer identifier, but we never store your card details.
                 </p>
                 <p>
                   <strong className="text-neutral-800 dark:text-neutral-200">License key.</strong>{" "}
-                  We generate a unique license key associated with your account. This is stored in our database and used solely to verify your Pro subscription in the macOS app.
+                  We generate a unique license key associated with your account. This is stored in our database and used solely to verify your Pro licence in the macOS app.
                 </p>
                 <p>
                   <strong className="text-neutral-800 dark:text-neutral-200">Device identifier.</strong>{" "}
@@ -100,7 +100,7 @@ export default function Privacy() {
                   <li>Create and manage your account</li>
                   <li>Deliver your license key and verify Pro activation in the app</li>
                   <li>Process payments via Stripe</li>
-                  <li>Send transactional emails (e.g. your license key, subscription receipts)</li>
+                  <li>Send transactional emails (e.g. your license key and purchase receipt)</li>
                   <li>Enforce per-device activation limits</li>
                 </ul>
               </Section>
@@ -117,7 +117,7 @@ export default function Privacy() {
 
               <Section title="Data Retention">
                 <p>
-                  We retain your account and license data for as long as your account is active. If you cancel your subscription, your account and license record are retained for 90 days before deletion, in case you wish to reactivate.
+                  We retain your account and licence data while your account is active. If a payment is refunded or a licence is deactivated, related records may be retained where needed for support, fraud prevention, accounting, and legal obligations.
                 </p>
                 <p>
                   You can request deletion of your account and all associated data at any time by emailing us at the address below.

@@ -170,7 +170,7 @@ export default function ProfileSettings({ license }: ProfileSettingsProps) {
           </div>
         </div>
 
-        {/* Subscription */}
+        {/* Licence */}
         <SubscriptionCard license={license} />
 
         {/* Sign out */}

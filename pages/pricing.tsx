@@ -163,8 +163,8 @@ export default function Pricing() {
               <div className="flex flex-col divide-y divide-neutral-100 dark:divide-neutral-800">
                 {[
                   {
-                    q: "How do I activate Pro after subscribing?",
-                    a: "After subscribing you'll receive a license key by email. Open Redock, go to Settings → Pro, paste your key, and click Activate.",
+                    q: "How do I activate Pro after buying?",
+                    a: "After you buy, you'll receive a license key by email. Open Redock, go to Settings → Pro, paste your key, and click Activate.",
                   },
                   {
                     q: "Can I use my license on multiple Macs?",

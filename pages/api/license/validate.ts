@@ -57,12 +57,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(402).json({
       valid: false,
       status: license.subscription_status ?? "inactive",
+      // Redock is a one-time purchase now; "subscription" in these messages
+      // read as a bait-and-switch to lifetime buyers. The statuses themselves
+      // stay, since legacy subscription-era licences still resolve here.
       message:
         license.subscription_status === "past_due"
-          ? "Payment failed. Please update your payment method."
+          ? "The payment for this licence didn't go through. Please update your payment method."
           : license.subscription_status === "canceled"
-          ? "Your subscription has been cancelled."
-          : "Your subscription appears inactive. Please renew to continue.",
+          ? "This licence has been cancelled."
+          : "This licence is not active. Visit the Manage License page for details.",
     });
   }
 
