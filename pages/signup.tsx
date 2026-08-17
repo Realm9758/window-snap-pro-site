@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useAuth } from "../lib/auth-context";
 import AuthShell, { AuthError, authButton, authInput, authLabel } from "../components/AuthShell";
 import { apiPath, CONTACT_EMAIL } from "../lib/site";
+import { issueFormToken } from "../lib/signupGuard";
 
 /**
  * Account creation.
@@ -14,8 +15,13 @@ import { apiPath, CONTACT_EMAIL } from "../lib/site";
  * It now posts to /api/auth/signup, which generates the link server-side and
  * sends it through Resend. See that route for the full account of what was
  * failing and why the failure was unreadable.
+ *
+ * Two of the fields below are not for the person filling it in. `formToken` is
+ * a signed timestamp proving this page was actually rendered, and `website` is
+ * a honeypot that only a bot will fill. lib/signupGuard.ts explains what each
+ * one caught.
  */
-export default function Signup() {
+export default function Signup({ formToken }: { formToken: string }) {
   const router = useRouter();
   const { user, loading } = useAuth();
 
@@ -26,6 +32,7 @@ export default function Signup() {
   const [errorCode, setErrorCode] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone]         = useState(false);
+  const [website, setWebsite]   = useState("");
 
   useEffect(() => {
     if (!loading && user) router.replace("/profile");
@@ -51,7 +58,12 @@ export default function Signup() {
       const res = await fetch(apiPath("/api/auth/signup"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim().toLowerCase(), password }),
+        body: JSON.stringify({
+          email: email.trim().toLowerCase(),
+          password,
+          formToken,
+          website,
+        }),
       });
       const data = await res.json().catch(() => ({}));
 
@@ -130,6 +142,25 @@ export default function Signup() {
       }
     >
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        {/*
+          Off-screen rather than display:none, because a bot that reads
+          computed styles skips a hidden input but still fills a positioned
+          one. aria-hidden and tabIndex keep it away from screen readers and
+          the tab order, so nobody filling this form in earnest ever meets it.
+        */}
+        <div aria-hidden="true" className="absolute left-[-9999px] w-px h-px overflow-hidden">
+          <label htmlFor="website">Leave this field empty</label>
+          <input
+            id="website"
+            name="website"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+          />
+        </div>
+
         <div className="flex flex-col gap-1.5">
           <label htmlFor="email" className={authLabel}>Email</label>
           <input
@@ -201,4 +232,13 @@ export default function Signup() {
       </form>
     </AuthShell>
   );
+}
+
+/**
+ * Mints the signed timestamp the API route checks. Rendering per request is
+ * the point: a token baked in at build time would be one value shared by
+ * everyone and would age out within hours of a deploy.
+ */
+export function getServerSideProps() {
+  return { props: { formToken: issueFormToken() } };
 }

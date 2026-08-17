@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { getServiceClient, normalizeEmail, clientIp } from "../../../lib/auth-server";
 import { sendAuthEmail } from "../../../lib/email";
 import { checkRateLimit } from "../../../lib/rateLimit";
+import { inboxKey, inspectSignup } from "../../../lib/signupGuard";
 import { CONTACT_EMAIL, SITE_URL } from "../../../lib/site";
 
 /**
@@ -62,11 +63,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
   }
 
+  // Bot checks come before the rate limiter and well before generateLink,
+  // because the thing being abused is the sending of mail, and a refusal here
+  // costs nothing to issue. See lib/signupGuard.ts for what each check is for.
+  const verdict = inspectSignup({
+    email,
+    honeypot: req.body?.website,
+    formToken: req.body?.formToken,
+  });
+  if (!verdict.ok) {
+    return fail(res, { status: 400, code: verdict.code, message: verdict.message });
+  }
+
   // Two buckets. The email one stops someone being mailed repeatedly by
   // whoever knows their address; the IP one stops a script working through a
-  // list. Both are keyed on the normalised address, because " A@x.com " and
-  // "a@x.com" are one account and must not be two allowances.
-  const perEmail = checkRateLimit(`signup:email:${email}`, 3, 15 * 60_000);
+  // list. The email bucket is keyed on the inbox rather than the spelling:
+  // " A@x.com ", "a@x.com" and "a+test@x.com" are one inbox and must not be
+  // three allowances.
+  const perEmail = checkRateLimit(`signup:email:${inboxKey(email)}`, 3, 15 * 60_000);
   const perIp = checkRateLimit(`signup:ip:${clientIp(req)}`, 8, 15 * 60_000);
   const limited = !perEmail.allowed ? perEmail : !perIp.allowed ? perIp : null;
   if (limited) {
