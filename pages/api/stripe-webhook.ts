@@ -71,6 +71,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const session = event.data.object as Stripe.Checkout.Session;
         if (session.mode !== "payment" && session.mode !== "subscription") break;
 
+        // This Stripe account also sells Floodtide and other products, and
+        // Stripe sends every completed checkout to every endpoint subscribed
+        // to the event. Without this check a Floodtide purchase minted a
+        // Redock licence and emailed the buyer a key for an app they did not
+        // buy. Redock's own checkout stamps this metadata on every session.
+        if (session.metadata?.product !== "window_snap_pro") {
+          console.log("[webhook] ignoring checkout for another product:", session.id);
+          break;
+        }
+
         // A one-time payment can complete as unpaid (e.g. delayed methods).
         if (session.payment_status === "unpaid") {
           console.warn("[webhook] session unpaid, skipping:", session.id);
