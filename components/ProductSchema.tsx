@@ -25,7 +25,7 @@ const SCHEMA = {
   applicationSubCategory: "Window manager",
   operatingSystem: "macOS 13.0 or later",
   processorRequirements: "Apple Silicon or Intel",
-  softwareVersion: "1.9.2",
+  softwareVersion: "1.9.3",
   url: SITE_URL,
   downloadUrl: `${SITE_URL}/download`,
   installUrl: `${SITE_URL}/download`,

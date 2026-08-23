@@ -56,7 +56,7 @@ export default function Hero() {
         <PurchaseTrustLine className="settle settle-3 mt-4 max-w-3xl" />
 
         <p className="settle settle-3 mt-2 text-[13px] ink-3">
-          <span className="tabular">Version 1.9.2</span>. Free to use, with a
+          <span className="tabular">Version 1.9.3</span>. Free to use, with a
           14&#8209;day trial of everything in Pro. Requires macOS 13 or later.
         </p>
       </div>

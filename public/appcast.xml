@@ -28,6 +28,28 @@
     <language>en</language>
 
     <item>
+      <title>Version 1.9.3</title>
+      <pubDate>Sun, 23 Aug 2026 14:48:24 +0100</pubDate>
+      <sparkle:version>13</sparkle:version>
+      <sparkle:shortVersionString>1.9.3</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+      <link>https://bhopstudio.com/redock/changelog</link>
+      <description><![CDATA[
+        <ul>
+          <li>Redock is now signed with a Developer ID and notarised by Apple. It opens normally on first launch; no right-click Open step, no Privacy &amp; Security detour.</li>
+          <li>The price shown inside the app now matches checkout: £19.99 once for three Macs.</li>
+        </ul>
+      ]]></description>
+      <enclosure
+        url="https://bhopstudio.com/redock/Redock-1.9.3.dmg"
+        sparkle:version="13"
+        sparkle:shortVersionString="1.9.3"
+        sparkle:edSignature="Korehlckr4GCNEIKzO6FP8JK8MXEZmg801CnId1sr8VWPQV5a3RF8YTs2M+UIAHMP39gO8KTESEi4a2OpL8BCA=="
+        length="3718064"
+        type="application/octet-stream" />
+    </item>
+
+    <item>
       <title>Version 1.9.2</title>
       <pubDate>Fri, 14 Aug 2026 16:24:44 +0100</pubDate>
       <sparkle:version>11</sparkle:version>

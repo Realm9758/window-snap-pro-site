@@ -7,9 +7,18 @@ import Link from "next/link";
 
 const changelog: ChangelogEntry[] = [
   {
-    version: "1.9.2",
+    version: "1.9.3",
     date: "August 2026",
     tag: "latest",
+    changes: [
+      { type: "improved", text: "Redock is now signed with a Developer ID and notarised by Apple. It opens normally on first launch with no right-click Open step or Privacy & Security detour." },
+      { type: "fixed", text: "The price shown inside the app now matches checkout: £19.99 once for three Macs." },
+    ],
+  },
+  {
+    version: "1.9.2",
+    date: "August 2026",
+    tag: "stable",
     changes: [
       { type: "added", text: "Purchase-success pages and licence emails can open Redock and activate this Mac automatically through a signed, expiring link. The licence key remains available as a fallback." },
       { type: "improved", text: "Workspace, app-rule, drag-zone and Clipboard Pro prompts now show the specific result you were trying to get, preview how it works and start the 14-day trial directly." },

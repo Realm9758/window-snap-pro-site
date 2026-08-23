@@ -66,9 +66,9 @@ export default function Download() {
                     Redock
                   </h2>
                   <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-400 dark:text-neutral-500">
-                    <span>Version 1.9.2</span>
+                    <span>Version 1.9.3</span>
                     <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-600" />
-                    <span>3.0 MB</span>
+                    <span>3.5 MB</span>
                     <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-600" />
                     <span>Released August 2026</span>
                   </div>
@@ -91,7 +91,7 @@ export default function Download() {
               {/* Meta row */}
               <div className="px-8 py-5 grid grid-cols-3 divide-x divide-neutral-100 dark:divide-neutral-800">
                 {[
-                  { label: "Version", value: "1.9.2" },
+                  { label: "Version", value: "1.9.3" },
                   { label: "Requires", value: "macOS 13+" },
                   { label: "Architecture", value: "Apple Silicon + Intel" },
                 ].map((item) => (
@@ -104,11 +104,8 @@ export default function Download() {
             </motion.div>
 
             {/*
-              Installing is worth spelling out. The app is signed to run
-              locally rather than with a Developer ID certificate, so the first
-              launch shows a dialog saying macOS cannot verify the developer,
-              with no obvious way past it. Saying so here is better than letting
-              someone meet that dialog cold and assume the download is malware.
+              Installing is worth spelling out even now that the app is
+              notarised: the Accessibility prompt is the step people stall on.
             */}
             <motion.div
               custom={4} variants={fadeUp} initial="hidden" animate="show"
@@ -120,7 +117,7 @@ export default function Download() {
               <ol className="flex flex-col gap-4">
                 {[
                   "Open Redock.dmg and drag Redock into your Applications folder.",
-                  "In Applications, Control-click or right-click Redock, choose Open, then click Open again. If macOS still blocks it, use Open Anyway at the bottom of System Settings → Privacy & Security.",
+                  "Open Redock from Applications. It is signed with a Developer ID and notarised by Apple, so it opens like any other app.",
                   "Redock will ask for Accessibility permission. It needs this to move windows belonging to other apps, and it cannot work without it.",
                 ].map((step, i) => (
                   <li key={step} className="flex items-start gap-3.5">
@@ -135,13 +132,13 @@ export default function Download() {
               </ol>
               <details className="group mt-5 pt-5 border-t border-neutral-100 dark:border-neutral-800">
                 <summary className="cursor-pointer list-none text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                  Why does macOS say Redock is from an unidentified developer?
+                  Still seeing an &quot;unidentified developer&quot; warning?
                 </summary>
                 <p className="mt-2 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
-                  Redock is not yet notarised by Apple, so macOS cannot verify
-                  its developer certificate. The right-click Open step is a
-                  one-time bypass for that missing certificate; it is not a
-                  warning that macOS found anything harmful in the app.
+                  That means you have a copy from before 1.9.3, which was not
+                  notarised. Download again from this page; the current build
+                  carries Apple&apos;s notarisation ticket and opens without any
+                  right-click step.
                 </p>
               </details>
             </motion.div>
@@ -157,14 +154,14 @@ export default function Download() {
                     <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z" />
                   </svg>
                 </span>
-                What&apos;s new in 1.9.2
+                What&apos;s new in 1.9.3
               </h3>
               <ul className="flex flex-col gap-2.5">
                 {[
+                  "Signed with a Developer ID and notarised by Apple: Redock opens normally on first launch",
                   "Secure purchase links open Redock and activate this Mac automatically; the licence key remains available as a fallback",
-                  "Workspace, app-rule and Clipboard Pro prompts now preview the result you asked for and can start the 14-day trial directly",
-                  "The menu's Save a Workspace action now leads free users to the workspace-specific preview instead of a generic licence screen",
-                  "Includes the update checks, Launch at Login default and expanded window actions introduced in 1.9 and 1.9.1",
+                  "Workspace, app-rule and Clipboard Pro prompts preview the result you asked for and can start the 14-day trial directly",
+                  "Includes the update checks, Launch at Login default and expanded window actions introduced in 1.9 to 1.9.2",
                 ].map((note) => (
                   <li key={note} className="flex items-start gap-3 text-sm text-neutral-600 dark:text-neutral-400">
                     <svg className="w-4 h-4 text-neutral-300 dark:text-neutral-600 flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="currentColor">
