@@ -68,7 +68,7 @@ export default function Pricing() {
     <>
       <Seo
         title="Redock pricing"
-        description="Redock is free to use. Pro is £19 once, for three Macs, with every future update included. No subscription."
+        description="Redock is free to use. Pro is £19.99 once, for three Macs, with every future update included. No subscription."
       />
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />
@@ -113,7 +113,7 @@ export default function Pricing() {
               />
               <PricingCard
                 name="Pro"
-                price="£19"
+                price="£19.99"
                 period="one time"
                 description="Saved layouts that come back when you reconnect a display."
                 features={PRO_FEATURES}

@@ -65,7 +65,7 @@ function Pricing() {
     <section id="pricing" className="px-6 py-20 sm:py-28">
       <div className="mx-auto max-w-4xl">
         <h2 className="text-[clamp(1.6rem,3vw,2.25rem)] font-semibold tracking-[-0.03em] ink text-balance">
-          Free to use. £19 once for the rest.
+          Free to use. £19.99 once for the rest.
         </h2>
         <p className="measure mt-3 leading-relaxed ink-2 text-pretty">
           No subscription. Buy it once and it stays yours, on up to three Macs,
@@ -84,7 +84,7 @@ function Pricing() {
           />
           <PricingCard
             name="Pro"
-            price="£19"
+            price="£19.99"
             period="one time"
             description="Saved layouts that come back when you reconnect a display."
             features={PRO_FEATURES}
@@ -114,7 +114,7 @@ export default function Home() {
     <>
       <Seo
         title="Redock: your Mac workspace restores itself"
-        description="Plug in your display and Redock restores your complete Mac workspace. Save layouts, route apps automatically and restore windows across displays. £19 once."
+        description="Plug in your display and Redock restores your complete Mac workspace. Save layouts, route apps automatically and restore windows across displays. £19.99 once."
       />
       <ProductSchema />
 

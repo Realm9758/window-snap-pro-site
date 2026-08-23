@@ -30,7 +30,7 @@ export interface License {
   activation_count: number;
   max_activations: number;
   active: boolean;
-  /** Minor units (1900 = £19.00). Null for manual and pre-tracking licences. */
+  /** Minor units (1999 = £19.99). Null for manual and pre-tracking licences. */
   amount_total: number | null;
   currency: string | null;
 }

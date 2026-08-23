@@ -35,7 +35,7 @@ export default function MultipleMonitorGuide() {
           heading: "Redock: best for a repeatable docked desk",
           paragraphs: [
             "Redock is built around one event: a known display setup appears. Save the complete arrangement, bind it to those displays and Redock can put the workspace back without a hotkey. Explicit app rules then handle apps opened later.",
-            "The free edition covers ordinary snapping. Pro is £19 once for three Macs, includes lifetime updates and has a 14-day trial. That price makes sense when automatic workspace recovery is the job you are buying, rather than basic tiling already supplied by macOS.",
+            "The free edition covers ordinary snapping. Pro is £19.99 once for three Macs, includes lifetime updates and has a 14-day trial. That price makes sense when automatic workspace recovery is the job you are buying, rather than basic tiling already supplied by macOS.",
           ],
         },
         {

@@ -49,7 +49,7 @@ export default function Hero() {
             style={{ borderColor: "var(--edge)" }}
           >
             Buy Redock
-            <span className="tabular ink-2">£19</span>
+            <span className="tabular ink-2">£19.99</span>
           </Link>
         </div>
 

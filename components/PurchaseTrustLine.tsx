@@ -1,5 +1,5 @@
 export const PURCHASE_TRUST =
-  "£19 once · 3 Macs · lifetime updates · 14-day trial · 14-day money-back guarantee · clipboard stays local";
+  "£19.99 once · 3 Macs · lifetime updates · 14-day trial · 14-day money-back guarantee · clipboard stays local";
 
 export default function PurchaseTrustLine({ className = "" }: { className?: string }) {
   return (

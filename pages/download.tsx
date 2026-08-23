@@ -20,7 +20,7 @@ export default function Download() {
     <>
       <Seo
         title="Download Redock for macOS"
-        description="Download Redock for macOS Ventura or later. Free to download; Pro is a one-time £19 purchase."
+        description="Download Redock for macOS Ventura or later. Free to download; Pro is a one-time £19.99 purchase."
       />
       <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
         <Navbar />
@@ -49,7 +49,7 @@ export default function Download() {
                 custom={2} variants={fadeUp} initial="hidden" animate="show"
                 className="text-lg text-neutral-500 dark:text-neutral-400 leading-relaxed max-w-xl mx-auto"
               >
-                Free to use. Pro is a one-time £19 purchase, with a 14 day trial.
+                Free to use. Pro is a one-time £19.99 purchase, with a 14 day trial.
               </motion.p>
             </div>
 
@@ -201,7 +201,7 @@ export default function Download() {
                   href="/pricing"
                   className="text-sm font-semibold text-accent hover:underline"
                 >
-                  Buy Redock, £19 once
+                  Buy Redock, £19.99 once
                 </Link>
                 <span className="hidden sm:block text-neutral-300 dark:text-neutral-700">·</span>
                 <Link

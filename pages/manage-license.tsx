@@ -338,7 +338,7 @@ export default function ManageLicense() {
                       href="/pricing"
                       className="inline-flex items-center gap-1.5 px-4 py-2 bg-accent text-white text-sm font-semibold rounded-xl shadow-sm shadow-accent/30 hover:bg-accent/90 transition-all duration-150 w-fit"
                     >
-                      Buy Redock, £19 once
+                      Buy Redock, £19.99 once
                     </Link>
                     <PurchaseTrustLine />
                   </div>

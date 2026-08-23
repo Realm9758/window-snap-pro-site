@@ -16,7 +16,7 @@ export default function MacOSTilingComparison() {
           ["Remember a complete desk", "No saved multi-app workspace", "Saves every eligible app window across displays"],
           ["Restore when a display reconnects", "No automatic workspace restore", "Can bind a workspace to that display setup"],
           ["Route an app on launch", "No per-app placement rules", "Choose its display and snap position"],
-          ["Price", "Included with macOS", "Free basics; Pro is £19 once"],
+          ["Price", "Included with macOS", "Free basics; Pro is £19.99 once"],
         ],
       }}
       sections={[

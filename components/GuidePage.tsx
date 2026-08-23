@@ -162,7 +162,7 @@ export default function GuidePage({
                   Download Redock
                 </Link>
                 <Link href="/pricing" className="rounded-lg border px-5 py-3 text-[15px] font-medium ink" style={{ borderColor: "var(--edge)" }}>
-                  Buy Redock · £19
+                  Buy Redock · £19.99
                 </Link>
               </div>
               <PurchaseTrustLine className="mt-4" />

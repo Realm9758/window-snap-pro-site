@@ -63,7 +63,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (event.type) {
       // ── Checkout completed → create license + send email ──────────────────
       //
-      // Handles BOTH modes. `payment` is the current one-time £19 licence;
+      // Handles BOTH modes. `payment` is the current one-time £19.99 licence;
       // `subscription` is kept so historical subscribers still resolve. The old
       // code bailed out unless mode was "subscription", which meant a one-time
       // checkout completed, took the money, and never issued a key.

@@ -11,7 +11,7 @@ import { SITE_URL } from "../lib/site";
  *
  * Every value here has to match what a visitor actually sees on the page.
  * Marking up a price the page does not show is a structured-data violation and
- * a manual-action risk, so the £19 here is the same £19 in the hero and on the
+ * a manual-action risk, so the £19.99 here is the same £19.99 in the hero and on the
  * pricing page.
  *
  * Deliberately no aggregateRating. There are no reviews yet, and inventing one
@@ -43,7 +43,7 @@ const SCHEMA = {
   ],
   offers: {
     "@type": "Offer",
-    price: "19.00",
+    price: "19.99",
     priceCurrency: "GBP",
     availability: "https://schema.org/InStock",
     url: `${SITE_URL}/pricing`,
